@@ -17,9 +17,8 @@ const AuthPage = () => {
   return (
     <div className="auth-page-container">
 
-      <div className="auth-image-container">
+      <div className="auth-image-container" >
         {/* Display img*/}
-        <img src="https://assets.quizlet.com/_next/static/media/QZ_Auth_LightV2.d6b0ba3d.png" alt="Auth Image" />
       </div>
 
       {/* Display status AuthForm*/}

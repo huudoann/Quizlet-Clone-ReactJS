@@ -1,0 +1,60 @@
+  .toggle-password-icon {
+      color: #586380;
+      position: absolute;
+      top: 65%;
+      right: 0px;
+      transform: translateY(-50%);
+      cursor: pointer;
+  }
+
+  .squaredcheck {
+      width: 100%;
+      position: relative;
+      margin: 20px auto;
+ }
+    .squaredcheck .label {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+          top: 5px;
+          left: 0;
+          background: lighten(#0096FF, 20%);
+          border-radius: 4px;
+
+          &:after {
+              content: '';
+              width: 10px;
+              height: 5px;
+              position: absolute;
+              top: 4px;
+              left: 3px;
+              border: 2px solid #fff;
+              border-top: none;
+              border-right: none;
+              background: transparent;
+              opacity: 0;
+              transform: rotate(-45deg);
+          }
+
+          &:hover::after {
+              opacity: 0.3;
+          }
+      }
+
+    .squaredcheck  span {
+          position: relative;
+          left: 10px;
+      }
+
+    .squaredcheck .input[type=checkbox] {
+          visibility: hidden;
+
+          &:checked+label {
+              background: #0096FF;
+          }
+
+          &:checked+label:after {
+              opacity: 1;
+          }
+      }
+ 

@@ -1,0 +1,32 @@
+.toggle-password-icon {
+  color: #586380;
+  position: absolute;
+  top: 65%;
+  right: 0px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.forgot-password {
+  text-align: right;
+  display: block;
+  margin-top: 0px;
+  font-size: 12px;
+  color: blue;
+  cursor: pointer;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+
+// auth-form
+// email-container
+// password-container
+// forgot-password
+// forgot-password
+// toggle-password-icon
+// noti-terms
+// button
+// switch-status
