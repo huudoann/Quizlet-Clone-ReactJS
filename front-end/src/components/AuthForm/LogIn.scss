@@ -7,26 +7,22 @@
   cursor: pointer;
 }
 
+.header-of-password {
+  position: relative;
+}
+
 .forgot-password {
+  font-size: 14px;
   text-align: right;
   display: block;
   margin-top: 0px;
-  font-size: 12px;
   color: blue;
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .forgot-password:hover {
   text-decoration: underline;
 }
-
-
-// auth-form
-// email-container
-// password-container
-// forgot-password
-// forgot-password
-// toggle-password-icon
-// noti-terms
-// button
-// switch-status

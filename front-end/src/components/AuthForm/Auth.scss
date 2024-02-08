@@ -1,9 +1,12 @@
-:root {
-    --authImg: url(https://assets.quizlet.com/_next/static/media/QZ_Auth_LightV2.d6b0ba3d.png);
+body,
+html {
+    height: 100%;
+    margin: 0;
 }
 
 .auth-page-container {
     display: flex;
+    height: 100vh;
 }
 
 *,
@@ -18,18 +21,41 @@
     }
 }
 
-.auth-image-container {
+.auth-page-container>.auth-image-container {
     flex: 50% 1;
-    background-image: var(--authImg);
-    background-position: 50%;
+    background-image: url(https://assets.quizlet.com/_next/static/media/QZ_Auth_LightV2.d6b0ba3d.png);
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.auth-form-container {
+.auth-page-container>.auth-form-container {
     flex: 50% 1;
     overflow: scroll;
     padding: 1rem;
+    justify-content: center;
+}
+
+.auth-tabs {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    margin-right: 2rem;
+}
+
+.auth-tabs button {
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #586380;
+}
+
+.auth-tabs button.active {
+    color: #000;
+    font-weight: bold;
 }
 
 .auth-form {
@@ -39,12 +65,19 @@
 }
 
 .auth-form label {
+    font-size: 0.875rem;
     text-align: left;
     display: flex;
-    margin-bottom: 3px;
+    margin-bottom: .5rem;
+    letter-spacing: normal;
+    line-height: 1.4;
+    font-weight: 600;
+    color: #586380;
 }
 
-.auth-form input[type = email], input[type = text], input[type = password]{
+.auth-form input[type=email],
+input[type=text],
+input[type=password] {
     background-color: #f6f7fb;
     width: 100%;
     height: 2rem;
@@ -58,6 +91,9 @@
     line-height: 1.5;
     overflow: hidden;
     border: none;
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 1.5;
 }
 
 .password-container {
@@ -70,15 +106,25 @@
     width: 100%;
     background-color: #4255ff;
     color: #fff;
-    padding: 15px;
+    padding: 1.125rem 1.875rem;
     border: none;
-    border-radius: 3px;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .auth-form button:hover {
     background-color: #423ed8;
 }
+
+.switch-status-btn {
+    width: 100% !important;
+    background-color: #fff !important;
+    color: #586380 !important;
+    margin-top: 10px !important;
+    border: 1px solid #ccc !important;
+}
+
 
 .auth-form p {
     margin: 1rem;
