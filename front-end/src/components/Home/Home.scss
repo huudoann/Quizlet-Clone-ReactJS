@@ -1,0 +1,77 @@
+.home{
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #FEFBF6;
+    color: black;
+    
+    .name-app {
+      font-size: 30px;
+      color: #0B60B0;
+      font-weight: bold;
+    }
+    
+    .button-register-login {
+      button {
+        margin-left: 10px;
+        padding: 12px 30px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      .register-button {
+        background-color: #007bff;
+        color: white;
+      }
+      
+      .login-button {
+        background-color: yellow; 
+      }
+    }
+  }
+  
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    
+    .content {
+      position: relative;
+      
+      img {
+        width: 100%;
+        height: auto;
+        z-index: -1;
+      }
+      
+      .overlay {
+        position: absolute;
+        top: 50%;
+        left: 20%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        
+        h1 {
+          font-size: 32px;
+          margin-bottom: 20px;
+        }
+        
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

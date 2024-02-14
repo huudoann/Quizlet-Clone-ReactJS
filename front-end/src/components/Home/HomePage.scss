@@ -1,0 +1,74 @@
+.home-page header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+
+  .name-app {
+      font-size: 40px;
+      color: white;
+      font-weight: bold;
+  }
+
+  .search {
+      display: flex;
+      margin-left: auto; // Dịch các phần tử sang bên phải
+      align-items: center;
+
+      input[type="text"] {
+          padding: 10px;
+          border-radius: 5px;
+          border: none;
+      }
+
+      .button-right {
+          display: flex;
+          align-items: center;
+      }
+
+      .icon-container {
+          position: relative;
+          width: 40px; // Kích thước của hình tròn
+          height: 40px;
+          border-radius: 50%; // Tạo hình tròn
+          background-color: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-left: 10px; // Khoảng cách giữa các biểu tượng
+          cursor: pointer;
+          svg {
+              color: black; // Màu biểu tượng
+              font-size: 20px; // Kích thước biểu tượng
+          }
+      }
+  }
+
+  .menu {
+      display: flex;
+      position: absolute;
+      flex-wrap: wrap;
+      top: 100%;
+      right: 0;
+      background-color: #fff;
+      border: 1px solid #000;
+      border-radius: 5px;
+      padding: 10px;
+      z-index: 999;
+      text-align: center;
+      color: black;
+      width: 120px; 
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        cursor: pointer;
+
+        svg {
+            margin-right: 5px;
+        }
+    }
+  }
+}
