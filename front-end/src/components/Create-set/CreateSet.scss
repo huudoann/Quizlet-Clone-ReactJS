@@ -40,8 +40,8 @@
             margin-left: 10px; // Khoảng cách giữa các biểu tượng
             cursor: pointer;
             svg {
-                color: black; // Màu biểu tượng
-                font-size: 20px; // Kích thước biểu tượng
+                color: black; 
+                font-size: 20px; 
             }
         }
     }
@@ -98,9 +98,15 @@
             margin-left: auto;
             font-size: 20px;
             font-weight: bold;
+            color: white;
             width: 40px; 
             height: 30px; 
+            background-color: #4255ff;
             cursor: pointer;
+
+            &:hover {
+                background-color: #423ed8;
+            }
         }
     }
     
@@ -181,9 +187,9 @@
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu khi hover */
-    }
-    .add-card-button:hover {
-        background-color: #7dd; /* Đổi màu background khi hover */
+
+        &:hover {
+            background-color: #7dd; /* Đổi màu background khi hover */
+        }
     }
 }
