@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import './HomePage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
+import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    }
+
+    const toggleFolderDialog = () => {
+        setIsFolderDialogOpen(!isFolderDialogOpen);
     }
 
     return (
@@ -22,7 +27,7 @@ const HomePage = () => {
                             {isMenuOpen && (
                                 <div className="menu">
                                     <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
+                                    <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
                                     <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div>
                                 </div>
                             )}
@@ -36,6 +41,18 @@ const HomePage = () => {
                     </div>
                 </div>
             </header>
+
+            {isFolderDialogOpen && (
+                <div className="folder-dialog">
+                    <div className="close-icon" onClick={toggleFolderDialog}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </div>
+                    <h2>Tạo thư mục mới</h2>
+                    <input type="text" placeholder="Tên thư mục" />
+                    <input type="text" placeholder="Mô tả" />
+                    <button onClick={toggleFolderDialog}>Tạo thư mục</button>
+                </div>
+            )}
         </div>
     );
 }
