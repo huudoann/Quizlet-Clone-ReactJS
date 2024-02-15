@@ -6,6 +6,7 @@ import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes } from
 const HomePage = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
+    const [isLibraryMenuOpen, setIsLibraryMenuOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -15,20 +16,39 @@ const HomePage = () => {
         setIsFolderDialogOpen(!isFolderDialogOpen);
     }
 
+    const toggleLibraryMenu = () => {
+        setIsLibraryMenuOpen(!isLibraryMenuOpen);
+    }
+
+
     return (
         <div className="home-page">
             <header>
                 <div className="name-app">Quizlet</div>
+
+                <div className='home-library-container'>
+                    <div className='homepage-btn'>Home</div>
+                    <div className='library-menu' onClick={toggleLibraryMenu}>Library</div>
+                    {isLibraryMenuOpen && (
+                        <div className="library-menu-dropdown">
+                            <div className="menu-item1">Study sets</div>
+                            <div className="menu-item1">Folders</div>
+                        </div>
+                    )}
+                </div>
+
+
+
                 <div className="search">
-                    <input type="text" placeholder="Tìm kiếm" />
+                    <input type="text" placeholder="Search for anything..." />
                     <div className="button-right">
                         <div className="icon-container" onClick={toggleMenu}>
                             <FontAwesomeIcon icon={faPlus} />
                             {isMenuOpen && (
                                 <div className="menu">
-                                    <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
-                                    <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div>
+                                    <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Study sets </div>
+                                    <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Folders </div>
+                                    <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Classes </div>
                                 </div>
                             )}
                         </div>
@@ -47,10 +67,10 @@ const HomePage = () => {
                     <div className="close-icon" onClick={toggleFolderDialog}>
                         <FontAwesomeIcon icon={faTimes} />
                     </div>
-                    <h2>Tạo thư mục mới</h2>
-                    <input type="text" placeholder="Tên thư mục" />
-                    <input type="text" placeholder="Mô tả" />
-                    <button onClick={toggleFolderDialog}>Tạo thư mục</button>
+                    <h2>Create new folder</h2>
+                    <input type="text" placeholder="Folder name" />
+                    <input type="text" placeholder="Description" />
+                    <button onClick={toggleFolderDialog}>Create</button>
                 </div>
             )}
         </div>
