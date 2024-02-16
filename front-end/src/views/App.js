@@ -9,7 +9,7 @@ import Flashcard from '../components/Flashcard/Flashcard';
 function App() {
   return (
     <div className="App">
-      <Flashcard/>
+      <AuthForm />
     </div>
   );
 }
