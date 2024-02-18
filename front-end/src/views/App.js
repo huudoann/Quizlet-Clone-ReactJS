@@ -7,11 +7,12 @@ import Home from '../components/Home/Home';
 import Flashcard from '../components/Flashcard/Flashcard';
 import Match from '../components/Match/Match';
 import Sets from '../components/StudySet/Sets/Sets';
+import Auth from '../components/AuthForm/Auth';
 
 function App() {
   return (
     <div className="App">
-      <AuthForm />
+      <Match />
     </div>
   );
 }

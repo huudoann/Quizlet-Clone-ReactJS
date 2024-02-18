@@ -5,10 +5,14 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const SignUpForm = ({ switchForm }) => {
+    // thêm username, sửa auth-form
+
+
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
+    //server không nhận được mail vs username
     const handleSignUp = async () => {
         const userData = {
             usernameOrEmail: usernameOrEmail,
@@ -24,7 +28,7 @@ const SignUpForm = ({ switchForm }) => {
             const token = response.data.token;
             console.log(token)
             localStorage.setItem('token', token);
-            
+
             return response.data;
         } catch (error) {
             console.error('Lỗi khi đăng ký:', error.message);
