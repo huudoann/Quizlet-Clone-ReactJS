@@ -78,7 +78,7 @@ const Flashcard = () => {
             </div>
 
             <div className="card-container">
-                <div className="card">
+                <div className="card-flashcard">
                     <div onClick={() => setToggleTermDefinition(!toggleTermDefinition)}
                         className="cardtext flip-container">
                         <div className="flipper">
