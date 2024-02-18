@@ -57,7 +57,7 @@ const Match = () => {
   return (
     <div className="Match">
       <h1>Matching Game</h1>
-      <div className="card-container">
+      <div className="card.match-container">
         {cards.map((card, index) => (
           <div
             key={index}
