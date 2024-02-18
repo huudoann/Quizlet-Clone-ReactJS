@@ -10,7 +10,7 @@ import Match from '../components/Match/Match';
 function App() {
   return (
     <div className="App">
-      <Flashcard />
+      <AuthForm />
     </div>
   );
 }

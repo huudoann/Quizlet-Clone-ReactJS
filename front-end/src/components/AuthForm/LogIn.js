@@ -1,34 +1,54 @@
 import React, { useState } from 'react';
 import './LogIn.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';      //
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // add icon EyeSlash for hide/unhide password
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
 const LoginForm = ({ switchForm }) => {
-  const [email, setEmail] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    const userData = {
+      usernameOrEmail: usernameOrEmail, // Sử dụng username hoặc email tùy thuộc vào loại dữ liệu
+      password: password,
+    };
 
-    console.log('Login:', { email, password });
+    const apiUrl = 'http://localhost:8080/api/auth/login';
 
+    try {
+      const response = await axios.post(apiUrl, userData);
+      console.log('Đăng nhập thành công:', response.data);
+
+      const token = response.data.token;
+      console.log(token);
+      localStorage.setItem('token', token);
+
+      return response.data;
+    } catch (error) {
+      console.error('Lỗi khi đăng nhập:', error.message);
+      throw error;
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setUsernameOrEmail(e.target.value);
   };
 
   const handleForgotPassword = () => {
-
-    console.log('Forgot Password:', email);
-
+    console.log('Forgot Password:', usernameOrEmail);
   };
 
   return (
     <div className="auth-form">
-      <div className='email-container'>
-        <label>Email:</label>
+      <div className='username-email-container'>
+        <label>Username or Email:</label>
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder='Enter your email address'
+          type="text"
+          value={usernameOrEmail}
+          onChange={handleInputChange}
+          placeholder='Enter your username or email'
           required />
       </div>
 

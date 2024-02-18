@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import './SignUp.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       //
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';  // add icon EyeSlash for hide/unhide password
-
-import axios from "axios"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
 const SignUpForm = ({ switchForm }) => {
-    const [email, setEmail] = useState('');
+    const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSignUp = async () => {
         const userData = {
-            username: "test",
-            email: email,
+            usernameOrEmail: usernameOrEmail,
             password: password,
         };
 
@@ -23,12 +21,10 @@ const SignUpForm = ({ switchForm }) => {
             const response = await axios.post(apiUrl, userData);
             console.log('Đăng ký thành công:', response.data);
 
-            // Lưu trữ token vào localStorage hoặc trạng thái toàn cục của ứng dụng
             const token = response.data.token;
             console.log(token)
             localStorage.setItem('token', token);
-
-            // Tiếp tục xử lý hoặc chuyển hướng trong ứng dụng của bạn
+            
             return response.data;
         } catch (error) {
             console.error('Lỗi khi đăng ký:', error.message);
@@ -36,17 +32,23 @@ const SignUpForm = ({ switchForm }) => {
         }
     };
 
+    const handleInputChange = (e) => {
+        setUsernameOrEmail(e.target.value);
+    };
 
+    const isEmail = (input) => {
+        return /\S+@\S+\.\S+/.test(input);
+    };
 
     return (
         <div className="auth-form">
-            <div className='email-container'>
-                <label>Email:</label>
+            <div className='username-email-container'>
+                <label>Username or Email:</label>
                 <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder='Enter your email address'
+                    type="text"
+                    value={usernameOrEmail}
+                    onChange={handleInputChange}
+                    placeholder='Enter your username or email'
                     required />
             </div>
 
@@ -67,9 +69,10 @@ const SignUpForm = ({ switchForm }) => {
             </div>
 
             <div className='squaredcheck'>
-                <label for="squaredcheck">
-                    <input type="checkbox" value="None" id="squaredcheck" class="checkbox" name="check" />
-                    <span>I accept Quizlet's Terms of Services and Privacy Policy</span></label>
+                <label htmlFor="squaredcheck">
+                    <input type="checkbox" value="None" id="squaredcheck" className="checkbox" name="check" />
+                    <span>I accept Quizlet's Terms of Services and Privacy Policy</span>
+                </label>
             </div>
 
             <div className='button'>
@@ -80,8 +83,6 @@ const SignUpForm = ({ switchForm }) => {
             <button className='switch-status-btn' type='button' onClick={() => switchForm('login')}>
                 <span>Already have an account? Log in</span>
             </button>
-
-
         </div>
     );
 };
