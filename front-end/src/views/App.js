@@ -6,11 +6,12 @@ import CreateSet from '../components/Create-set/CreateSet';
 import Home from '../components/Home/Home';
 import Flashcard from '../components/Flashcard/Flashcard';
 import Match from '../components/Match/Match';
+import Sets from '../components/StudySet/Sets/Sets';
 
 function App() {
   return (
     <div className="App">
-      <Flashcard />
+      <AuthForm />
     </div>
   );
 }

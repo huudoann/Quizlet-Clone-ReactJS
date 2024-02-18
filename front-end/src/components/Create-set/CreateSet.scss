@@ -5,29 +5,29 @@
     background-color: #0a092d;
     color: white;
     border-bottom: 0.5px solid white;
-  
+
     .name-app {
         font-size: 40px;
         color: white;
         font-weight: bold;
     }
-  
+
     .search {
         display: flex;
         margin-left: auto; // Dịch các phần tử sang bên phải
         align-items: center;
-  
+
         input[type="text"] {
             padding: 10px;
             border-radius: 5px;
             border: none;
         }
-  
+
         .button-right {
             display: flex;
             align-items: center;
         }
-  
+
         .icon-container {
             position: relative;
             width: 40px; // Kích thước của hình tròn
@@ -39,13 +39,14 @@
             align-items: center;
             margin-left: 10px; // Khoảng cách giữa các biểu tượng
             cursor: pointer;
+
             svg {
-                color: black; 
-                font-size: 20px; 
+                color: black;
+                font-size: 20px;
             }
         }
     }
-  
+
     .menu {
         display: flex;
         position: absolute;
@@ -59,20 +60,20 @@
         z-index: 999;
         text-align: center;
         color: black;
-        width: 120px; 
-  
+        width: 120px;
+
         .menu-item {
-          display: flex;
-          align-items: center;
-          padding: 5px;
-          cursor: pointer;
-  
-          svg {
-              margin-right: 5px;
-          }
-      }
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+
+            svg {
+                margin-right: 5px;
+            }
+        }
     }
-  }
+}
 
 .create-set body {
     padding: 50px;
@@ -81,15 +82,18 @@
     background-color: #0a092d;
     color: white;
     flex: 1;
+    height: 100vh;
 
     .toolbar {
         display: flex;
         justify-content: space-between;
+
         .create-a-new-course {
             font-size: 20px;
             color: white;
             font-weight: bold;
         }
+
         .bt-create {
             display: flex;
             align-items: center;
@@ -99,8 +103,8 @@
             font-size: 20px;
             font-weight: bold;
             color: white;
-            width: 40px; 
-            height: 30px; 
+            width: 40px;
+            height: 30px;
             background-color: #4255ff;
             cursor: pointer;
 
@@ -109,10 +113,11 @@
             }
         }
     }
-    
+
     .enter-title ::placeholder {
         color: white;
     }
+
     .enter-title input[type="text"] {
         width: 100%;
         box-sizing: border-box;
@@ -121,12 +126,14 @@
         font-size: 16px;
         font-weight: bold;
         margin-top: 50px;
-        background-color: #d9dde859; 
-        color: white; 
+        background-color: #d9dde859;
+        color: white;
     }
+
     .add-description ::placeholder {
         color: white;
     }
+
     .add-description input[type="text"] {
         width: 100%;
         height: 70px;
@@ -136,10 +143,10 @@
         font-size: 16px;
         font-weight: bold;
         margin-top: 30px;
-        background-color: #d9dde859; 
-        color: white; 
+        background-color: #d9dde859;
+        color: white;
     }
-    
+
     .card {
         display: flex;
         flex-direction: column;
@@ -149,32 +156,35 @@
         background-color: #d9dde859;
         border-radius: 10px;
     }
-    
+
     .item-card {
         display: flex;
         align-items: center;
 
         .stt-input {
-            width: 20px; 
-            text-align: center; 
+            width: 20px;
+            text-align: center;
         }
-        
+
         .input-terms,
         .input-define {
-            flex: 1; /* Chia đều chiều rộng của các ô nhập còn lại */
+            flex: 1;
+            /* Chia đều chiều rộng của các ô nhập còn lại */
             padding: 8px;
-            border: 1px solid #ccc; /* Viền */
-            border-radius: 5px; 
+            border: 1px solid #ccc;
+            /* Viền */
+            border-radius: 5px;
             outline: none;
-            margin-left: 30px; 
+            margin-left: 30px;
         }
-        
+
         .delete-icon {
-            margin-left: 40px; 
-            cursor: pointer; /* Con trỏ chuột thành dấu nhấn chuột khi rê chuột vào */
+            margin-left: 40px;
+            cursor: pointer;
+            /* Con trỏ chuột thành dấu nhấn chuột khi rê chuột vào */
         }
     }
-    
+
     .add-card-button {
         display: block;
         margin: 0 auto;
@@ -189,7 +199,8 @@
         cursor: pointer;
 
         &:hover {
-            background-color: #7dd; /* Đổi màu background khi hover */
+            background-color: #7dd;
+            /* Đổi màu background khi hover */
         }
     }
 }

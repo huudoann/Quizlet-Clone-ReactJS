@@ -4,6 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
+    // sửa lại UI
+    // logic các nút, bao gồm gửi về server
+    // thêm footer
+
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
     const [isLibraryMenuOpen, setIsLibraryMenuOpen] = useState(false);

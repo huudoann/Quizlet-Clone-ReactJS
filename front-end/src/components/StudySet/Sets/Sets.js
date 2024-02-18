@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Sets = () => {
+    // sửa UI
+    // code dựa trên data fake
+
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
     const [isLibraryMenuOpen, setIsLibraryMenuOpen] = useState(false);

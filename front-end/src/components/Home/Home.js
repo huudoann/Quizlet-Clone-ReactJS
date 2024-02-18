@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './Home.scss';
 
 const Home = () => {
+  // thêm logic của 2 nút
+  // sửa img cho full trang
+
   return (
     <div className="home">
       <header>

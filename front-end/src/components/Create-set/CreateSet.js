@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
 
 const CreateSet = () => {
+    // thay navbar
+    // sửi lại UI (navbar, nút tạo, thêm private public, các thuật ngữ cách nhau ra)
+    // logic tạo
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputElements, setInputElements] = useState([]);
     const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
