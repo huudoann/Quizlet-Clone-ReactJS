@@ -1,0 +1,260 @@
+.sets {
+    header {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #0d072d;
+        color: white;
+        border-bottom: 0.5px solid white;
+        .name-app {
+            font-size: 40px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .home-library-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .homepage-btn,
+        .library-menu {
+            font-size: 20px;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            margin: 0 20px;
+
+            input[type="text"] {
+                flex-grow: 2;
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+            }
+
+            .button-right {
+                display: flex;
+                align-items: center;
+            }
+
+            .icon-container {
+                position: relative;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 10px;
+                cursor: pointer;
+
+                svg {
+                    color: black;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+    .library-menu-dropdown {
+        position: absolute;
+        top: 100%;
+        background-color: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+        z-index: 999;
+        text-align: center;
+        color: black;
+        width: auto;
+        display: flex;
+        padding: 10px 20px;
+
+        .menu-item1 {
+            display: flex;
+            align-items: left;
+            cursor: pointer;
+            padding: 5px;
+        }
+    }
+
+    .menu {
+        display: flex;
+        position: absolute;
+        flex-wrap: wrap;
+        top: 100%;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+        padding: 10px;
+        z-index: 999;
+        text-align: center;
+        color: black;
+        width: 120px;
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+
+            svg {
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+.folder-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    button {
+        width: calc(100% - 40px);
+        margin: 0 auto 10px; // Căn giữa theo chiều ngang
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block; // Đảm bảo các phần tử này chiếm toàn bộ chiều ngang
+    }
+
+    button {
+        background-color: #4255ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #423ed8;
+        }
+    }
+}
+
+
+.close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: #999;
+    }
+}
+
+.body-sets{
+    height: 100vh;
+    background-color: #0d072d;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 20px 50px 20px 50px;
+}
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 70px; /* Điều chỉnh kích thước avatar theo ý muốn */
+    height: 70px; /* Điều chỉnh kích thước avatar theo ý muốn */
+    border-radius: 50%; /* Để hình ảnh thành hình tròn */
+    margin-right: 10px; /* Khoảng cách giữa avatar và tên người dùng */
+}
+
+.username {
+    color: white;
+    font-size: 16px;
+    font-weight: bold; /* Điều chỉnh kích thước của tên người dùng theo ý muốn */
+}
+
+.select-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+
+}
+.term,
+.folder {
+    cursor: pointer; /* Biến con trỏ thành dấu tay khi hover vào */
+    color: #8493b4; /* Màu chữ trắng */
+    font-weight: bold;
+    position: relative; /* Để thiết lập vị trí tuyệt đối cho đường line màu tím */
+
+    &:hover {
+        color: white;
+    }
+}
+
+.term:hover::after,
+.folder:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+    height: 2px;
+    background-color: #acacfc;
+}
+
+.search-term {
+    width: 50vh;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    flex-grow: 1;
+    height: 50px; 
+    padding-top: 20px;
+    
+    input[type="text"] {
+        flex-grow: 2;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        color: white;
+        background-color: #313756;
+    }
+
+    // .icon-search {
+    //     position: absolute;
+    //     right: 10px;
+    //     top: 50%;
+    //     transform: translateY(50%);
+    //     width: 40px;
+    //     height: 40px;
+    //     border-radius: 50%;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     cursor: pointer;
+
+    //     svg {
+    //         color: #acacfc;
+    //         font-size: 20px;
+    //     }
+    // }
+}
