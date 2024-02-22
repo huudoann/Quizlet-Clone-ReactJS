@@ -16,27 +16,21 @@ const Header = () => {
         setIsFolderDialogOpen(!isFolderDialogOpen);
     }
 
-    const toggleLibraryMenu = () => {
-        setIsLibraryMenuOpen(!isLibraryMenuOpen);
-    }
     return (
         <div className='nav-header'>
             <header>
                 <div className="name-app">Quizlet</div>
 
                 <div className='home-library-container'>
-                    <Link to="/lastest">
+
+     {/* Phần slash của Home trong trang Header.js và Quizlet trong trang Home.js đang đảo nhau để fake đăng nhập */}
+
+                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>   
                         <div className='homepage-btn'>Home</div>
                     </Link>
-                    <Link to="/sets">
-                        <div className='library-menu' onClick={toggleLibraryMenu}>Library</div>
+                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                        <div className='library-menu'>Library</div>
                     </Link>
-                    {isLibraryMenuOpen && (
-                        <div className="library-menu-dropdown">
-                            <div className="menu-item1">Study sets</div>
-                            <div className="menu-item1">Folders</div>
-                        </div>
-                    )}
                 </div>
 
                 <div className="search">
@@ -47,7 +41,7 @@ const Header = () => {
                                 className='faPlus' />
                             {isMenuOpen && (
                                 <div className="menu">
-                                    <Link to="/create-set">
+                                    <Link to="/create-set" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                                         <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
                                     </Link>
                                     <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>

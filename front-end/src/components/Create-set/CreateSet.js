@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './CreateSet.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
-import Header from '../Header/Header';
 
 const CreateSet = () => {
     // thay navbar
@@ -42,7 +41,6 @@ const CreateSet = () => {
 
     return (
         <div className='create-set'>
-            <Header />
             
             <body>
                 <div className="body">

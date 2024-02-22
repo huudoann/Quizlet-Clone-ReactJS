@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import './Sets.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
-import Header from '../../Header/Header';
 
 const Sets = () => {
     // sửa UI
@@ -28,7 +25,6 @@ const Sets = () => {
 
     return (
         <div className="sets">
-            <Header/>
 
             <div className='body-sets'>
                 <div className='user-profile'>

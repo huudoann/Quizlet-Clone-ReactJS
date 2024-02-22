@@ -1,6 +1,5 @@
-import logo from './logo.svg';
-import './App.scss';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../components/Home/HomePage';
 import CreateSet from '../components/Create-set/CreateSet';
 import Home from '../components/Home/Home';
@@ -12,35 +11,34 @@ import Header from '../components/Header/Header';
 import Learn from '../components/Learn/Learn';
 
 
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+
   return (
-    <div className="App">
+    <Router>
+      <div className="App">
+        <Routes>
 
+        {/* Đang fake đã đăng nhập rồi bằng cách nhấn vào Quizlet khi ở trang trước khi đăng nhập
+          và ấn vào Home trên Nav của trang HomePage sau khi đăng nhập rồi để coi như đăng xuất */}
 
-      {/* <Link to="/lastest"></Link >
-      <Link to="/sets"></Link>
-      <Link to="/create-set"></Link >
-      <Routes>
-        <Route path='/lastest' element={<HomePage />} />
-        <Route path='/sets' element={<Sets />} />
-        <Route path='/create-set' element={<CreateSet />} />
-      </Routes> */}
+          <Route path='/' element={<Home />} />
+          <Route path='/lastest' element={<HomePage />} />
+          <Route path='/login' element={<Auth />} />
 
-
-      <Link to="/"></Link>
-      <Link to="/signup"></Link>
-      <Link to="/login"></Link>
-
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/signup' element={<Auth />} />
-        <Route path='/login' element={<Auth />} />
-      </Routes>
-
-      {/* {<Learn />} */}
-
-
-    </div>
+          <Route path='/signup' element={<Auth />} />
+          <Route path='/lastest' element={<HomePage />} />
+          <Route path='/sets' element={<Sets />} />
+          <Route path='/create-set' element={<CreateSet />} />
+          <Route path='/flashcard' element={<Flashcard />} />
+          <Route path='/match' element={<Match />} />
+          <Route path='/learn' element={<Learn />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
