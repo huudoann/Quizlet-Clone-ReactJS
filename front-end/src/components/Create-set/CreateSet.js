@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CreateSet.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
+import Header from '../Header/Header';
 
 const CreateSet = () => {
     // thay navbar
     // sửi lại UI (navbar, nút tạo, thêm private public, các thuật ngữ cách nhau ra)
     // logic tạo
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [inputElements, setInputElements] = useState([]);
     const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
+
+    useEffect(() => {
+        setSttCount(inputElements.length + 1);
+    }, [inputElements]);
 
     const addInputElement = () => {
         setInputElements(prevInputs => [...prevInputs, { id: Date.now(), content1: '', content2: '', stt: sttCount }]);
@@ -26,6 +30,7 @@ const CreateSet = () => {
         setInputElements(newInputs);
     };
 
+
     const removeInputElement = (id) => {
         setInputElements(prevInputs => {
             // Lọc bỏ ô nhập có id trùng khớp
@@ -35,37 +40,10 @@ const CreateSet = () => {
         });
     };
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
     return (
         <div className='create-set'>
-            <header>
-                <div className="name-app">Quizlet</div>
-                <div className="search">
-                    <input type="text" placeholder="Tìm kiếm" />
-                    <div className="button-right">
-                        <div className="icon-container" onClick={toggleMenu}>
-                            <FontAwesomeIcon icon={faPlus} />
-                            {isMenuOpen && (
-                                <div className="menu">
-                                    <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="icon-container">
-                            <FontAwesomeIcon icon={faBell} />
-                        </div>
-                        <div className="icon-container">
-                            <FontAwesomeIcon icon={faUser} />
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+            <Header />
+            
             <body>
                 <div className="body">
                     <div className="toolbar">
@@ -77,6 +55,11 @@ const CreateSet = () => {
                     </div>
                     <div className='add-description'>
                         <input type="text" placeholder="Thêm mô tả..." />
+                    </div>
+                    <div className='private-public'>
+                        <span className='selecte-private-public'>Chọn quyền truy cập: </span>
+                        <button className='private'>Riêng tư</button>
+                        <button className='public'>Công khai</button>
                     </div>
                     <div className='card'>
                         {inputElements.map(input => (

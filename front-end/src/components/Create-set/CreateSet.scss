@@ -1,88 +1,12 @@
-.create-set header {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+body {
     background-color: #0a092d;
-    color: white;
-    border-bottom: 0.5px solid white;
-
-    .name-app {
-        font-size: 40px;
-        color: white;
-        font-weight: bold;
-    }
-
-    .search {
-        display: flex;
-        margin-left: auto; // Dịch các phần tử sang bên phải
-        align-items: center;
-
-        input[type="text"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-        }
-
-        .button-right {
-            display: flex;
-            align-items: center;
-        }
-
-        .icon-container {
-            position: relative;
-            width: 40px; // Kích thước của hình tròn
-            height: 40px;
-            border-radius: 50%; // Tạo hình tròn
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: 10px; // Khoảng cách giữa các biểu tượng
-            cursor: pointer;
-
-            svg {
-                color: black;
-                font-size: 20px;
-            }
-        }
-    }
-
-    .menu {
-        display: flex;
-        position: absolute;
-        flex-wrap: wrap;
-        top: 100%;
-        right: 0;
-        background-color: #fff;
-        border: 1px solid #000;
-        border-radius: 5px;
-        padding: 10px;
-        z-index: 999;
-        text-align: center;
-        color: black;
-        width: 120px;
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            cursor: pointer;
-
-            svg {
-                margin-right: 5px;
-            }
-        }
-    }
 }
-
 .create-set body {
     padding: 50px;
-    display: vertical;
     align-items: center;
-    background-color: #0a092d;
     color: white;
     flex: 1;
-    height: 100vh;
+    height: 100%;
 
     .toolbar {
         display: flex;
@@ -99,12 +23,12 @@
             align-items: center;
             border-radius: 5px;
             text-align: center;
-            margin-left: auto;
+            justify-content: center;
             font-size: 20px;
             font-weight: bold;
             color: white;
-            width: 40px;
-            height: 30px;
+            width: 70px;
+            height: 50px;
             background-color: #4255ff;
             cursor: pointer;
 
@@ -147,22 +71,65 @@
         color: white;
     }
 
+    .private-public {
+        .selecte-private-public {
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        }
+        .private,
+        .public {
+            border: 2px solid white;
+            background-color: transparent;
+            padding: 5px 10px;  
+            cursor: pointer;
+            margin-top: 50px;
+            margin-right: 10px;
+            margin-left: 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .private:last-child,
+        .public:last-child {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+        .private:focus,
+        .public:focus {
+            outline: none;
+        }
+
+        .private:hover,
+        .public:hover {
+            color: #000;
+            background-color: yellow;
+        }
+
+    }
     .card {
         display: flex;
         flex-direction: column;
         margin-top: 20px;
-        gap: 10px;
+        gap: 20px;
         padding: 20px;
-        background-color: #d9dde859;
+        background-color: #0a092d;
         border-radius: 10px;
     }
 
     .item-card {
         display: flex;
         align-items: center;
+        padding: 10px; /* Thêm padding để tạo khoảng cách từ border */
+        border: 2px solid #ccc; /* Thêm border cho mỗi item card */
+        border-radius: 10px; /* Bo tròn các góc của item card */
+        background-color: #d9dde859;
 
         .stt-input {
-            width: 20px;
+            width: 50px;
             text-align: center;
         }
 
@@ -176,6 +143,8 @@
             border-radius: 5px;
             outline: none;
             margin-left: 30px;
+            margin-left: 20px; /* Giảm khoảng cách từ trái của các input */
+            border: none; /* Loại bỏ border để không lặp lại border */
         }
 
         .delete-icon {
