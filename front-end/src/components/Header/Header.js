@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Header.scss';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,7 +25,9 @@ const Header = () => {
                 <div className="name-app">Quizlet</div>
 
                 <div className='home-library-container'>
-                    <div className='homepage-btn'>Home</div>
+                    <Link to="/">
+                        <div className='homepage-btn'>Home</div>
+                    </Link>
                     <div className='library-menu' onClick={toggleLibraryMenu}>Library</div>
                     {isLibraryMenuOpen && (
                         <div className="library-menu-dropdown">
@@ -42,7 +45,9 @@ const Header = () => {
                                 className='faPlus' />
                             {isMenuOpen && (
                                 <div className="menu">
-                                    <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
+                                    <Link to="/create-set">
+                                        <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
+                                    </Link>
                                     <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
                                     <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div>
                                 </div>
@@ -56,7 +61,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-            </header>
+            </header >
 
             {isFolderDialogOpen && (
                 <div className="folder-dialog">
@@ -69,7 +74,7 @@ const Header = () => {
                     <button onClick={toggleFolderDialog}>Create</button>
                 </div>
             )}
-        </div>
+        </div >
     );
 }
 
