@@ -25,10 +25,12 @@ const Header = () => {
                 <div className="name-app">Quizlet</div>
 
                 <div className='home-library-container'>
-                    <Link to="/">
+                    <Link to="/lastest">
                         <div className='homepage-btn'>Home</div>
                     </Link>
-                    <div className='library-menu' onClick={toggleLibraryMenu}>Library</div>
+                    <Link to="/sets">
+                        <div className='library-menu' onClick={toggleLibraryMenu}>Library</div>
+                    </Link>
                     {isLibraryMenuOpen && (
                         <div className="library-menu-dropdown">
                             <div className="menu-item1">Study sets</div>

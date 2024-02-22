@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 import './Home.scss';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   // thêm logic của 2 nút
   // sửa img cho full trang
 
   return (
+
     <div className="home">
       <header>
-        <div className="name-app">Quizlet</div>
+        <Link to="/">
+          <div className="name-app">Quizlet</div>
+        </Link>
+
         <div className="button-register-login">
-          <button className="register-button">Đăng ký</button>
-          <button className="login-button">Đăng nhập</button>
+          <Link to="/signup">
+            <button className="register-button">Đăng ký</button>
+          </Link>
+          <Link to="/login">
+            <button className="login-button">Đăng nhập</button>
+          </Link>
+
         </div>
       </header>
       <main>
