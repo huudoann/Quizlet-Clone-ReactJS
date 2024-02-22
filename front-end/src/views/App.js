@@ -9,6 +9,7 @@ import Match from '../components/Match/Match';
 import Sets from '../components/StudySet/Sets/Sets';
 import Auth from '../components/AuthForm/Auth';
 import Header from '../components/Header/Header';
+import Learn from '../components/Learn/Learn';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path='/login' element={<Auth />} />
       </Routes>
 
+      {/* {<Learn />} */}
 
 
     </div>

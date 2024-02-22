@@ -1,0 +1,51 @@
+.learn-container {
+    $fonts: 'Roboto', Helvetica, sans-serif;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #ddd;
+        margin: 0;
+        padding: 0;
+        font-family: $fonts;
+        font-weight: 300;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 100;
+    }
+
+    .main {
+        width: 65em;
+        margin: 2em auto;
+        display: flex;
+        justify-content: center;
+
+        @media(max-width: 66em) {
+            width: 48em;
+        }
+
+        @media(max-width: 48em) {
+            display: block;
+            margin: 0;
+            width: 100vw;
+        }
+    }
+
+    .message {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        text-align: center;
+
+        p {
+            font-size: 1.2rem;
+        }
+    }
+}
