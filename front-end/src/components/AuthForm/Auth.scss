@@ -1,142 +1,159 @@
-body,
-html {
-    height: 100%;
-    margin: 0;
-}
-
 .auth-page-container {
     display: flex;
     height: 100vh;
-}
 
-*,
-:after,
-:before {
-    box-sizing: inherit;
-}
-
-@media (max-width: 64rem) {
-    .auth-image-container {
-        display: none;
+    body,
+    html {
+        height: 100%;
+        margin: 0;
     }
-}
 
-.auth-page-container>.auth-image-container {
-    flex: 50% 1;
-    background-image: url(https://assets.quizlet.com/_next/static/media/QZ_Auth_LightV2.d6b0ba3d.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+    *,
+    :after,
+    :before {
+        box-sizing: inherit;
+    }
 
-.auth-page-container>.auth-form-container {
-    flex: 50% 1;
-    overflow: scroll;
-    padding: 1rem;
-    justify-content: center;
-    background-color: #fff;
-}
+    @media (max-width: 64rem) {
+        .auth-image-container {
+            display: none;
+        }
+    }
 
-.auth-tabs {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: row;
-    margin-right: 2rem;
-}
+    .auth-image-container {
+        flex: 50% 1;
+        background-image: url(https://assets.quizlet.com/_next/static/media/QZ_Auth_LightV2.d6b0ba3d.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
-.auth-tabs button {
-    padding: 1rem 2rem;
-    margin-bottom: 1rem;
-    background-color: #fff;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #586380;
-}
+    .auth-form-container {
+        flex: 50% 1;
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+    }
 
-.auth-tabs button.active {
-    color: #000;
-    font-weight: bold;
-}
+    .auth-tabs {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: row;
+        margin-right: 2rem;
+    }
 
-.auth-form {
-    max-width: 40rem;
-    margin: 3rem auto auto;
-    padding: 0rem 2rem 4rem;
-}
+    .auth-tabs button {
+        padding: 2rem 2rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #586380;
+    }
 
-.auth-form label {
-    font-size: 0.875rem;
-    text-align: left;
-    display: flex;
-    margin-bottom: .5rem;
-    letter-spacing: normal;
-    line-height: 1.4;
-    font-weight: 600;
-    color: #586380;
-}
+    .auth-tabs button.active {
+        color: #000;
+        font-weight: bold;
+    }
 
-.auth-form input[type=email],
-input[type=text],
-input[type=password] {
-    background-color: #f6f7fb;
-    width: 100%;
-    height: 2rem;
-    padding: .25rem 1rem;
-    border-radius: .5rem;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    justify-content: center;
-    color: #586380;
-    line-height: 1.5;
-    overflow: hidden;
-    border: none;
-    font-size: 1rem;
-    letter-spacing: normal;
-    line-height: 1.5;
-}
+    .auth-form {
+        max-width: 100%;
+        margin: 2rem;
+        padding: 1rem;
+    }
 
-.password-container {
-    position: relative;
-}
+    .auth-form label {
+        width: 100%;
+        font-size: 1rem;
+        text-align: left;
+        display: flex;
+        margin: .5rem;
+        letter-spacing: normal;
+        line-height: 1.5;
+        font-weight: 600;
+        color: #586380;
+    }
 
+    .auth-form input[type=email],
+    input[type=text],
+    input[type=password] {
+        background-color: #f6f7fb;
+        width: 100%;
+        height: 3rem;
+        padding: .25rem 1rem;
+        border-radius: .5rem;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        justify-content: center;
+        color: #586380;
+        line-height: 1.5;
+        overflow: hidden;
+        border: none;
+        font-size: 1rem;
+        letter-spacing: normal;
+        line-height: 1.5;
+    }
 
-.auth-form button {
-    font-weight: bold;
-    width: 100%;
-    background-color: #4255ff;
-    color: #fff;
-    padding: 1.125rem 1.875rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.auth-form button:hover {
-    background-color: #423ed8;
-}
-
-.switch-status-btn {
-    width: 100% !important;
-    background-color: #fff !important;
-    color: #586380 !important;
-    margin-top: 10px !important;
-    border: 1px solid #ccc !important;
-}
+    .password-container {
+        position: relative;
+    }
 
 
-.auth-form p {
-    margin: 1rem;
-    font-size: 14px;
-}
+    .auth-form button {
+        font-weight: bold;
+        width: 100%;
+        background-color: #4255ff;
+        color: #fff;
+        padding: 1.125rem 1.875rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-.auth-form p span {
-    width: 100%;
-    background: #0000;
-    color: #586380;
-    border: 1px solid #a0a7ba;
-    border-radius: 20px;
-    cursor: pointer;
+    .auth-form button:hover {
+        background-color: #423ed8;
+    }
+
+    .switch-status-btn {
+        width: 100% !important;
+        background-color: #fff !important;
+        color: #586380 !important;
+        margin-top: 10px !important;
+        border: 1px solid #ccc !important;
+    }
+
+
+    .auth-form p {
+        margin: 1rem;
+        font-size: 14px;
+    }
+
+    .auth-form p span {
+        width: 100%;
+        background: #0000;
+        color: #586380;
+        border: 1px solid #a0a7ba;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        color: #000;
+        transition: color 0.3s ease;
+        padding: 0 .25rem;
+        margin: .25rem 0;
+
+        &:hover {
+            color: #fff;
+            background-color: red;
+        }
+    }
 }

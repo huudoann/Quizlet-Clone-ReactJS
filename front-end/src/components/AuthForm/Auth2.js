@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
 
 const AuthPage = () => {
-  const [currentForm, setCurrentForm] = useState('signup');
+  const [currentForm, setCurrentForm] = useState('login');
   const [isCloseButton, setIsCloseButton] = useState(false);
   const navigate = useNavigate ();
 

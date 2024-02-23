@@ -8,9 +8,8 @@ import Match from '../components/Match/Match';
 import Sets from '../components/StudySet/Sets/Sets';
 import Header from '../components/Header/Header';
 import Learn from '../components/Learn/Learn';
-import Login from '../components/AuthForm/LogIn';
-import SignUp from '../components/AuthForm/SignUp';
 import Auth from '../components/AuthForm/Auth';
+import Auth2 from '../components/AuthForm/Auth2';
 
 
 function App() {
@@ -32,9 +31,8 @@ function App() {
 
           <Route exact path='/' element={<Home />} />
           <Route exact path='/lastest' element={<HomePage />} />
-          <Route exact path='/login' element={<Auth />} />
-
           <Route exact path='/signup' element={<Auth />} />
+          <Route exact path='/login' element={<Auth2 />} />
           <Route exact path='/lastest' element={<HomePage />} />
           <Route exact path='/sets' element={<Sets />} />
           <Route exact path='/create-set' element={<CreateSet />} />
