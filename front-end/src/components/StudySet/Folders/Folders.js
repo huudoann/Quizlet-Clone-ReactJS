@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import './Sets.scss';
+import React from "react";
+import './Folders.scss';
 import { Link } from 'react-router-dom';
-import Header from '../../Header/Header';
+import Header from "../../Header/Header";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolder } from '@fortawesome/free-solid-svg-icons';
 
-const Sets = () => {
-    // sửa UI
-    // code dựa trên data fake
-
+const Folders = () => {
     return (
-        <div className="sets">
+        <div className="folders">
             {<Header />}
-            <div className='body-sets'>
+
+            <div className='body-folders'>
                 <div className='user-profile'>
                     <img src='https://e7.pngegg.com/pngimages/7/618/png-clipart-man-illustration-avatar-icon-fashion-men-avatar-face-fashion-girl-thumbnail.png' alt='Avatar' className='avatar' />
                     <span className='username'>Tên người dùng</span>
@@ -24,15 +24,21 @@ const Sets = () => {
                     </Link>
                 </div>
                 <div className='search-term'>
-                    <input type="text" placeholder="Tìm kiếm học phần" />
+                    <input type="text" placeholder="Tìm kiếm thư mục" />
                     {/* <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
                     </div> */}
                 </div>
+                <div className='folder-card'>
+                    <div className="number-term">Số học phần</div>
+                    <div className="folder-name">
+                        <FontAwesomeIcon icon={faFolder} className='faFolder' />
+                        Tên thư mục
+                    </div>
+                </div>
             </div>
         </div>
     );
-
 }
 
-export default Sets;
+export default Folders;
