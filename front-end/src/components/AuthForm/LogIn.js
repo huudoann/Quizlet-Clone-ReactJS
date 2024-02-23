@@ -92,3 +92,4 @@ const LoginForm = ({ switchForm }) => {
 };
 
 export default LoginForm;
+

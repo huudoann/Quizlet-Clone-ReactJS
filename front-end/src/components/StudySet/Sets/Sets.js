@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Sets.scss';
+import Header from '../../Header/Header';
 
 const Sets = () => {
     // sửa UI
@@ -25,7 +26,7 @@ const Sets = () => {
 
     return (
         <div className="sets">
-
+            {<Header/>}
             <div className='body-sets'>
                 <div className='user-profile'>
                     <img src='https://e7.pngegg.com/pngimages/7/618/png-clipart-man-illustration-avatar-icon-fashion-men-avatar-face-fashion-girl-thumbnail.png' alt='Avatar' className='avatar' />

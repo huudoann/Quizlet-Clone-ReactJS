@@ -6,16 +6,17 @@ import axios from "axios";
 
 const SignUpForm = ({ switchForm }) => {
     // thêm username, sửa auth-form
-
-
-    const [usernameOrEmail, setUsernameOrEmail] = useState('');
+    
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
     //server không nhận được mail vs username
     const handleSignUp = async () => {
         const userData = {
-            usernameOrEmail: usernameOrEmail,
+            username: username,
+            email: email,
             password: password,
         };
 
@@ -36,26 +37,36 @@ const SignUpForm = ({ switchForm }) => {
         }
     };
 
-    const handleInputChange = (e) => {
-        setUsernameOrEmail(e.target.value);
+    const handleInputUsernameChange = (e) => {
+        setUsername(e.target.value);
     };
 
-    const isEmail = (input) => {
-        return /\S+@\S+\.\S+/.test(input);
+    const handleInputEmailChange = (e) => {
+        setEmail(e.target.value);
     };
+
 
     return (
         <div className="auth-form">
-            <div className='username-email-container'>
-                <label>Username or Email:</label>
+            <div className='username-container'>
+                <label>Username:</label>
                 <input
                     type="text"
-                    value={usernameOrEmail}
-                    onChange={handleInputChange}
-                    placeholder='Enter your username or email'
+                    value={username}
+                    onChange={handleInputUsernameChange}
+                    placeholder='Enter your username'
                     required />
             </div>
 
+            <div className='email-container'>
+                <label>Email:</label>
+                <input
+                    type="text"
+                    value={email}
+                    onChange={handleInputEmailChange}
+                    placeholder='Enter your email'
+                    required />
+            </div>
             <div className="password-container">
                 <label>Password:</label>
                 <input

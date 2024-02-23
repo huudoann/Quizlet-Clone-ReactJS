@@ -6,10 +6,11 @@ import Home from '../components/Home/Home';
 import Flashcard from '../components/Flashcard/Flashcard';
 import Match from '../components/Match/Match';
 import Sets from '../components/StudySet/Sets/Sets';
-import Auth from '../components/AuthForm/Auth';
 import Header from '../components/Header/Header';
 import Learn from '../components/Learn/Learn';
-
+import Login from '../components/AuthForm/LogIn';
+import SignUp from '../components/AuthForm/SignUp';
+import Auth from '../components/AuthForm/Auth';
 
 
 function App() {
@@ -22,20 +23,24 @@ function App() {
       <div className="App">
         <Routes>
 
-        {/* Đang fake đã đăng nhập rồi bằng cách nhấn vào Quizlet khi ở trang trước khi đăng nhập
-          và ấn vào Home trên Nav của trang HomePage sau khi đăng nhập rồi để coi như đăng xuất */}
+        {/* 
+          Đang fake đã đăng nhập rồi bằng cách nhấn vào Quizlet khi ở trang trước khi đăng nhập
+          và ấn vào Home trên Nav của trang HomePage sau khi đăng nhập rồi để coi như đăng xuất 
+          
+          Sau khi sửa lại thì cần xóa phần Header của Sets và CreateSet
+        */}
 
-          <Route path='/' element={<Home />} />
-          <Route path='/lastest' element={<HomePage />} />
-          <Route path='/login' element={<Auth />} />
+          <Route exact path='/' element={<Home />} />
+          <Route exact path='/lastest' element={<HomePage />} />
+          <Route exact path='/login' element={<Auth />} />
 
-          <Route path='/signup' element={<Auth />} />
-          <Route path='/lastest' element={<HomePage />} />
-          <Route path='/sets' element={<Sets />} />
-          <Route path='/create-set' element={<CreateSet />} />
-          <Route path='/flashcard' element={<Flashcard />} />
-          <Route path='/match' element={<Match />} />
-          <Route path='/learn' element={<Learn />} />
+          <Route exact path='/signup' element={<Auth />} />
+          <Route exact path='/lastest' element={<HomePage />} />
+          <Route exact path='/sets' element={<Sets />} />
+          <Route exact path='/create-set' element={<CreateSet />} />
+          <Route exact path='/flashcard' element={<Flashcard />} />
+          <Route exact path='/match' element={<Match />} />
+          <Route exact path='/learn' element={<Learn />} />
         </Routes>
       </div>
     </Router>
