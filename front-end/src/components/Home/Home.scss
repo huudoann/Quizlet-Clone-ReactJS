@@ -1,4 +1,6 @@
 .home{
+  max-height: 100vh;
+  overflow-y: hidden;
   header {
     display: flex;
     justify-content: space-between;
