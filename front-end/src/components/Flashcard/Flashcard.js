@@ -43,7 +43,7 @@ const Flashcard = () => {
     }, []);
 
     return (
-        <div className="game">
+        <div className="flashcard-container">
             <div className="container gamebar-main-container">
                 <div className="gamebar-content-container">
                     <div className="gamebar-header-container gamebar-containers">

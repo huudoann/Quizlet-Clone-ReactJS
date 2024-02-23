@@ -1,133 +1,146 @@
-.learn-progress-bar {
-    .bar {
-        height: 1rem;
-      }
-      
-      .bar-fill {
-        height: 100%;
-        max-width: 100%;
-        transition: all 0.3s;
-      }
-      
-      .bar-text {
-        display: flex;
-        justify-content: space-between;
-      
-        h4 {
-          color: #fafafa;
-          text-transform: capitalize;
-        }
-      
-        @media(max-width: 48em) {
-          justify-content: center;
-      
-          h4 {
-            font-size: .7rem; // changed from em to rem
-      
-            &:last-child {
-              order: -1;
-              margin-right: .4rem; // changed from em to rem
-            }
-          }
-        }
-      }
-      
-      .remaining {
-        background-color: lighten(#0099cc, 10%);
-        .bar-fill {
-          background-color: #0099cc;
-        }
-      }
-      
-      .correct {
-        background-color: lighten(#00e639, 15%);
-        .bar-fill {
-          background-color: #00e639;
-        }
-      }
-      
-      .incorrect {
-        background-color: lighten(#e60026, 15%);
-        .bar-fill {
-          background-color: #e60026;
-        }
-      }
-      
-      .progress-bar {
-        width: 100%;
-      
-        @media(max-width: 48em) {
-          width: 30%;
-        }
-      }
-}
-
-
-
-
 .learn-sidebar {
+
+  .learn-progress-bar {
     .bar {
-        height: 1rem;
+      height: 1rem;
     }
 
     .bar-fill {
-        height: 100%;
-        max-width: 100%;
-        transition: all 0.3s;
+      height: 100%;
+      max-width: 100%;
+      transition: all 0.3s;
     }
 
     .bar-text {
-        display: flex;
-        justify-content: space-between;
+      display: flex;
+      justify-content: space-between;
+
+      h4 {
+        color: #fafafa;
+        text-transform: capitalize;
+      }
+
+      @media(max-width: 48rem) {
+        justify-content: center;
 
         h4 {
-            color: #fafafa;
-            text-transform: capitalize;
+          font-size: .7rem;
+
+          &:last-child {
+            order: -1;
+            margin-right: .4rem;
+          }
         }
-
-        @media(max-width: 48em) {
-            justify-content: center;
-
-            h4 {
-                font-size: .7rem;
-
-                &:last-child {
-                    order: -1;
-                    margin-right: .4rem;
-                }
-            }
-        }
+      }
     }
 
     .remaining {
-        background-color: lighten(#0099cc, 10%);
+      background-color: lighten(#0099cc, 20%);
 
-        .bar-fill {
-            background-color: #0099cc;
-        }
+      .bar-fill {
+        background-color: #0099cc;
+      }
     }
 
     .correct {
-        background-color: lighten(#00e639, 15%);
+      background-color: lighten(#00e639, 20%);
 
-        .bar-fill {
-            background-color: #00e639;
-        }
+      .bar-fill {
+        background-color: #00e639;
+      }
     }
 
     .incorrect {
-        background-color: lighten(#e60026, 15%);
+      background-color: lighten(#e60026, 20%);
 
-        .bar-fill {
-            background-color: #e60026;
-        }
+      .bar-fill {
+        background-color: #e60026;
+      }
     }
 
     .progress-bar {
-        width: 100%;
+      width: 100%;
 
-        @media(max-width: 48em) {
-            width: 30%;
-        }
+      @media(max-width: 48rem) {
+        width: 30%;
+      }
     }
+  }
+
+
+  width: 40%;
+
+  .bar {
+    height: 1.5rem;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s;
+  }
+
+  .bar-text {
+    display: flex;
+    justify-content: space-between;
+
+    h4 {
+      color: #fafafa;
+      text-transform: capitalize;
+    }
+
+    @media(max-width: 48em) {
+      justify-content: center;
+
+      h4 {
+        font-size: .7rem;
+
+        &:last-child {
+          order: -1;
+          margin-right: .4rem;
+        }
+      }
+    }
+  }
+
+  .remaining {
+    background-color: lighten(#fff, 10%);
+    border-radius: .25rem;
+
+    .bar-fill {
+      background-color: #0099cc;
+      border-radius: .25rem;
+
+    }
+  }
+
+  .correct {
+    background-color: lighten(#fff, 15%);
+    border-radius: .25rem;
+
+    .bar-fill {
+      background-color: #00e639;
+      border-radius: .25rem;
+
+    }
+  }
+
+  .incorrect {
+    background-color: lighten(#fff, 15%);
+    border-radius: .25rem;
+
+    .bar-fill {
+      background-color: #e60026;
+      border-radius: .25rem;
+
+    }
+  }
+
+  .progress-bar {
+    width: 100%;
+
+    @media(max-width: 48em) {
+      width: 30%;
+    }
+  }
 }

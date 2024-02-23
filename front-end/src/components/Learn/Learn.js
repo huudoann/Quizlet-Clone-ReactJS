@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Sidebar from './LearnSideBar.js';
-import LearnContent from './LearnContent.js';
 import allLearnDemo from './LearnDemo.js';
 import './Learn.scss';
 
@@ -81,6 +80,67 @@ const Learn = () => {
       </div>
     );
   };
+
+  const LearnContent = ({ vocab, handleAnswer }) => {
+    const [inputValue, setInputValue] = useState('');
+    const [showingHint, setShowingHint] = useState(false);
+    const [hint, setHint] = useState('');
+    const [inputDisabled, setInputDisabled] = useState(false);
+  
+    const handleInput = (e) => {
+      setInputValue(e.target.value);
+    }
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      handleAnswer(inputValue);
+      setInputValue('');
+    }
+  
+    const showHint = () => {
+      if (vocab[0].definition) {
+        const definition = vocab[0].definition;
+        const hint = definition.charAt(0) + '_'.repeat(definition.length - 1);
+        setHint("Hint: " + hint);
+        setShowingHint(true);
+      }
+      else{
+        if (showingHint){
+          setShowingHint(false);
+        }
+      }
+    }
+  
+    const skip = () => {
+      setInputValue('Skipped');
+      handleAnswer('Skipped');
+      setInputValue('');
+    }
+  
+    return (
+      <div className='learn-content-container'>
+        <h4>Term:</h4>
+        <h3>{vocab[0].term}</h3>
+        <button className='show-hint' type='button' onClick={showHint}>Show hint</button>
+        {showingHint && <p>{hint}</p>}
+
+        <h4>Your answer:</h4>
+        <form className="answer" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInput}
+            placeholder='Type your answer'
+          />
+          <button className='dont-know' type='button' onClick={skip}>Don't know?</button> 
+          <button className='btn' type='submit'>Answer</button>
+        </form>
+        <small>Type the answer</small>
+      </div>
+    );
+  }
+
+
 
   return (
     <main className="learn-container">

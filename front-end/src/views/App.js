@@ -20,14 +20,13 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Routes>
+        {/* <Routes>
 
-        {/* 
+          {/* 
           Đang fake đã đăng nhập rồi bằng cách nhấn vào Quizlet khi ở trang trước khi đăng nhập
           và ấn vào Home trên Nav của trang HomePage sau khi đăng nhập rồi để coi như đăng xuất 
           
           Sau khi sửa lại thì cần xóa phần Header của Sets và CreateSet
-        */}
 
           <Route exact path='/' element={<Home />} />
           <Route exact path='/lastest' element={<HomePage />} />
@@ -39,7 +38,9 @@ function App() {
           <Route exact path='/flashcard' element={<Flashcard />} />
           <Route exact path='/match' element={<Match />} />
           <Route exact path='/learn' element={<Learn />} />
-        </Routes>
+        </Routes> */}
+
+        {<Learn />}
       </div>
     </Router>
   );

@@ -21,7 +21,7 @@ const ProgressBar = ({ type, numCards, totalCards }) => {
 
 const Sidebar = ({ totalCards, numRemaining, numCorrect, numIncorrect }) => (
   <div className='learn-sidebar'>
-    <h1>Learn</h1>
+    <h1>Learning Mode</h1>
     <ProgressBar type='remaining' totalCards={totalCards} numCards={numRemaining} />
     <ProgressBar type='correct' totalCards={totalCards} numCards={numCorrect} />
     <ProgressBar type='incorrect' totalCards={totalCards} numCards={numIncorrect} />
