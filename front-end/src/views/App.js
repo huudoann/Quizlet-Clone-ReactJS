@@ -10,6 +10,7 @@ import Header from '../components/Header/Header';
 import Learn from '../components/Learn/Learn';
 import SignUpForm from '../components/AuthForm/SignUpForm';
 import LoginForm from '../components/AuthForm/LoginForm';
+import { Folder } from '@mui/icons-material';
 
 
 function App() {
@@ -31,15 +32,13 @@ function App() {
                     <Route exact path='/lastest' element={<HomePage />} />
                     <Route exact path='/signup' element={<SignUpForm />} />
                     <Route exact path='/login' element={<LoginForm />} />
-                    <Route exact path='/lastest' element={<HomePage />} />
                     <Route exact path='/sets' element={<Sets />} />
+                    <Route exact path='/folders' element={<Folder />} />
                     <Route exact path='/create-set' element={<CreateSet />} />
                     <Route exact path='/flashcard' element={<Flashcard />} />
                     <Route exact path='/match' element={<Match />} />
                     <Route exact path='/learn' element={<Learn />} />
                 </Routes>
-
-                {/* {<Learn />} */}
             </div>
         </Router>
     );
