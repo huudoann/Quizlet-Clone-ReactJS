@@ -5,13 +5,13 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const LoginForm = ({ switchForm }) => {
-  const [usernameOrEmail, setUsernameOrEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     const userData = {
-      usernameOrEmail: usernameOrEmail, // Sử dụng username hoặc email tùy thuộc vào loại dữ liệu
+      email: email,
       password: password,
     };
 
@@ -33,11 +33,11 @@ const LoginForm = ({ switchForm }) => {
   };
 
   const handleInputChange = (e) => {
-    setUsernameOrEmail(e.target.value);
+    setEmail(e.target.value);
   };
 
   const handleForgotPassword = () => {
-    console.log('Forgot Password:', usernameOrEmail);
+    console.log('Forgot Password:', email);
   };
 
   return (
@@ -46,7 +46,7 @@ const LoginForm = ({ switchForm }) => {
         <label>Username or Email:</label>
         <input
           type="text"
-          value={usernameOrEmail}
+          value={email}
           onChange={handleInputChange}
           placeholder='Enter your username or email'
           required />

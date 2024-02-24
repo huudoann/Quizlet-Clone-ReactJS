@@ -1,105 +1,82 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Flashcard.scss';
+import flashcardDemoData from './FlashcardDemo';
+import { NavLink } from 'react-router-dom';
+import { ArrowBackIos, ArrowForwardIos, Flip, CropFreeTwoTone, Style, LocalLibrary, Quiz, Compare } from '@mui/icons-material';
+import Header from '../Header/Header';
 
 const Flashcard = () => {
-    const [cards, setCards] = useState([
-        { term: 'React', definition: 'A JavaScript library for building user interfaces' },
-        { term: 'Node.js', definition: 'An open-source, cross-platform, JavaScript runtime environment' },
-        { term: 'HTML', definition: 'Hypertext Markup Language, a standard markup language for documents designed to be displayed in a web browser' },
-        { term: 'CSS', definition: 'Cascading Style Sheets, a style sheet language used for describing the presentation of a document written in HTML' },
-        { term: 'JavaScript', definition: 'A programming language that conforms to the ECMAScript specification' }
-    ]);
-    const [toggleTermDefinition, setToggleTermDefinition] = useState(true);
-    const [activeCard, setActiveCard] = useState(0);
-    const [total, setTotal] = useState(cards.length - 1);
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [isZoomed, setIsZoomed] = useState(false);
 
-    const nextCard = () => {
-        let next = activeCard + 1;
-        if (next > total) {
-            next = 0;
+    const { subject, flashcards, creator } = flashcardDemoData;
+
+    if (!flashcards || !flashcards.length) {
+        return <div className='no-flashcard'>No flashcards available.</div>;
+    }
+
+    const handleNextCard = () => {
+        if (currentCardIndex < flashcards.length - 1) {
+            setCurrentCardIndex(currentCardIndex + 1);
+            setIsFlipped(false);
         }
-        setActiveCard(next);
     };
 
-    const previousCard = () => {
-        let previous = activeCard - 1;
-        if (previous < 0) {
-            previous = total;
+    const handlePrevCard = () => {
+        if (currentCardIndex > 0) {
+            setCurrentCardIndex(currentCardIndex - 1);
+            setIsFlipped(false);
         }
-        setActiveCard(previous);
     };
 
-    useEffect(() => {
-        // Thực hiện các thao tác khi trạng thái thay đổi, tương tự như componentDidMount và componentDidUpdate trong class component
-        // axios.get(BASE_URL + '/api/studysets/studysetid/' + props.match.params.studysetid)
-        //   .then((response) => {
-        //     console.log(response.data.studyset.cards);
-        //     setCards(response.data.studyset.cards);
-        //     setTotal(response.data.studyset.cards.length - 1);
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
-    }, []);
+    const handleFlipCard = () => {
+        setIsFlipped(!isFlipped);
+    };
+
+    const handleZoom = () => {
+        setIsZoomed(!isZoomed);
+    };
 
     return (
-        <div className="flashcard-container">
-            <div className="container gamebar-main-container">
-                <div className="gamebar-content-container">
-                    <div className="gamebar-header-container gamebar-containers">
-                        <div className="settings-container content-containers">
-                            <i className="fa" aria-hidden="true">&#9664;</i>
-                            {/* <Link to={"/study-set/"+this.props.params.studysetid}> */}
-                            <p>Back</p>
-                            {/* </Link> */}
-                        </div>
-                    </div>
-                    <div className="gamebar-header-container gamebar-containers">
-                        <div className="gamebar-header settings-container">
-                            <p>CARDS</p>
-                        </div>
+        <div>
 
-                        <div className="gamebar-footer-container">
-                            <div className="progression-bar">
-                                <div className="progression-total"></div>
-                                <div style={{ width: `${(activeCard + 1) / (total + 1) * 100}%` }} className="progression-progress"></div>
-                            </div>
-                            <label className="Input-Label">Progress</label>
-                            {activeCard + 1} of {total + 1}
-                            <div className="game-buttons">
-                                <button className="Side-Button">&#9654; Play</button>
-                                <button className="Side-Button">&#10542; Shuffle</button>
-                                <button className="Side-Button Side-Button-Primary">&#8645; Options</button>
-                            </div>
+            {<Header />}
+            <div className="flashcard-container">
+                <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
+                    <h1>{subject}</h1>
+                    <div className="flashcard-navigation">
+                        <NavLink to="/flashcard" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Style></Style> <span>Flashcards</span></NavLink>
+                        <NavLink to="/learn" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><LocalLibrary></LocalLibrary> <span>Learn</span></NavLink>
+                        <NavLink to="/test" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Quiz></Quiz> <span>Test</span></NavLink>
+                        <NavLink to="/match" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Compare></Compare> <span>Match</span></NavLink>
+                    </div>
+                    <div className={`flashcard-form`}>
+                        <div className={`flashcard ${isFlipped ? 'flipped' : ''}`} onClick={handleFlipCard}>
+                            <div className="front">{flashcards[currentCardIndex].term}</div>
+                            <div className="back">{flashcards[currentCardIndex].definition}</div>
+                        </div>
+                        <div className='function-button'>
+                            <Flip onClick={handleFlipCard}>Flip</Flip>
+                            <ArrowBackIos onClick={handlePrevCard} disabled={currentCardIndex === 0}>Previous</ArrowBackIos>
+                            <span>{`${currentCardIndex + 1}/${flashcards.length}`}</span>
+                            <ArrowForwardIos onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>Next</ArrowForwardIos>
+                            <CropFreeTwoTone onClick={handleZoom}>Zoom</CropFreeTwoTone>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="card-container">
-                <div className="card-flashcard">
-                    <div onClick={() => setToggleTermDefinition(!toggleTermDefinition)} className="cardtext flip-container">
-                        <div className={`flipper ${toggleTermDefinition ? 'flipped' : ''}`}>
-                            <div className="front">
-                                <div className="cardBackground"><h1>{cards[activeCard].term}</h1> </div>
-                            </div>
-                            <div className="back">
-                                <div className="cardBackground"><h1>{cards[activeCard].definition}</h1> </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }} className="row">
-                        <div className="col-md-2">
-                            <svg viewBox="0 0 100 100" xmlns="http://w3.org/2000/svg">
-                                <circle onClick={nextCard} cx="50" cy="25" r="25" />
-                            </svg>
-                        </div>
-                        <div className="col-md-2">
-                            <svg viewBox="0 0 100 100" xmlns="http://w3.org/2000/svg">
-                                <circle onClick={previousCard} cx="50" cy="25" r="25" />
-                            </svg>
-                        </div>
-                    </div>
+                <div className="creator">
+                    <img src={creator.avatar} alt="Creator Avatar" />
+                    <p>{creator.name}</p>
+                </div>
+                <div className="flashcard-list">
+                    <ul>
+                        {flashcards.map((card, index) => (
+                            <li key={index}>
+                                <strong>{card.term}</strong>   {card.definition}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
