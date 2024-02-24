@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { createSvgIcon } from '@mui/material/utils';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from '@mui/icons-material/Person';
 import './Header.scss';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +19,19 @@ const Header = () => {
         setIsFolderDialogOpen(!isFolderDialogOpen);
     }
 
+    const PlusIcon = createSvgIcon(
+        // credit: plus icon from https://heroicons.com/
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>,
+        'Plus',
+    );
     return (
         <div className='nav-header'>
             <header>
@@ -23,12 +39,12 @@ const Header = () => {
 
                 <div className='home-library-container'>
 
-     {/* Phần slash của Home trong trang Header.js và Quizlet trong trang Home.js đang đảo nhau để fake đăng nhập */}
+                    {/* Phần slash của Home trong trang Header.js và Quizlet trong trang Home.js đang đảo nhau để fake đăng nhập */}
 
-                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>   
+                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <div className='homepage-btn'>Home</div>
                     </Link>
-                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <div className='library-menu'>Library</div>
                     </Link>
                 </div>
@@ -37,11 +53,10 @@ const Header = () => {
                     <input type="text" placeholder="Search for anything..." />
                     <div className="button-right">
                         <div className="icon-container icon-container-plus" onClick={toggleMenu}>
-                            <FontAwesomeIcon icon={faPlus}
-                                className='faPlus' />
+                            <PlusIcon />
                             {isMenuOpen && (
                                 <div className="menu">
-                                    <Link to="/create-set" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                                    <Link to="/create-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                                         <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
                                     </Link>
                                     <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
@@ -50,10 +65,10 @@ const Header = () => {
                             )}
                         </div>
                         <div className="icon-container icon-container-bell">
-                            <FontAwesomeIcon icon={faBell} />
+                            <NotificationsIcon />
                         </div>
                         <div className="icon-container icon-container-user">
-                            <FontAwesomeIcon icon={faUser} />
+                            <PersonIcon />
                         </div>
                     </div>
                 </div>
