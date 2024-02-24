@@ -1,0 +1,34 @@
+.body-folders{
+    height: 100vh;
+    background-color: #0d072d;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 20px 50px 20px 50px;
+}
+
+.folder-card {
+    display: flex;
+    border: 1px solid #313756;
+    background-color: #313756;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 30px;
+    width: 150vh;
+    padding: 10px 30px;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.folder-info {
+    margin-right: 10px;
+}
+
+.folder-name, .number-term {
+    margin-bottom: 5px;
+}
+
+.faFolder {
+    font-size: 24px;
+    margin-right: 10px;
+}
