@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+
 import './CreateSet.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
@@ -46,19 +52,27 @@ const CreateSet = () => {
             <body>
                 <div className="body">
                     <div className="toolbar">
+
                         <span className='create-a-new-course'>Tạo học phần mới</span>
-                        <button className='bt-create'>Tạo</button>
+                        <div className='bt-create'>
+                            <Button variant="contained">Tạo</Button>
+                        </div>
                     </div>
-                    <div className='enter-title'>
-                        <input type="text" placeholder="Nhập tiêu đề" />
-                    </div>
-                    <div className='add-description'>
-                        <input type="text" placeholder="Thêm mô tả..." />
-                    </div>
+                    <Box
+                        component="form"
+                        sx={{
+                            '& > :not(style)': { m: 1, width: '25ch' },
+                        }}
+                        noValidate
+                        autoComplete="off">
+
+                        <TextField className='enter-title' label="Tên học phần" variant="outlined" />
+                        <TextField className='add-description' label="Thêm mô tả" variant="outlined" />
+                    </Box>
                     <div className='private-public'>
                         <span className='selecte-private-public'>Chọn quyền truy cập: </span>
-                        <button className='private'>Riêng tư</button>
-                        <button className='public'>Công khai</button>
+                        <Button className='private'>Riêng tư</Button>
+                        <Button className='public'>Công khai</Button>
                     </div>
                     <div className='card'>
                         {inputElements.map(input => (
@@ -84,20 +98,21 @@ const CreateSet = () => {
                                     onChange={(e) => handleInputChange(input.id, "content2", e)}
                                     className="input-define"
                                 />
-                                <FontAwesomeIcon
-                                    icon={faTrashAlt}
+                                <IconButton
+                                    aria-label="delete" size="large"
                                     className="delete-icon"
-                                    onClick={() => removeInputElement(input.id)}
-                                />
+                                    onClick={() => removeInputElement(input.id)}>
+                                    <DeleteIcon fontSize="inherit" />
+                                </IconButton>
                             </div>
                         ))}
                     </div>
-                    <button
+                    <Button variant="contained"
                         onClick={() => { addInputElement(); setSttCount(prevCount => prevCount + 1); }}
                         className="add-card-button"
                     >
                         Thêm thẻ
-                    </button>
+                    </Button>
                 </div>
             </body>
         </div>

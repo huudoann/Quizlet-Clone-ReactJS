@@ -18,44 +18,62 @@ body {
             font-weight: bold;
         }
 
-        .bt-create {
-            display: flex;
-            align-items: center;
-            border-radius: 5px;
-            text-align: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            width: 70px;
-            height: 50px;
-            background-color: #4255ff;
-            cursor: pointer;
+        // .bt-create {
+        //     display: flex;
+        //     align-items: center;
+        //     border-radius: 5px;
+        //     text-align: center;
+        //     justify-content: center;
+        //     font-size: 20px;
+        //     font-weight: bold;
+        //     color: white;
+        //     width: 70px;
+        //     height: 50px;
+        //     background-color: #4255ff;
+        //     cursor: pointer;
 
-            &:hover {
-                background-color: #423ed8;
-            }
-        }
+        //     &:hover {
+        //         background-color: #423ed8;
+        //     }
+        // }
     }
 
+    .enter-title {
+        width: 100%;
+        margin-top: 50px;
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+    }
     .enter-title ::placeholder {
         color: white;
+        
     }
 
     .enter-title input[type="text"] {
         width: 100%;
         height: 50px;
         box-sizing: border-box;
-        border: 1px solid #ccc;
+        //border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
-        margin-top: 50px;
         padding: 20px;
         background-color: #d9dde859;
         color: white;
     }
 
+    .add-description {
+        width: 100%;
+        margin-top: 50px;
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+    }
     .add-description ::placeholder {
         color: white;
     }
@@ -64,21 +82,23 @@ body {
         width: 100%;
         height: 70px;
         box-sizing: border-box;
-        border: 1px solid #ccc;
+        //border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
-        margin-top: 30px;
         padding: 20px;
         background-color: #d9dde859;
         color: white;
     }
 
     .private-public {
+        display: flex;
         .selecte-private-public {
             font-size: 20px;
             color: white;
             font-weight: bold;
+            margin-top: 55px;
+            
         }
         .private,
         .public {
@@ -157,6 +177,7 @@ body {
 
         .delete-icon {
             margin-left: 40px;
+            color: white;
             cursor: pointer;
         }
     }
@@ -166,7 +187,7 @@ body {
         margin: 0 auto;
         margin-top: 30px;
         padding: 10px 20px;
-        background-color: white;
+        background-color: yellow;
         color: black;
         border: 2px solid white;
         border-radius: 5px;
