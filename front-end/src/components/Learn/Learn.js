@@ -20,7 +20,6 @@ const Learn = () => {
 
   const [learnState, setLearnState] = useState(generateInitialState('ENGLISH'));
 
-
   const handleAnswer = (answer) => {
     const { remaining, correct, incorrect, numTerms } = learnState;
     const correctAnswer = remaining[0].definition.toLowerCase();
