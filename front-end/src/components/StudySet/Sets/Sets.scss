@@ -32,8 +32,8 @@
 }
 .term,
 .folder {
-    cursor: pointer; /* Biến con trỏ thành dấu tay khi hover vào */
-    color: #8493b4; /* Màu chữ trắng */
+    cursor: pointer;
+    color: #8493b4;
     font-weight: bold;
     position: relative; /* Để thiết lập vị trí tuyệt đối cho đường line màu tím */
 
@@ -68,7 +68,7 @@
         border-radius: 10px;
         border: none;
         color: white;
-        background-color: #313756;
+        background-color: #303c54;
     }
 
     // .icon-search {
