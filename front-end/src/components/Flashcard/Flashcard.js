@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
 import flashcardDemoData from './FlashcardDemo';
 import { NavLink } from 'react-router-dom';
-import { ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
+import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
 
 const Flashcard = () => {
@@ -14,6 +14,9 @@ const Flashcard = () => {
     const [isFront, setIsFront] = useState(true);
     const [scrollPosition, setScrollPosition] = useState(0);
     const [shouldAnimate, setShouldAnimate] = useState(false);
+    const [slideDirection, setSlideDirection] = useState('left'); 
+    const [rating, setRating] = useState(0);
+    const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
 
     const flashcardContainerRef = useRef(null);
 
@@ -31,16 +34,15 @@ const Flashcard = () => {
 
     useEffect(() => {
         if (shouldAnimate) {
-          const timer = setTimeout(() => {
-            setShouldAnimate(false);
-          }, 500);
-          return () => clearTimeout(timer);
+            const timer = setTimeout(() => {
+                setShouldAnimate(false);
+            }, 500);
+            return () => clearTimeout(timer);
         }
-      }, [shouldAnimate]);
+    }, [shouldAnimate]);
 
     const shuffleArray = (array) => {
         const newArray = [...array];
-
         for (let i = newArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
@@ -55,6 +57,7 @@ const Flashcard = () => {
             setIsFront(true);
             setScrollPosition(flashcardContainerRef.current.scrollLeft + flashcardContainerRef.current.offsetWidth);
             setShouldAnimate(true);
+            setSlideDirection('left');
         }
     };
 
@@ -63,8 +66,9 @@ const Flashcard = () => {
             setCurrentCardIndex(currentCardIndex - 1);
             setIsFlipped(false);
             setIsFront(true);
-            setScrollPosition(flashcardContainerRef.current.scrollLeft - flashcardContainerRef.current.offsetWidth);
+            setScrollPosition(flashcardContainerRef.current.scrollRight - flashcardContainerRef.current.offsetWidth);
             setShouldAnimate(true);
+            setSlideDirection('right');
         }
     };
 
@@ -79,7 +83,7 @@ const Flashcard = () => {
         if (!isShuffled) {
             shuffleRemainingCards();
         } else {
-            setShuffledFlashcards(flashcards);;
+            setShuffledFlashcards(flashcards);
         }
         setIsShuffled(!isShuffled);
     };
@@ -93,12 +97,37 @@ const Flashcard = () => {
         setIsZoomed(!isZoomed);
     };
 
+    const handleStarHover = (index) => {
+        setHoveredStarIndex(index);
+    };
+
+    const handleStarClick = (value) => {
+        setRating(value); 
+    };
+
+    const handleSubmitRating = () => {
+        console.log("Đã gửi đánh giá:", rating);
+    };
+
     return (
         <div>
             <Header />
             <div className="flashcard-container" ref={flashcardContainerRef}>
                 <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
                     <h1>{subject}</h1>
+                    <div className="rating">
+                        <h4>Đánh giá học phần này: </h4>
+                        {[1, 2, 3, 4, 5].map((value, index) => (
+                            <Star
+                                key={value}
+                                onMouseEnter={() => handleStarHover(index)}
+                                onMouseLeave={() => handleStarHover(-1)}
+                                onClick={() => handleStarClick(value)}
+                                className={index <= (hoveredStarIndex !== -1 ? hoveredStarIndex : rating - 1) ? 'filled' : ''}
+                            />
+                        ))}
+                        <button className='rating-button' onClick={handleSubmitRating}>Gửi Đánh Giá</button>
+                    </div>
                     <div className="flashcard-navigation">
                         <NavLink to="/flashcard" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
                         <NavLink to="/learn" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
@@ -106,7 +135,7 @@ const Flashcard = () => {
                         <NavLink to="/match" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
                     </div>
                     <div className={`flashcard-form`}>
-                        <div className={`flashcard  ${isFlipped ? 'flipped' : ''}` } style={{ animation: shouldAnimate ? 'slideLeft 0.5s ease' : 'none'}} onClick={handleFlipCard}>
+                        <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.5s ease` : 'none' }} onClick={handleFlipCard}>
                             <div className={isFront ? "front" : "back"}>
                                 {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
                             </div>
@@ -131,7 +160,7 @@ const Flashcard = () => {
                     <ul>
                         {flashcards.map((card, index) => (
                             <li key={index}>
-                                <strong>{card.front_text}</strong>   {card.back_text}
+                                <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
                             </li>
                         ))}
                     </ul>
