@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createSvgIcon } from '@mui/material/utils';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
@@ -12,12 +12,33 @@ const Header = () => {
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
     const [isLibraryMenuOpen, setIsLibraryMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
+    const menuRef = useRef(null); // Ref cho menu
+
+    useEffect(() => {
+        // Hàm xử lý sự kiện click ra ngoài menu
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false); // Đóng menu nếu click ra ngoài
+            }
+        };
+
+        // Thêm sự kiện nghe click vào document
+        document.addEventListener('click', handleClickOutside);
+
+        // Cleanup function để loại bỏ sự kiện nghe khi component unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []); // [] đảm bảo useEffect chỉ chạy một lần sau khi component mount
+
+    const toggleMenu = (event) => {
+        event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
         setIsMenuOpen(!isMenuOpen);
     };
+
     const toggleFolderDialog = () => {
         setIsFolderDialogOpen(!isFolderDialogOpen);
-    }
+    };
 
     const PlusIcon = createSvgIcon(
         // credit: plus icon from https://heroicons.com/
@@ -32,15 +53,13 @@ const Header = () => {
         </svg>,
         'Plus',
     );
+
     return (
         <div className='nav-header'>
             <header>
                 <div className="name-app">Quizlet</div>
 
                 <div className='home-library-container'>
-
-                    {/* Phần slash của Home trong trang Header.js và Quizlet trong trang Home.js đang đảo nhau để fake đăng nhập */}
-
                     <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <div className='homepage-btn'>Home</div>
                     </Link>
@@ -55,7 +74,7 @@ const Header = () => {
                         <div className="icon-container icon-container-plus" onClick={toggleMenu}>
                             <PlusIcon />
                             {isMenuOpen && (
-                                <div className="menu">
+                                <div ref={menuRef} className="menu" onClick={(e) => e.stopPropagation()}>
                                     <Link to="/create-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                                         <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
                                     </Link>
@@ -72,7 +91,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-            </header >
+            </header>
 
             {isFolderDialogOpen && (
                 <div className="folder-dialog">
@@ -85,8 +104,8 @@ const Header = () => {
                     <button onClick={toggleFolderDialog}>Create</button>
                 </div>
             )}
-        </div >
+        </div>
     );
 }
 
-export default Header
+export default Header;

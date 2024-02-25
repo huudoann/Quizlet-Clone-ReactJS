@@ -1,0 +1,69 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.start-learn {
+    display: flex;
+    justify-content: flex-end; /* Dịch hình ảnh sang bên phải */
+    position: relative;
+}
+
+.start-learn img {
+    width: 70%; /* Phóng to hình ảnh */
+    max-height: 100%; /* Giữ tỷ lệ khung hình */
+    object-fit: contain;
+    margin-right: 150px; /* Tạo khoảng cách giữa hình ảnh và DateCalendar */
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.image-overlay {
+    position: absolute;  
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #0B60B0;
+    font-weight: bold;
+    margin-top: 150px;
+}
+
+.image-overlay p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.image-overlay button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ff9800;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.image-overlay button:hover {
+    background-color: #ffa726;
+}
+
+.date-calendar-container {
+    margin-left: 20px; /* Tạo khoảng cách giữa hình ảnh và DateCalendar */
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+
+.date-calendar {
+    background-color: white;
+    border-radius: 15px;
+}
