@@ -14,6 +14,20 @@ const CreateSet = () => {
     // thay navbar
     // sửi lại UI (navbar, nút tạo, thêm private public, các thuật ngữ cách nhau ra)
     // logic tạo
+    const [isPrivateSelected, setIsPrivateSelected] = useState(false); // State cho nút private
+    const [isPublicSelected, setIsPublicSelected] = useState(false); // State cho nút public
+
+    // Hàm xử lý khi click vào nút private
+    const handlePrivateClick = () => {
+        setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
+        setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
+    };
+
+    // Hàm xử lý khi click vào nút public
+    const handlePublicClick = () => {
+        setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
+        setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
+    };
 
     const [inputElements, setInputElements] = useState([]);
     const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
@@ -53,8 +67,8 @@ const CreateSet = () => {
                     <div className="toolbar">
 
                         <span className='create-a-new-course'>Tạo học phần mới</span>
-                        <div className='bt-create'>
-                            <Button variant="contained">Tạo</Button>
+                        <div>
+                            <Button variant="contained" className='bt-create'>Tạo</Button>
                         </div>
                     </div>
                     <Box
@@ -70,8 +84,18 @@ const CreateSet = () => {
                     </Box>
                     <div className='private-public'>
                         <span className='selecte-private-public'>Chọn quyền truy cập: </span>
-                        <Button className='private'>Riêng tư</Button>
-                        <Button className='public'>Công khai</Button>
+                        <Button
+                            className={`private ${isPrivateSelected ? 'selected' : ''}`}
+                            onClick={handlePrivateClick}
+                            variant="contained">
+                            Riêng tư
+                        </Button>
+                        <Button
+                            className={`public ${isPublicSelected ? 'selected' : ''}`}
+                            onClick={handlePublicClick}
+                            variant="contained">
+                            Công khai
+                        </Button>
                     </div>
                     <div className='card'>
                         {inputElements.map(input => (
@@ -124,7 +148,7 @@ const CreateSet = () => {
                         onClick={() => { addInputElement(); setSttCount(prevCount => prevCount + 1); }}
                         className="add-card-button"
                     >
-                        Thêm thẻ
+                        + Thêm thẻ
                     </Button>
                 </div>
             </body>
