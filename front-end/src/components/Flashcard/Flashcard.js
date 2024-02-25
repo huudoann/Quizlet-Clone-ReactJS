@@ -22,10 +22,8 @@ const Flashcard = () => {
 
     const { subject, flashcards, creator } = flashcardDemoData;
 
-    useEffect(() => {
-        setShuffledFlashcards(shuffleArray(flashcards));
-    }, [flashcards]);
 
+    //xử lí chuyển thẻ
     useEffect(() => {
         if (flashcardContainerRef.current) {
             flashcardContainerRef.current.scrollLeft = scrollPosition;
@@ -41,6 +39,11 @@ const Flashcard = () => {
         }
     }, [shouldAnimate]);
 
+    //tráo thẻ
+    useEffect(() => {
+        setShuffledFlashcards(shuffleArray(flashcards));
+    }, [flashcards]);
+
     const shuffleArray = (array) => {
         const newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i--) {
@@ -49,28 +52,6 @@ const Flashcard = () => {
         }
         return newArray;
     }
-
-    const handleNextCard = () => {
-        if (currentCardIndex < shuffledFlashcards.length - 1) {
-            setCurrentCardIndex(currentCardIndex + 1);
-            setIsFlipped(false);
-            setIsFront(true);
-            setScrollPosition(flashcardContainerRef.current.scrollLeft + flashcardContainerRef.current.offsetWidth);
-            setShouldAnimate(true);
-            setSlideDirection('left');
-        }
-    };
-
-    const handlePrevCard = () => {
-        if (currentCardIndex > 0) {
-            setCurrentCardIndex(currentCardIndex - 1);
-            setIsFlipped(false);
-            setIsFront(true);
-            setScrollPosition(flashcardContainerRef.current.scrollRight - flashcardContainerRef.current.offsetWidth);
-            setShouldAnimate(true);
-            setSlideDirection('right');
-        }
-    };
 
     const shuffleRemainingCards = () => {
         const remainingCards = isShuffled ? shuffledFlashcards.slice(currentCardIndex) : flashcards.slice(currentCardIndex);
@@ -88,15 +69,42 @@ const Flashcard = () => {
         setIsShuffled(!isShuffled);
     };
 
+    //chuyển thẻ kế tiếp
+    const handleNextCard = () => {
+        if (currentCardIndex < shuffledFlashcards.length - 1) {
+            setCurrentCardIndex(currentCardIndex + 1);
+            setIsFlipped(false);
+            setIsFront(true);
+            setScrollPosition(flashcardContainerRef.current.scrollLeft + flashcardContainerRef.current.offsetWidth);
+            setShouldAnimate(true);
+            setSlideDirection('left');
+        }
+    };
+
+    //quay lại thẻ trước đó
+    const handlePrevCard = () => {
+        if (currentCardIndex > 0) {
+            setCurrentCardIndex(currentCardIndex - 1);
+            setIsFlipped(false);
+            setIsFront(true);
+            setScrollPosition(flashcardContainerRef.current.scrollRight - flashcardContainerRef.current.offsetWidth);
+            setShouldAnimate(true);
+            setSlideDirection('right');
+        }
+    };
+
+    //lật mặt trước/mặt sau thẻ
     const handleFlipCard = () => {
         setIsFlipped(!isFlipped);
         setIsFront(!isFront);
     };
 
+    //phóng to
     const handleZoom = () => {
         setIsZoomed(!isZoomed);
     };
 
+    //xử lý phần đánh giá
     const handleStarHover = (index) => {
         setHoveredStarIndex(index);
     };
