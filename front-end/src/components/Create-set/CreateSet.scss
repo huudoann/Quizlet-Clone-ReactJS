@@ -147,13 +147,14 @@ body {
         display: flex;
         align-items: center;
         padding: 10px; /* Thêm padding để tạo khoảng cách từ border */
-        border: 2px solid #ccc; /* Thêm border cho mỗi item card */
+        border: 2px solid black; /* Thêm border cho mỗi item card */
         border-radius: 10px; /* Bo tròn các góc của item card */
         background-color: #d9dde859;
 
         .stt-input {
             width: 50px;
             text-align: center;
+            font-size: 18px;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -164,15 +165,23 @@ body {
         .input-terms,
         .input-define {
             flex: 1;
-            /* Chia đều chiều rộng của các ô nhập còn lại */
             padding: 8px;
             border: 1px solid #ccc;
-            /* Viền */
             border-radius: 5px;
             outline: none;
             margin-left: 30px;
             margin-left: 20px; /* Giảm khoảng cách từ trái của các input */
             border: none; /* Loại bỏ border để không lặp lại border */
+
+            label {
+                color: white;
+                font-size: 18px;
+            }
+            
+            input[type="text"] {
+                color: white;
+                font-size: 18px;
+            }
         }
 
         .delete-icon {
