@@ -11,9 +11,9 @@ const Home = () => {
     <div className="home">
       <header>
 
-     {/* Phần slash của Home trong trang Header.js và Quizlet trong trang Home.js đang đảo nhau để fake đăng nhập */}
+        {/* Phần slash của Home trong trang Header.js và Quizlet trong trang Home.js đang đảo nhau để fake đăng nhập */}
 
-        <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+        <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
           <div className="name-app">Quizlet</div>
         </Link>
 
