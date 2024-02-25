@@ -5,6 +5,9 @@ import { NavLink } from 'react-router-dom';
 import { ArrowBackIos, ArrowForwardIos, Flip, CropFreeTwoTone, Style, LocalLibrary, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
 
+
+//  sửa hover; khi đang ở definition chuyển cảnh thì không bị lật, thêm chuyển cảnh ở đổi thẻ
+
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
@@ -53,8 +56,8 @@ const Flashcard = () => {
                     </div>
                     <div className={`flashcard-form`}>
                         <div className={`flashcard ${isFlipped ? 'flipped' : ''}`} onClick={handleFlipCard}>
-                            <div className="front">{flashcards[currentCardIndex].term}</div>
-                            <div className="back">{flashcards[currentCardIndex].definition}</div>
+                            <div className="front">{flashcards[currentCardIndex].front_text}</div>
+                            <div className="back">{flashcards[currentCardIndex].back_text}</div>
                         </div>
                         <div className='function-button'>
                             <Flip onClick={handleFlipCard}>Flip</Flip>
@@ -73,7 +76,7 @@ const Flashcard = () => {
                     <ul>
                         {flashcards.map((card, index) => (
                             <li key={index}>
-                                <strong>{card.term}</strong>   {card.definition}
+                                <strong>{card.front_text}</strong>   {card.back_text}
                             </li>
                         ))}
                     </ul>
