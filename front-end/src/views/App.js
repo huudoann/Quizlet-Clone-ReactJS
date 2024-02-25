@@ -11,6 +11,7 @@ import Learn from '../components/Learn/Learn';
 import SignUpForm from '../components/AuthForm/SignUpForm';
 import LoginForm from '../components/AuthForm/LoginForm';
 import { Folder } from '@mui/icons-material';
+import Folders from '../components/StudySet/Folders/Folders';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                     <Route exact path='/flashcard' element={<Flashcard />} />
                     <Route exact path='/match' element={<Match />} />
                     <Route exact path='/learn' element={<Learn />} />
+                    <Route exact path='/folders' element={<Folders />} />
                 </Routes>
             </div>
         </Router>
