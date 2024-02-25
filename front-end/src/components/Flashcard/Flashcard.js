@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
 import flashcardDemoData from './FlashcardDemo';
 import { NavLink } from 'react-router-dom';
 import { ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
-
-
-//  sửa hover - đã sửa; khi đang ở definition chuyển cảnh thì không bị lật, thêm chuyển cảnh ở đổi thẻ
-
-//  đã thêm shuffle
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -16,12 +11,32 @@ const Flashcard = () => {
     const [isZoomed, setIsZoomed] = useState(false);
     const [shuffledFlashcards, setShuffledFlashcards] = useState([]);
     const [isShuffled, setIsShuffled] = useState(false);
+    const [isFront, setIsFront] = useState(true);
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [shouldAnimate, setShouldAnimate] = useState(false);
+
+    const flashcardContainerRef = useRef(null);
 
     const { subject, flashcards, creator } = flashcardDemoData;
 
     useEffect(() => {
         setShuffledFlashcards(shuffleArray(flashcards));
     }, [flashcards]);
+
+    useEffect(() => {
+        if (flashcardContainerRef.current) {
+            flashcardContainerRef.current.scrollLeft = scrollPosition;
+        }
+    }, [scrollPosition]);
+
+    useEffect(() => {
+        if (shouldAnimate) {
+          const timer = setTimeout(() => {
+            setShouldAnimate(false);
+          }, 500);
+          return () => clearTimeout(timer);
+        }
+      }, [shouldAnimate]);
 
     const shuffleArray = (array) => {
         const newArray = [...array];
@@ -33,14 +48,13 @@ const Flashcard = () => {
         return newArray;
     }
 
-    // if (!flashcards || !flashcards.length) {
-    //     return <div className='no-flashcard'>No flashcards available.</div>;
-    // }
-
     const handleNextCard = () => {
         if (currentCardIndex < shuffledFlashcards.length - 1) {
             setCurrentCardIndex(currentCardIndex + 1);
             setIsFlipped(false);
+            setIsFront(true);
+            setScrollPosition(flashcardContainerRef.current.scrollLeft + flashcardContainerRef.current.offsetWidth);
+            setShouldAnimate(true);
         }
     };
 
@@ -48,6 +62,9 @@ const Flashcard = () => {
         if (currentCardIndex > 0) {
             setCurrentCardIndex(currentCardIndex - 1);
             setIsFlipped(false);
+            setIsFront(true);
+            setScrollPosition(flashcardContainerRef.current.scrollLeft - flashcardContainerRef.current.offsetWidth);
+            setShouldAnimate(true);
         }
     };
 
@@ -69,6 +86,7 @@ const Flashcard = () => {
 
     const handleFlipCard = () => {
         setIsFlipped(!isFlipped);
+        setIsFront(!isFront);
     };
 
     const handleZoom = () => {
@@ -77,9 +95,8 @@ const Flashcard = () => {
 
     return (
         <div>
-
-            {<Header />}
-            <div className="flashcard-container">
+            <Header />
+            <div className="flashcard-container" ref={flashcardContainerRef}>
                 <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
                     <h1>{subject}</h1>
                     <div className="flashcard-navigation">
@@ -89,15 +106,19 @@ const Flashcard = () => {
                         <NavLink to="/match" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
                     </div>
                     <div className={`flashcard-form`}>
-                        <div className={`flashcard ${isFlipped ? 'flipped' : ''}`} onClick={handleFlipCard}>
-                            <div className="front">{isShuffled ? shuffledFlashcards[currentCardIndex].front_text : flashcards[currentCardIndex].front_text}</div>
-                            <div className="back">{isShuffled ? shuffledFlashcards[currentCardIndex].back_text : flashcards[currentCardIndex].back_text}</div>
+                        <div className={`flashcard  ${isFlipped ? 'flipped' : ''}` } style={{ animation: shouldAnimate ? 'slideLeft 0.5s ease' : 'none'}} onClick={handleFlipCard}>
+                            <div className={isFront ? "front" : "back"}>
+                                {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
+                            </div>
+                            <div className={!isFront ? "front" : "back"}>
+                                {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][!isFront ? "front_text" : "back_text"]}
+                            </div>
                         </div>
                         <div className='function-button'>
                             <Shuffle onClick={handleShuffle}>Shuffle {isShuffled ? 'Off' : 'On'}</Shuffle>
-                            <ArrowBackIos onClick={handlePrevCard} disabled={currentCardIndex === 0}>Previous</ArrowBackIos>
+                            <ArrowBackIos className='slider-button' onClick={handlePrevCard} disabled={currentCardIndex === 0}>Previous</ArrowBackIos>
                             <span>{`${currentCardIndex + 1}/${flashcards.length}`}</span>
-                            <ArrowForwardIos onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>Next</ArrowForwardIos>
+                            <ArrowForwardIos className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>Next</ArrowForwardIos>
                             <CropFreeTwoTone onClick={handleZoom}>Zoom</CropFreeTwoTone>
                         </div>
                     </div>

@@ -1,9 +1,16 @@
+@keyframes slideLeft {
+  30% { transform: translateX(0); }
+  60% { transform: translateX(-10%); }
+}
+
 .flashcard-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0;
+  overflow-x: hidden;
+  white-space: nowrap;
   color: #fff;
 
 
@@ -46,6 +53,7 @@
       flex-direction: column;
       flex-grow: 1;
       transition: all 0.3s ease;
+      overflow: hidden;
 
       .flashcard {
         flex-grow: 1;
@@ -97,6 +105,20 @@
         transform: rotateY(0deg);
       }
 
+      .flashcard.slider-button {
+        transition: all 0.5s ease;
+        transform: rotateY(180deg);
+      }
+
+      .slider-button {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+      
+      .slider-button:hover {
+        transform: scale(1.1);
+      }
+
       .function-button {
         width: 100%;
         display: flex;
@@ -104,6 +126,7 @@
         align-items: center;
         position: relative;
         cursor: pointer;
+        white-space: nowrap;
       }
 
       .function-button button {
