@@ -36,7 +36,7 @@
         font-weight: 500;
 
         &:hover {
-          border-bottom: 3px #ccc solid;
+          box-shadow: inset 0 -2px 0 0 #ccc;
         }
       }
     }
@@ -62,38 +62,37 @@
         font-size: 2rem;
         cursor: pointer;
         transition: transform 0.5s ease;
-
-        .front,
-        .back {
-          width: calc(100% - 15px);
-          height: calc(100% - 15px);
-          position: absolute;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          backface-visibility: hidden;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          transform-style: preserve-3d;
-          transform: rotateY(180deg);
-        }
-
-        .front {
-          transform: rotateY(0deg);
-        }
-
-        .back {
-          transform: rotateY(180deg);
-        }
       }
-
+      
+      .flashcard .front,
+      .flashcard .back {
+        width: calc(100% - 15px);
+        height: calc(100% - 15px);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backface-visibility: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transform-style: preserve-3d;
+      }
+      
+      .flashcard .front {
+        transform: rotateY(0deg);
+      }
+      
+      .flashcard .back {
+        transform: rotateY(180deg);
+      }
+      
       .flashcard.flipped {
         transform: rotateX(180deg) scaleY(-1);
       }
-
+      
       .flashcard.flipped .front {
         transform: rotateY(-180deg);
       }
-
+      
       .flashcard.flipped .back {
         transform: rotateY(0deg);
       }
