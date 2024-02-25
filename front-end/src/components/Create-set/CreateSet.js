@@ -36,7 +36,6 @@ const CreateSet = () => {
         setInputElements(newInputs);
     };
 
-
     const removeInputElement = (id) => {
         setInputElements(prevInputs => {
             // Lọc bỏ ô nhập có id trùng khớp
@@ -66,7 +65,7 @@ const CreateSet = () => {
                         noValidate
                         autoComplete="off">
 
-                        <TextField className='enter-title' label="Tên học phần" variant="outlined" />
+                        <TextField className='enter-title' label="Nhập tiêu đề" variant="outlined" />
                         <TextField className='add-description' label="Thêm mô tả" variant="outlined" />
                     </Box>
                     <div className='private-public'>
@@ -84,20 +83,34 @@ const CreateSet = () => {
                                     readOnly
                                     className="stt-input"
                                 />
-                                <input
+                                <TextField
+                                    className="input-terms"
+                                    label="Thuật ngữ"
+                                    variant="standard"
+                                    value={input.content1}
+                                    onChange={(e) => handleInputChange(input.id, "content1", e)}
+                                />
+                                {/* <input
                                     type="text"
                                     placeholder="Thuật ngữ"
                                     value={input.content1}
                                     onChange={(e) => handleInputChange(input.id, "content1", e)}
                                     className="input-terms"
+                                /> */}
+                                <TextField
+                                    className="input-define"
+                                    label="Định nghĩa"
+                                    variant="standard"
+                                    value={input.content2}
+                                    onChange={(e) => handleInputChange(input.id, "content2", e)}
                                 />
-                                <input
+                                {/* <input
                                     type="text"
                                     placeholder="Định nghĩa"
                                     value={input.content2}
                                     onChange={(e) => handleInputChange(input.id, "content2", e)}
                                     className="input-define"
-                                />
+                                /> */}
                                 <IconButton
                                     aria-label="delete" size="large"
                                     className="delete-icon"
