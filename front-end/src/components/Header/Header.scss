@@ -1,4 +1,4 @@
-.nav-header header{
+.nav-header header {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -20,7 +20,7 @@
     .homepage-btn,
     .library-menu {
         font-size: 20px;
-        font-weight:500;
+        font-weight: 500;
         margin-left: 20px;
         position: relative;
         cursor: pointer;
@@ -36,7 +36,8 @@
         position: absolute;
         left: 0;
         bottom: -2px;
-        width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+        width: 100%;
+        /* Chiếm toàn bộ chiều rộng của phần tử cha */
         height: 2px;
         background-color: #acacfc;
     }
@@ -49,12 +50,19 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            margin-left: 20px;
+            padding: 10px 10px 10px 15px;
+            margin-left: 30px;
+            margin-right: 20px;
             border-radius: 20px;
             border: none;
             background-color: #303c54;
             color: white;
+        }
+
+        input::placeholder {
+            color: #fff;
+            font-weight: 300;
+            font-size: 1rem;
         }
 
         .button-right {
@@ -73,7 +81,7 @@
             align-items: center;
             margin-left: 10px; // Khoảng cách giữa các biểu tượng
             cursor: pointer;
-            
+
             svg {
                 color: black;
                 font-size: 20px;
@@ -84,6 +92,7 @@
             svg {
                 color: white;
             }
+
             background-color: #4255ff;
 
             &:hover {
