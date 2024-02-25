@@ -24,7 +24,7 @@ const HomePage = () => {
                 <div className="start-learn">
                     <img src="https://images.prismic.io/quizlet-web/MDFkMjA3YzUtMGQyNC00ZDU3LThmMDctZjljZjQ5OTg2N2M0_130dc509-6919-47bc-b27d-17f600a41b0c_intlfirstslice.png?auto=compress,format&rect=0,0,1000,683&w=1000&h=683" alt="Start learning" />
                     <div className="image-overlay">
-                        <p>Ghi nhớ nhanh hơn, miễn phí</p>
+                        <p>Ghi nhớ nhanh hơn, miễn phí !</p>
                         <Button variant="contained">Học ngay</Button>
                     </div>
                 </div>

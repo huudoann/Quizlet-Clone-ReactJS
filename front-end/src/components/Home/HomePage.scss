@@ -8,7 +8,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 50px;
 }
 
 .start-learn {
@@ -23,6 +22,7 @@
     object-fit: contain;
     margin-right: 150px; /* Tạo khoảng cách giữa hình ảnh và DateCalendar */
     margin-bottom: 50px;
+    margin-top: 50px;
 }
 
 .image-overlay {
@@ -33,7 +33,7 @@
     text-align: center;
     color: #0B60B0;
     font-weight: bold;
-    margin-top: 148px;
+    margin-top: 150px;
 }
 
 .image-overlay p {
