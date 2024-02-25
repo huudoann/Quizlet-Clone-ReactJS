@@ -119,8 +119,8 @@ body {
         }
         .private,
         .public {
-            border: 2px solid white;
-            background-color: transparent;
+            border: 2px solid #ccc;
+            background-color: #0a092d;
             padding: 5px 10px;  
             cursor: pointer;
             margin-top: 50px;
@@ -146,16 +146,16 @@ body {
         .private:hover,
         .public:hover {
             color: #000;
-            background-color: yellow;
+            background-color: #acacb4;
         }
 
         .private.selected {
-            background-color: yellow;
+            background-color: #acacb4;
             color: #000;
         }
         
         .public.selected {
-            background-color: yellow;
+            background-color: #acacb4;
             color: #000;
         }
 
@@ -235,7 +235,7 @@ body {
         cursor: pointer;
 
         &:hover {
-            background-color: yellow;
+            background-color: #7dd;
             color: #000;
             /* Đổi màu background khi hover */
         }
