@@ -1,39 +1,108 @@
-.Match {
-    text-align: center;
+.match-page {
+  min-height: 90vh;
+  padding: 20px;
+
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navigation select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.time-display {
+  font-weight: bold;
+}
+
+.close-button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: inherit;
+  color: #fff;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: lighten(#262645, 10%);
+}
+
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+}
+
+.card-front,
+.card-back {
+  color: #ccc;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #262645;
+  transition: background-color 0.3s ease;
+}
+
+.card-front:hover,
+.card-back:hover {
+  color: #262645;
+  background-color: #f0f0f0;
+}
+
+.card.selected {
+  background-color: green;
+  color: white;
+  cursor: pointer;
+}
+
+.card.selected:nth-child(2) {
+  animation: disappear 0.2s ease-in-out; /* Hiệu ứng biến mất sau 0.2s */
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
   }
-  
-  .card-match-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  100% {
+    opacity: 0;
+    display: none; /* Biến mất hoàn toàn */
   }
-  
-  .card-match {
-    width: 75%;
-    height: 75%;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s; /* Thay đổi màu nền khi hover */
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
   }
-  
-  .card-match.hidden {
-    opacity: 0; /* Ẩn các thẻ đã tìm thấy cặp */
-    pointer-events: none; /* Ngăn không cho người dùng tương tác */
+  25% {
+    transform: translateX(-5px);
   }
-  
-  .card-match.selected {
-    background-color: lightblue; /* Màu nền khác cho thẻ được chọn */
+  50% {
+    transform: translateX(5px);
   }
-  
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.front_text, .back_text {
+  font-weight: bold;
+  margin: .25rem;
+}
+
+}

@@ -4,7 +4,7 @@ import flashcardDemoData from './FlashcardDemo';
 import { NavLink } from 'react-router-dom';
 import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
-import * as requests from '../../utils/requestCard';
+import getCardsDataFromSet from '../../utils/requestCard';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -23,24 +23,7 @@ const Flashcard = () => {
 
     const { subject, flashcards, creator } = flashcardDemoData;
 
-    // const fetchApi = async () => {
-    //     try {
-    //         const response = await requests.get(`/{set_id}/cards`);
-    //         console.log(response.data);
-
-    //         const token = response.data.token;
-    //         console.log(token);
-    //         localStorage.setItem('token', token);
-
-    //         return response.data;
-    //     }
-    //     catch (error) {
-    //         console.error('Lỗi khi lấy dữ liệu:', error.message);
-    //         throw error;
-    //     }
-    // }
-
-    // fetchApi();
+    // getCardsDataFromSet();
 
 
     //xử lí chuyển thẻ
