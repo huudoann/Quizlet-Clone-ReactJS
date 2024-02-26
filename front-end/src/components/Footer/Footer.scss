@@ -3,9 +3,11 @@
     padding:30px 0px;
     font-family: 'Play', sans-serif;
     text-align:center;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
+    white-space: nowrap; /* Chỉ định không gian trắng không bị ngắt dòng */
+    overflow-x: hidden; /* Ẩn thanh cuộn ngang */
     }
     
     .footer .row{
