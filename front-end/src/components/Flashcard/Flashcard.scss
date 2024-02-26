@@ -1,20 +1,20 @@
 @keyframes slideLeft {
-  30% {
+  100% {
     transform: translateX(0);
   }
 
-  60% {
-    transform: translateX(-10%);
+  100% {
+    transform: translateX(-100%);
   }
 }
 
 @keyframes slideRight {
-  30% {
+  100% {
     transform: translateX(0);
   }
 
-  60% {
-    transform: translateX(10%);
+  100% {
+    transform: translateX(100%);
   }
 }
 
@@ -70,7 +70,7 @@
       border-radius: 5px;
       cursor: pointer;
       font-weight: 500;
-      
+
       transition: background-color 0.3s ease;
     }
 

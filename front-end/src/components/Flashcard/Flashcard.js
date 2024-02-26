@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
-import flashcardDemoData from './FlashcardDemo';
+import CardsData from './CardsData';
 import { NavLink } from 'react-router-dom';
 import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
@@ -21,7 +21,7 @@ const Flashcard = () => {
 
     const flashcardContainerRef = useRef(null);
 
-    const { subject, flashcards, creator } = flashcardDemoData;
+    const { subject, flashcards, creator } = CardsData;
 
     // getCardsDataFromSet();
 
@@ -146,7 +146,7 @@ const Flashcard = () => {
                         <NavLink to="/match" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
                     </div>
                     <div className={`flashcard-form`}>
-                        <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.5s ease` : 'none' }} onClick={handleFlipCard}>
+                        <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
                             <div className={isFront ? "front" : "back"}>
                                 {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
                             </div>
