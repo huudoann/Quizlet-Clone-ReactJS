@@ -4,6 +4,7 @@ import flashcardDemoData from './FlashcardDemo';
 import { NavLink } from 'react-router-dom';
 import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
+import * as requests from '../../utils/requestCard';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -14,13 +15,32 @@ const Flashcard = () => {
     const [isFront, setIsFront] = useState(true);
     const [scrollPosition, setScrollPosition] = useState(0);
     const [shouldAnimate, setShouldAnimate] = useState(false);
-    const [slideDirection, setSlideDirection] = useState('left'); 
+    const [slideDirection, setSlideDirection] = useState('left');
     const [rating, setRating] = useState(0);
     const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
 
     const flashcardContainerRef = useRef(null);
 
     const { subject, flashcards, creator } = flashcardDemoData;
+
+    // const fetchApi = async () => {
+    //     try {
+    //         const response = await requests.get(`/{set_id}/cards`);
+    //         console.log(response.data);
+
+    //         const token = response.data.token;
+    //         console.log(token);
+    //         localStorage.setItem('token', token);
+
+    //         return response.data;
+    //     }
+    //     catch (error) {
+    //         console.error('Lỗi khi lấy dữ liệu:', error.message);
+    //         throw error;
+    //     }
+    // }
+
+    // fetchApi();
 
 
     //xử lí chuyển thẻ
@@ -110,7 +130,7 @@ const Flashcard = () => {
     };
 
     const handleStarClick = (value) => {
-        setRating(value); 
+        setRating(value);
     };
 
     const handleSubmitRating = () => {
