@@ -1,6 +1,7 @@
-.home{
+.home {
   max-height: 100vh;
   overflow-y: hidden;
+
   header {
     display: flex;
     justify-content: space-between;
@@ -8,13 +9,13 @@
     padding: 10px;
     background-color: #FEFBF6;
     color: black;
-    
+
     .name-app {
       font-size: 40px;
       color: #0B60B0;
       font-weight: bold;
     }
-    
+
     .button-register-login {
       button {
         margin-left: 10px;
@@ -24,35 +25,35 @@
         border-radius: 5px;
         cursor: pointer;
       }
-      
+
       .register-button {
         background-color: #007bff;
         color: white;
       }
-      
+
       .login-button {
-        background-color: yellow; 
+        background-color: yellow;
       }
     }
   }
-  
+
   main {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
     object-fit: contain;
-    
+
     .content {
       position: relative;
-      
+
       img {
         width: 100%;
         min-height: 100vh;
         z-index: -1;
         object-fit: cover;
       }
-      
+
       .overlay {
         position: absolute;
         top: 50%;
@@ -60,12 +61,12 @@
         transform: translate(-50%, -50%);
         text-align: center;
         color: white;
-        
+
         h1 {
           font-size: 32px;
           margin-bottom: 20px;
         }
-        
+
         button {
           padding: 10px 20px;
           font-size: 16px;

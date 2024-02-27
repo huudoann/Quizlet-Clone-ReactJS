@@ -3,17 +3,17 @@ import axios from 'axios';
 
 const getCardsDataFromSet = async () => {
     const set_id = 1; // chuyển thành set_id lấy từ fe khi user click chuột vào set đó
-    let token = localStorage.getItem('token'); // Thay đổi từ localStorage sang sessionStorage
+    let token = localStorage.getItem('token');
 
     try {
         // Kiểm tra xem token có tồn tại không
         if (!token) {
-            throw new Error('Token không tồn tại trong sessionStorage'); // Thay đổi từ localStorage sang sessionStorage
+            throw new Error('Token không tồn tại trong localStorage');
         }
 
         const response = await axios.get(`http://localhost:8080/${set_id}/cards`, {
             headers: {
-                'Authorization': `Bearer ${token}` // Gửi token giống như Bearer Token
+                'Authorization': `Bearer ${token}`
             }
         });
 

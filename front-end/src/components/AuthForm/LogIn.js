@@ -43,7 +43,7 @@ const LoginForm = ({ switchForm }) => {
   return (
     <div className="auth-form">
       <div className='username-email-container'>
-        <label>Username or Email:</label>
+        <label>Email:</label>
         <input
           type="text"
           value={email}

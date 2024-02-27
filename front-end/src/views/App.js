@@ -12,7 +12,7 @@ import SignUpForm from '../components/AuthForm/SignUpForm';
 import LoginForm from '../components/AuthForm/LoginForm';
 import { Folder } from '@mui/icons-material';
 import Folders from '../components/StudySet/Folders/Folders';
-
+import '../styles/global.scss';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -1,7 +1,9 @@
-body {
+.body {
     background-color: #0a092d;
+    min-height: 100vh;
 }
-.create-set body {
+
+.create-set .body {
     padding: 50px;
     align-items: center;
     color: white;
@@ -17,6 +19,7 @@ body {
             color: white;
             font-weight: bold;
         }
+
         .bt-create {
             display: flex;
             align-items: center;
@@ -35,6 +38,7 @@ body {
                 background-color: #423ed8;
             }
         }
+
         // .bt-create {
         //     display: flex;
         //     align-items: center;
@@ -58,15 +62,17 @@ body {
     .enter-title {
         width: 100%;
         margin-top: 50px;
+
         label {
             font-size: 16px;
             font-weight: bold;
             color: white;
         }
     }
+
     .enter-title ::placeholder {
         color: white;
-        
+
     }
 
     .enter-title input[type="text"] {
@@ -85,12 +91,14 @@ body {
     .add-description {
         width: 100%;
         margin-top: 50px;
+
         label {
             font-size: 16px;
             font-weight: bold;
             color: white;
         }
     }
+
     .add-description ::placeholder {
         color: white;
     }
@@ -110,18 +118,20 @@ body {
 
     .private-public {
         display: flex;
+
         .selecte-private-public {
             font-size: 20px;
             color: white;
             font-weight: bold;
             margin-top: 55px;
-            
+
         }
+
         .private,
         .public {
             border: 2px solid #ccc;
             background-color: #0a092d;
-            padding: 5px 10px;  
+            padding: 5px 10px;
             cursor: pointer;
             margin-top: 50px;
             margin-right: 10px;
@@ -153,13 +163,14 @@ body {
             background-color: #acacb4;
             color: #000;
         }
-        
+
         .public.selected {
             background-color: #acacb4;
             color: #000;
         }
 
     }
+
     .card {
         display: flex;
         flex-direction: column;
@@ -173,9 +184,12 @@ body {
     .item-card {
         display: flex;
         align-items: center;
-        padding: 10px; /* Thêm padding để tạo khoảng cách từ border */
-        border: 2px solid black; /* Thêm border cho mỗi item card */
-        border-radius: 10px; /* Bo tròn các góc của item card */
+        padding: 10px;
+        /* Thêm padding để tạo khoảng cách từ border */
+        border: 2px solid black;
+        /* Thêm border cho mỗi item card */
+        border-radius: 10px;
+        /* Bo tròn các góc của item card */
         background-color: #2e3856;
 
         .stt-input {
@@ -188,26 +202,28 @@ body {
             border: 1px solid #2e3856;
             border-radius: 5px;
             outline: none;
-            border: none; 
+            border: none;
             background-color: #2e3856;
         }
-    
-        .input-terms,
-        .input-define {
+
+        .front-text,
+        .back-text {
             flex: 1;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             outline: none;
             margin-left: 30px;
-            margin-left: 20px; /* Giảm khoảng cách từ trái của các input */
-            border: none; /* Loại bỏ border để không lặp lại border */
+            margin-left: 20px;
+            /* Giảm khoảng cách từ trái của các input */
+            border: none;
+            /* Loại bỏ border để không lặp lại border */
 
             label {
                 color: white;
                 font-size: 18px;
             }
-            
+
             input[type="text"] {
                 color: white;
                 font-size: 18px;

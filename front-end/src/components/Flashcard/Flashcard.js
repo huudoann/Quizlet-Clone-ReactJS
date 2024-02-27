@@ -4,7 +4,7 @@ import CardsData from './CardsData';
 import { NavLink } from 'react-router-dom';
 import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
-import getCardsDataFromSet from '../../utils/requestCard';
+import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -18,12 +18,11 @@ const Flashcard = () => {
     const [slideDirection, setSlideDirection] = useState('left');
     const [rating, setRating] = useState(0);
     const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
-
     const flashcardContainerRef = useRef(null);
-
     const { subject, flashcards, creator } = CardsData;
 
-    // getCardsDataFromSet();
+    // gọi API lấy dữ liệu từ BE (đang fake dữ liệu để test)
+    getCardsDataFromSet();
 
 
     //xử lí chuyển thẻ

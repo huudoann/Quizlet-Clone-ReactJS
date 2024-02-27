@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-
+import { Box, TextField, IconButton, Button } from '@mui/material';
 import './CreateSet.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
 import Header from '../Header/Header';
+import axios from 'axios';
 
 const CreateSet = () => {
     // thay navbar
@@ -16,6 +13,42 @@ const CreateSet = () => {
     // logic tạo
     const [isPrivateSelected, setIsPrivateSelected] = useState(false); // State cho nút private
     const [isPublicSelected, setIsPublicSelected] = useState(false); // State cho nút public
+    const [inputElements, setInputElements] = useState([]);
+    const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+
+    //post dữ liệu về BE
+    const handleCreateButtonClick = async () => {
+        const isPublic = isPublicSelected;
+
+        const setData = {
+            title: title,
+            description: description,
+            is_public: isPublic
+        };
+
+        const apiUrl = 'http://localhost:8080/api/set/create-set';
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            console.error('Không có token trong localStorage');
+            return;
+        }
+
+        try {
+            const response = await axios.post(apiUrl, setData, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Thêm token vào header Authorization
+                }
+            });
+            console.log('Tạo học phần thành công:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Lỗi khi tạo học phần:', error.message);
+            throw error;
+        }
+    };
 
     // Hàm xử lý khi click vào nút private
     const handlePrivateClick = () => {
@@ -28,9 +61,6 @@ const CreateSet = () => {
         setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
         setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
     };
-
-    const [inputElements, setInputElements] = useState([]);
-    const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
 
     useEffect(() => {
         setSttCount(inputElements.length + 1);
@@ -62,96 +92,108 @@ const CreateSet = () => {
     return (
         <div className='create-set'>
             {<Header />}
-            <body>
-                <div className="body">
-                    <div className="toolbar">
+            <div className="body">
+                <div className="toolbar">
 
-                        <span className='create-a-new-course'>Tạo học phần mới</span>
-                        <div>
-                            <Button variant="contained" className='bt-create'>Tạo</Button>
-                        </div>
-                    </div>
-                    <Box
-                        component="form"
-                        sx={{
-                            '& > :not(style)': { m: 1, width: '25ch' },
-                        }}
-                        noValidate
-                        autoComplete="off">
-
-                        <TextField className='enter-title' label="Nhập tiêu đề" variant="outlined" />
-                        <TextField className='add-description' label="Thêm mô tả" variant="outlined" />
-                    </Box>
-                    <div className='private-public'>
-                        <span className='selecte-private-public'>Chọn quyền truy cập: </span>
-                        <Button
-                            className={`private ${isPrivateSelected ? 'selected' : ''}`}
-                            onClick={handlePrivateClick}
-                            variant="contained">
-                            Riêng tư
-                        </Button>
-                        <Button
-                            className={`public ${isPublicSelected ? 'selected' : ''}`}
-                            onClick={handlePublicClick}
-                            variant="contained">
-                            Công khai
+                    <span className='create-a-new-course'>Tạo học phần mới</span>
+                    <div>
+                        <Button variant="contained" className='bt-create' onClick={handleCreateButtonClick}>
+                            Tạo
                         </Button>
                     </div>
-                    <div className='card'>
-                        {inputElements.map(input => (
-                            <div key={input.id} className="item-card">
-                                <input
-                                    type="text"
-                                    placeholder="STT"
-                                    value={input.stt}
-                                    readOnly
-                                    className="stt-input"
-                                />
-                                <TextField
-                                    className="input-terms"
-                                    label="Thuật ngữ"
-                                    variant="standard"
-                                    value={input.content1}
-                                    onChange={(e) => handleInputChange(input.id, "content1", e)}
-                                />
-                                {/* <input
+                </div>
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off">
+
+                    <TextField
+                        className='enter-title'
+                        label="Nhập tiêu đề"
+                        variant="outlined"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <TextField
+                        className='add-description'
+                        label="Thêm mô tả"
+                        variant="outlined"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </Box>
+                <div className='private-public'>
+                    <span className='selecte-private-public'>Chọn quyền truy cập: </span>
+                    <Button
+                        className={`private ${isPrivateSelected ? 'selected' : ''}`}
+                        onClick={handlePrivateClick}
+                        variant="contained">
+                        Riêng tư
+                    </Button>
+                    <Button
+                        className={`public ${isPublicSelected ? 'selected' : ''}`}
+                        onClick={handlePublicClick}
+                        variant="contained">
+                        Công khai
+                    </Button>
+                </div>
+                <div className='card'>
+                    {inputElements.map(input => (
+                        <div key={input.id} className="item-card">
+                            <input
+                                type="text"
+                                placeholder="STT"
+                                value={input.stt}
+                                readOnly
+                                className="stt-input"
+                            />
+                            <TextField
+                                className="input-terms"
+                                label="Thuật ngữ"
+                                variant="standard"
+                                value={input.content1}
+                                onChange={(e) => handleInputChange(input.id, "content1", e)}
+                            />
+                            {/* <input
                                     type="text"
                                     placeholder="Thuật ngữ"
                                     value={input.content1}
                                     onChange={(e) => handleInputChange(input.id, "content1", e)}
                                     className="input-terms"
                                 /> */}
-                                <TextField
-                                    className="input-define"
-                                    label="Định nghĩa"
-                                    variant="standard"
-                                    value={input.content2}
-                                    onChange={(e) => handleInputChange(input.id, "content2", e)}
-                                />
-                                {/* <input
+                            <TextField
+                                className="input-define"
+                                label="Định nghĩa"
+                                variant="standard"
+                                value={input.content2}
+                                onChange={(e) => handleInputChange(input.id, "content2", e)}
+                            />
+                            {/* <input
                                     type="text"
                                     placeholder="Định nghĩa"
                                     value={input.content2}
                                     onChange={(e) => handleInputChange(input.id, "content2", e)}
                                     className="input-define"
                                 /> */}
-                                <IconButton
-                                    aria-label="delete" size="large"
-                                    className="delete-icon"
-                                    onClick={() => removeInputElement(input.id)}>
-                                    <DeleteIcon fontSize="inherit" />
-                                </IconButton>
-                            </div>
-                        ))}
-                    </div>
-                    <Button variant="contained"
-                        onClick={() => { addInputElement(); setSttCount(prevCount => prevCount + 1); }}
-                        className="add-card-button"
-                    >
-                        + Thêm thẻ
-                    </Button>
+                            <IconButton
+                                aria-label="delete" size="large"
+                                className="delete-icon"
+                                onClick={() => removeInputElement(input.id)}>
+                                <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                        </div>
+                    ))}
                 </div>
-            </body>
+                <Button variant="contained"
+                    onClick={() => { addInputElement(); setSttCount(prevCount => prevCount + 1); }}
+                    className="add-card-button"
+                >
+                    + Thêm thẻ
+                </Button>
+            </div>
         </div>
     );
 }
