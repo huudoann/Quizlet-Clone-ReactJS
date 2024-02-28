@@ -8,7 +8,9 @@ const getCardsDataFromSet = async () => {
     try {
         // Kiểm tra xem token có tồn tại không
         if (!token) {
-            throw new Error('Token không tồn tại trong localStorage');
+            window.location.href("/login")
+            return null
+            // throw new Error('Token không tồn tại trong localStorage');
         }
 
         const response = await axios.get(`http://localhost:8080/${set_id}/cards`, {

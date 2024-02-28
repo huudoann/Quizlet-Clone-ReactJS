@@ -6,7 +6,7 @@ import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentC
 import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 
-const Flashcard = () => {
+const Flashcard = async () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
@@ -19,10 +19,19 @@ const Flashcard = () => {
     const [rating, setRating] = useState(0);
     const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
     const flashcardContainerRef = useRef(null);
-    const { subject, flashcards, creator } = CardsData;
 
     // gọi API lấy dữ liệu từ BE (đang fake dữ liệu để test)
-    getCardsDataFromSet();
+    const flashcards = await getCardsDataFromSet();
+    console.log(flashcards)
+
+
+    const CardsData = {
+        subject: 'English Vocabulary',
+        flashcards,
+        creator: { name: 'test', avatar: 'https://via.placeholder.com/40' },
+    };
+
+    const { subject, creator } = CardsData;
 
 
     //xử lí chuyển thẻ

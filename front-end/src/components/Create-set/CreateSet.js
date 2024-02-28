@@ -23,31 +23,62 @@ const CreateSet = () => {
         const isPublic = isPublicSelected;
 
         const setData = {
-            title: title,
-            description: description,
+            title,
+            description,
             is_public: isPublic
         };
 
-        const apiUrl = 'http://localhost:8080/api/set/create-set';
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            console.error('Không có token trong localStorage');
-            return;
-        }
-
+        const createSetApiUrl = 'http://localhost:8080/api/set/create-set';
+        const token = localStorage.getItem('token'); // Lấy token từ local storage
+        //check token co ton tai hay k
         try {
-            const response = await axios.post(apiUrl, setData, {
+            const response = await axios.post(createSetApiUrl, setData, {
                 headers: {
                     'Authorization': `Bearer ${token}` // Thêm token vào header Authorization
                 }
             });
             console.log('Tạo học phần thành công:', response.data);
-            return response.data;
+
+
+            const set_id = response.data.set_id; // Lưu set_id từ phản hồi
+            console.log(set_id)
+
+            // Gửi dữ liệu các cards
+            const cardData = inputElements.map(input => ({
+                front_text: input.content1,
+                back_text: input.content2,
+                is_known: false
+            }));
+
+            console.log(cardData)
+
+            const createCardApiUrl = `http://localhost:8080/${set_id}/create_card`;
+            // const responseCard = await axios.post(createCardApiUrl, cardData, {
+            //     headers: {
+            //         'Authorization': `Bearer ${token}`
+            //     }
+            // });
+
+            cardData.map(async (card) => {
+                const responseCard = await axios.post(createCardApiUrl, card, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                console.log(responseCard)
+            })
+
+            //chuyển về trang có set_id đó
+            return
+
+            // console.log('Tạo card thành công:', responseCard.data);
+
+            // return responseCard.data;
         } catch (error) {
-            console.error('Lỗi khi tạo học phần:', error.message);
+            console.error('Lỗi khi tạo:', error.message);
             throw error;
         }
+
     };
 
     // Hàm xử lý khi click vào nút private
