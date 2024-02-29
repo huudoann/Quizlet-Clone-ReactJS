@@ -5,14 +5,17 @@ import PersonIcon from '@mui/icons-material/Person';
 import './Header.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
+import { faStickyNote, faFolder, faUsers, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
     const navigate = useNavigate();
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State cho menu người dùng
+
     const menuRef = useRef(null); // Ref cho menu
+    const menuUserRef = useRef(null); // Ref cho menu người dùng
 
     const handleLibraryClick = async () => {
         let token = localStorage.getItem('token');
@@ -57,17 +60,39 @@ const Header = () => {
         };
     }, []); // [] đảm bảo useEffect chỉ chạy một lần sau khi component mount
 
+    // useEffect để xử lý sự kiện click ra ngoài cho menu người dùng
+    useEffect(() => {
+        const handleClickOutsideUserMenu = (event) => {
+            if (menuUserRef.current && !menuUserRef.current.contains(event.target)) {
+                setIsUserMenuOpen(false); // Đóng menu người dùng nếu click ra ngoài
+            }
+        };
+
+        document.addEventListener('click', handleClickOutsideUserMenu);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutsideUserMenu);
+        };
+    }, []);
+
     const toggleMenu = (event) => {
         event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
         setIsMenuOpen(!isMenuOpen);
+        setIsUserMenuOpen(false);
     };
 
     const toggleFolderDialog = () => {
         setIsFolderDialogOpen(!isFolderDialogOpen);
     };
 
+    // Hàm xử lý mở/closed menu người dùng
+    const toggleUserMenu = (event) => {
+        event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
+        setIsUserMenuOpen(!isUserMenuOpen);
+        setIsMenuOpen(false);
+    };
+
     const PlusIcon = createSvgIcon(
-        // credit: plus icon from https://heroicons.com/
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -113,8 +138,18 @@ const Header = () => {
                         <div className="icon-container icon-container-bell">
                             <NotificationsIcon />
                         </div>
-                        <div className="icon-container icon-container-user">
+                        <div className="icon-container icon-container-user" onClick={toggleUserMenu}>
                             <PersonIcon />
+                            {isUserMenuOpen && (
+                                <div ref={menuUserRef} className="menu" onClick={(e) => e.stopPropagation()}>
+                                    {/* Thêm các menu item cho menu người dùng ở đây */}
+                                    <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
+                                    <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
+                                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                                        <div className="menu-item">Đăng xuất</div>
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
