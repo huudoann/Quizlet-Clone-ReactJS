@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './Match.scss';
-import CardsData from '../Flashcard/CardsData';
 import { Close } from '@mui/icons-material';
 import DropDownMenu from './DropDownMenu';
+import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 
-const MatchPage = () => {
+const MatchPage = async () => {
   const [selectedFrontId, setSelectedFrontId] = useState(null);
   const [selectedBackId, setSelectedBackId] = useState(null);
   const [matchedIds, setMatchedIds] = useState([]);
   const [unmatchedIds, setUnmatchedIds] = useState([]);
-  const { flashcards } = CardsData;
+  const flashcards = await getCardsDataFromSet();
 
   useEffect(() => {
     // Xử lý khi có hai thẻ được chọn

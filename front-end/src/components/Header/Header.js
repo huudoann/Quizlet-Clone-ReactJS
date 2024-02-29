@@ -3,16 +3,42 @@ import { createSvgIcon } from '@mui/material/utils';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import './Header.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
+import { faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
-    const [isLibraryMenuOpen, setIsLibraryMenuOpen] = useState(false);
-
+    const navigate = useNavigate();
     const menuRef = useRef(null); // Ref cho menu
+
+    const handleLibraryClick = async () => {
+        let token = localStorage.getItem('token');
+        const userId = localStorage.getItem('user_id');
+
+        try {
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                throw new Error('Token không tồn tại trong localStorage');
+            }
+
+            const response = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            console.log(response.data);
+            console.log("Lấy dữ liệu thành công");
+
+            navigate(`/sets?sets=${encodeURIComponent(JSON.stringify(response.data))}`);
+
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách các set:', error.message);
+            throw error;
+        }
+    };
 
     useEffect(() => {
         // Hàm xử lý sự kiện click ra ngoài menu
@@ -57,14 +83,15 @@ const Header = () => {
     return (
         <div className='nav-header'>
             <header>
-                <div className="name-app">Quizlet</div>
+                <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                    <div className="name-app">Quizlet</div> </Link>
 
                 <div className='home-library-container'>
-                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                    <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <div className='homepage-btn'>Home</div>
                     </Link>
-                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className='library-menu'>Library</div>
+                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }} onClick={handleLibraryClick}>
+                        <div className='library-menu' onClick={handleLibraryClick}>Library</div>
                     </Link>
                 </div>
 

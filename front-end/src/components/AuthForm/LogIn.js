@@ -3,11 +3,13 @@ import './LogIn.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ switchForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     const userData = {
@@ -22,8 +24,11 @@ const LoginForm = ({ switchForm }) => {
       console.log('Đăng nhập thành công:', response.data);
 
       const token = response.data.token;
+      const user_id = response.data.user_id;
       console.log(token);
       localStorage.setItem('token', token);
+      localStorage.setItem('user_id', user_id);
+      navigate('/lastest');
 
       return response.data;
     } catch (error) {

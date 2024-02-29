@@ -3,14 +3,16 @@ import './SignUp.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = ({ switchForm }) => {
     // thêm username, sửa auth-form
-    
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     //server không nhận được mail vs username
     const handleSignUp = async () => {
@@ -29,6 +31,7 @@ const SignUpForm = ({ switchForm }) => {
             const token = response.data.token;
             console.log(token)
             localStorage.setItem('token', token);
+            navigate('/login');
 
             return response.data;
         } catch (error) {

@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
-import CardsData from './CardsData';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
 import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 
-const Flashcard = async () => {
+const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
@@ -18,11 +17,25 @@ const Flashcard = async () => {
     const [slideDirection, setSlideDirection] = useState('left');
     const [rating, setRating] = useState(0);
     const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
+    const [flashcards, setFlashcards] = useState([]);
+    const location = useLocation();
+
     const flashcardContainerRef = useRef(null);
 
     // gọi API lấy dữ liệu từ BE (đang fake dữ liệu để test)
-    const flashcards = await getCardsDataFromSet();
-    console.log(flashcards)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const set_id = new URLSearchParams(location.search).get('set_id');
+                const flashcardsData = await getCardsDataFromSet(set_id);
+                setFlashcards(flashcardsData);
+            } catch (error) {
+                console.error('Error fetching flashcards:', error);
+            }
+        };
+
+        fetchData();
+    }, [location.search]);
 
 
     const CardsData = {
@@ -155,12 +168,18 @@ const Flashcard = async () => {
                     </div>
                     <div className={`flashcard-form`}>
                         <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
-                            <div className={isFront ? "front" : "back"}>
-                                {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
-                            </div>
-                            <div className={!isFront ? "front" : "back"}>
-                                {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][!isFront ? "front_text" : "back_text"]}
-                            </div>
+                            {flashcards.length > 0 ? (
+                                <React.Fragment>
+                                    <div className={isFront ? "front" : "back"}>
+                                        {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
+                                    </div>
+                                    <div className={!isFront ? "front" : "back"}>
+                                        {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][!isFront ? "front_text" : "back_text"]}
+                                    </div>
+                                </React.Fragment>
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                         </div>
                         <div className='function-button'>
                             <Shuffle onClick={handleShuffle}>Shuffle {isShuffled ? 'Off' : 'On'}</Shuffle>
@@ -179,7 +198,7 @@ const Flashcard = async () => {
                     <ul>
                         {flashcards.map((card, index) => (
                             <li key={index}>
-                                <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
+                                {/* <strong>{card.front_text}</strong>   <span>{card.back_text}</span> */}
                             </li>
                         ))}
                     </ul>

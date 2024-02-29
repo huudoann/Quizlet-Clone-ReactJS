@@ -24,10 +24,7 @@ function App() {
             <div className="App">
                 <Routes>
 
-                    Đang fake đã đăng nhập rồi bằng cách nhấn vào Quizlet khi ở trang trước khi đăng nhập
-                    và ấn vào Home trên Nav của trang HomePage sau khi đăng nhập rồi để coi như đăng xuất
-
-                    Sau khi sửa lại thì cần xóa phần Header của Sets và CreateSet
+                    Đăng nhập thành công thì mới chuyển vào HomePage
 
                     <Route exact path='/' element={<Home />} />
                     <Route exact path='/lastest' element={<HomePage />} />

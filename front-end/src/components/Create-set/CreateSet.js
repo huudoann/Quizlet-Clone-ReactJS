@@ -30,7 +30,11 @@ const CreateSet = () => {
 
         const createSetApiUrl = 'http://localhost:8080/api/set/create-set';
         const token = localStorage.getItem('token'); // Lấy token từ local storage
-        //check token co ton tai hay k
+
+        if (!token) {
+            throw new Error('Token không tồn tại trong localStorage');
+        }
+
         try {
             const response = await axios.post(createSetApiUrl, setData, {
                 headers: {

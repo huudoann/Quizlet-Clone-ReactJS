@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 
-const getCardsDataFromSet = async () => {
-    const set_id = 1; // chuyển thành set_id lấy từ fe khi user click chuột vào set đó
+const getCardsDataFromSet = async (set_id) => {
     let token = localStorage.getItem('token');
 
     try {
