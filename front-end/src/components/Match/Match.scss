@@ -38,8 +38,8 @@
     grid-gap: 1rem;
   }
 
-  .card-front,
-  .card-back {
+  .card-front_text,
+  .card-back_text {
     color: #ccc;
     height: 80%;
     display: flex;
@@ -52,28 +52,29 @@
     cursor: pointer;
     background-color: #262645;
     transition: background-color 0.3s ease;
+    visibility: visible;
   }
 
-  .card-front:hover,
-  .card-back:hover {
+  .card-front_text:hover,
+  .card-back_text:hover {
     color: #262645;
     background-color: #f0f0f0;
   }
 
-  .card-front.selected,
-  .card-back.selected {
+  .card-front_text.selected,
+  .card-back_text.selected {
     background-color: blue;
   }
 
-  .card-front.match,
-  .card-back.match {
+  .card-front_text.match,
+  .card-back_text.match {
     background-color: green !important;
     color: white;
-    animation: disappear 0.2s ease-in-out !important;
+    visibility: hidden !important;
   }
 
-  .card-front.no-match,
-  .card-back.no-match {
+  .card-front_text.no-match,
+  .card-back_text.no-match {
     background-color: red !important;
     color: white;
     animation: shake 0.2s ease-in-out;
@@ -81,12 +82,11 @@
 
   @keyframes disappear {
     0% {
-      opacity: 1;
+      opacity: 0;
     }
 
     100% {
       opacity: 0;
-      display: none;
     }
   }
 

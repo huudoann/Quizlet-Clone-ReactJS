@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import { Button, Menu, MenuItem, Divider } from '@mui/material';
 import { KeyboardArrowDown, Home, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const CustomizedButton = styled(Button)(({ theme }) => ({
     padding: '1rem 0',
@@ -64,6 +64,8 @@ const StyledMenu = styled((props) => (
 }));
 
 export default function CustomizedMenus() {
+    const location = useLocation();
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -97,15 +99,15 @@ export default function CustomizedMenus() {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem component={Link} to="/flashcard" onClick={handleClose} disableRipple>
+                <MenuItem component={Link} to={`/flashcard${location.search}`} onClick={handleClose} disableRipple>
                     <ContentCopy />
                     Flashcard
                 </MenuItem>
-                <MenuItem component={Link} to="/learn" onClick={handleClose} disableRipple>
+                <MenuItem component={Link} to={`/flashcard${location.search}`} onClick={handleClose} disableRipple>
                     <AutoMode />
                     Learn
                 </MenuItem>
-                <MenuItem component={Link} to="/test" onClick={handleClose} disableRipple>
+                <MenuItem component={Link} to={`/flashcard${location.search}`} onClick={handleClose} disableRipple>
                     <Quiz />
                     Test
                 </MenuItem>

@@ -18,6 +18,7 @@ const Flashcard = () => {
     const [rating, setRating] = useState(0);
     const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
     const [flashcards, setFlashcards] = useState([]);
+    const [flashcardTitle, setFlashcardTitle] = useState('');
     const location = useLocation();
 
     const flashcardContainerRef = useRef(null);
@@ -29,6 +30,8 @@ const Flashcard = () => {
                 const set_id = new URLSearchParams(location.search).get('set_id');
                 const flashcardsData = await getCardsDataFromSet(set_id);
                 setFlashcards(flashcardsData);
+                const title = new URLSearchParams(location.search).get('title');
+                setFlashcardTitle(title);
             } catch (error) {
                 console.error('Error fetching flashcards:', error);
             }
@@ -39,12 +42,11 @@ const Flashcard = () => {
 
 
     const CardsData = {
-        subject: 'English Vocabulary',
         flashcards,
         creator: { name: 'test', avatar: 'https://via.placeholder.com/40' },
     };
 
-    const { subject, creator } = CardsData;
+    const { creator } = CardsData;
 
 
     //xử lí chuyển thẻ
@@ -146,7 +148,7 @@ const Flashcard = () => {
             <Header />
             <div className="flashcard-container" ref={flashcardContainerRef}>
                 <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
-                    <h1>{subject}</h1>
+                    <h1>{flashcardTitle}</h1>
                     <div className="rating">
                         <h4>Đánh giá học phần này: </h4>
                         {[1, 2, 3, 4, 5].map((value, index) => (
@@ -161,10 +163,10 @@ const Flashcard = () => {
                         <button className='rating-button' onClick={handleSubmitRating}>Gửi Đánh Giá</button>
                     </div>
                     <div className="flashcard-navigation">
-                        <NavLink to="/flashcard" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
-                        <NavLink to="/learn" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
-                        <NavLink to="/test" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
-                        <NavLink to="/match" activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
+                        <NavLink to={`/flashcard${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
+                        <NavLink to={`/learn${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
+                        <NavLink to={`/test${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
+                        <NavLink to={`/match${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
                     </div>
                     <div className={`flashcard-form`}>
                         <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
@@ -198,7 +200,7 @@ const Flashcard = () => {
                     <ul>
                         {flashcards.map((card, index) => (
                             <li key={index}>
-                                {/* <strong>{card.front_text}</strong>   <span>{card.back_text}</span> */}
+                                <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
                             </li>
                         ))}
                     </ul>

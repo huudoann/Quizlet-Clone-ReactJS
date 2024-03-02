@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Sets.scss';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from '../../Header/Header';
+import axios from 'axios';
 
 const Sets = () => {
     // sửa UI
@@ -9,24 +10,31 @@ const Sets = () => {
 
     const [sets, setSets] = useState([]);
 
-    //biến State để kiểm soát việc gọi API
-    const location = useLocation();
-
     useEffect(() => {
+        const fetchData = async () => {
+            let token = localStorage.getItem('token');
+            const userId = localStorage.getItem('user_id');
 
-        const params = new URLSearchParams(location.search);
-        const setsParam = params.get('sets');
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                throw new Error('Token không tồn tại trong localStorage');
+            } else {
+                try {
+                    // Thực hiện gọi API ở đây
+                    const response = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    setSets(response.data);
+                } catch (error) {
+                    console.error('Lỗi khi lấy danh sách các set:', error.message);
+                }
+            }
+        };
 
-        if (setsParam) {
-            const parsedSets = JSON.parse(decodeURIComponent(setsParam));
-            setSets(parsedSets);
-        }
-
-        else {
-            console.log("useEffect hadn't run")
-        }
-
-    }, [location.search]);
+        fetchData();
+    }, []);
 
     return (
         <div className="sets">
@@ -56,7 +64,7 @@ const Sets = () => {
                         sets.map(set => (
                             <div key={set.setId} className="set-item">
                                 {/* Link to Flashcard page with set_id */}
-                                <Link to={`/flashcard?set_id=${set.setId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to={`/flashcard?set_id=${set.setId}&title=${encodeURIComponent(set.title)}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <h3>{set.title}</h3>
                                 </Link>
                             </div>

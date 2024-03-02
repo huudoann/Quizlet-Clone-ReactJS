@@ -6,7 +6,6 @@ import './Header.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faFolder, faUsers, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,30 +16,8 @@ const Header = () => {
     const menuRef = useRef(null); // Ref cho menu
     const menuUserRef = useRef(null); // Ref cho menu người dùng
 
-    const handleLibraryClick = async () => {
-        let token = localStorage.getItem('token');
-        const userId = localStorage.getItem('user_id');
+    const handleLibraryClick = () => {
 
-        try {
-            // Kiểm tra xem token có tồn tại không
-            if (!token) {
-                throw new Error('Token không tồn tại trong localStorage');
-            }
-
-            const response = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            console.log(response.data);
-            console.log("Lấy dữ liệu thành công");
-
-            navigate(`/sets?sets=${encodeURIComponent(JSON.stringify(response.data))}`);
-
-        } catch (error) {
-            console.error('Lỗi khi lấy danh sách các set:', error.message);
-            throw error;
-        }
     };
 
     useEffect(() => {
@@ -90,6 +67,11 @@ const Header = () => {
         event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
         setIsUserMenuOpen(!isUserMenuOpen);
         setIsMenuOpen(false);
+    };
+
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate('/');
     };
 
     const PlusIcon = createSvgIcon(
@@ -143,11 +125,11 @@ const Header = () => {
                             {isUserMenuOpen && (
                                 <div ref={menuUserRef} className="menu" onClick={(e) => e.stopPropagation()}>
                                     {/* Thêm các menu item cho menu người dùng ở đây */}
-                                    <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
-                                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                                        <div className="menu-item">Đăng xuất</div>
+                                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                                        <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
                                     </Link>
+                                    <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
+                                    <div className="menu-item" onClick={handleLogout}>Đăng xuất</div>
                                 </div>
                             )}
                         </div>
