@@ -31,7 +31,6 @@ function App() {
                     <Route exact path='/signup' element={<SignUpForm />} />
                     <Route exact path='/login' element={<LoginForm />} />
                     <Route exact path='/sets' element={<Sets />} />
-                    <Route exact path='/folders' element={<Folder />} />
                     <Route exact path='/create-set' element={<CreateSet />} />
                     <Route exact path='/flashcard' element={<Flashcard />} />
                     <Route exact path='/match' element={<Match />} />

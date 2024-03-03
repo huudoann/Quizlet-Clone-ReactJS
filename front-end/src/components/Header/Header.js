@@ -113,13 +113,13 @@ const Header = () => {
                                         <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
                                     </Link>
                                     <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div>
+                                    {/* <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div> */}
                                 </div>
                             )}
                         </div>
-                        <div className="icon-container icon-container-bell">
+                        {/* <div className="icon-container icon-container-bell">
                             <NotificationsIcon />
-                        </div>
+                        </div> */}
                         <div className="icon-container icon-container-user" onClick={toggleUserMenu}>
                             <PersonIcon />
                             {isUserMenuOpen && (
