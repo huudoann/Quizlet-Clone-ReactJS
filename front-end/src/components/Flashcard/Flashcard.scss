@@ -91,12 +91,12 @@
 
       span {
         font-size: 1.5rem;
+        padding: 0 0.5rem 0.5rem 0.5rem;
       }
 
       a {
         flex-grow: 1;
         padding: .5rem;
-        margin: 0 .5rem;
         background-color: #2e3856;
         border-radius: 5px;
         font-weight: 500;
@@ -133,8 +133,6 @@
 
       .flashcard .front,
       .flashcard .back {
-        width: calc(100% - 15px);
-        height: calc(100% - 15px);
         position: absolute;
         display: flex;
         justify-content: center;
