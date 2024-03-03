@@ -129,6 +129,9 @@ const Header = () => {
                                         <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
                                     </Link>
                                     <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
+                                    <Link to="/tos" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                                        <div className="menu-item">Quyền riêng tư</div>
+                                    </Link>
                                     <div className="menu-item" onClick={handleLogout}>Đăng xuất</div>
                                 </div>
                             )}
