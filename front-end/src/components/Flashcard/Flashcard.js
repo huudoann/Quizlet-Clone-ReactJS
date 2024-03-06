@@ -265,97 +265,100 @@ const Flashcard = () => {
     return (
         <div>
             <Header />
-            <div className="flashcard-container" ref={flashcardContainerRef}>
-                <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
-                    <h1>{flashcardTitle}</h1>
-                    <div className="rating">
-                        <h4>Đánh giá học phần này: </h4>
-                        {[1, 2, 3, 4, 5].map((value, index) => (
-                            <Star
-                                key={value}
-                                onMouseEnter={() => handleStarHover(index)}
-                                onMouseLeave={() => handleStarHover(-1)}
-                                onClick={() => handleStarClick(value)}
-                                className={index <= (hoveredStarIndex !== -1 ? hoveredStarIndex : rating - 1) ? 'filled' : ''}
-                            />
-                        ))}
-                        <button className='rating-button'
-                        // onClick={handleSubmitRating}
-                        >Gửi Đánh Giá</button>
-                        {/* <p>Số điểm trung bình: {averageRating}</p> */}
-                    </div>
-                    <div className="flashcard-navigation">
-                        <NavLink to={`/flashcard${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
-                        <NavLink to={`/learn${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
-                        <NavLink to={`/test${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
-                        <NavLink to={`/match${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
-                    </div>
-                    <div className={`flashcard-form`}>
-                        <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
-                            {flashcards.length > 0 ? (
-                                <React.Fragment>
-                                    <div className={isFront ? "front" : "back"}>
-                                        {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
-                                    </div>
-                                    <div className={!isFront ? "front" : "back"}>
-                                        {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][!isFront ? "front_text" : "back_text"]}
-                                    </div>
-                                </React.Fragment>
-                            ) : (
-                                <p>Loading...</p>
-                            )}
+            <div className='flashcard-mainContainer'>
+                <div className="flashcard-container" ref={flashcardContainerRef}>
+                    <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
+                        <h1>{flashcardTitle}</h1>
+                        <div className="rating">
+                            <h4>Đánh giá học phần này: </h4>
+                            {[1, 2, 3, 4, 5].map((value, index) => (
+                                <Star
+                                    key={value}
+                                    onMouseEnter={() => handleStarHover(index)}
+                                    onMouseLeave={() => handleStarHover(-1)}
+                                    onClick={() => handleStarClick(value)}
+                                    className={index <= (hoveredStarIndex !== -1 ? hoveredStarIndex : rating - 1) ? 'filled' : ''}
+                                />
+                            ))}
+                            <button className='rating-button'
+                            // onClick={handleSubmitRating}
+                            >Gửi Đánh Giá</button>
+                            {/* <p>Số điểm trung bình: {averageRating}</p> */}
                         </div>
-                        <div className='function-button'>
-                            <Shuffle onClick={handleShuffle}>Shuffle {isShuffled ? 'Off' : 'On'}</Shuffle>
-                            <ArrowBackIos className='slider-button' onClick={handlePrevCard} disabled={currentCardIndex === 0}>Previous</ArrowBackIos>
-                            <span>{`${currentCardIndex + 1}/${flashcards.length}`}</span>
-                            <ArrowForwardIos className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>Next</ArrowForwardIos>
-                            <CropFreeTwoTone onClick={handleZoom}>Zoom</CropFreeTwoTone>
+                        <div className="flashcard-navigation">
+                            <NavLink to={`/flashcard${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
+                            <NavLink to={`/learn${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
+                            <NavLink to={`/test${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
+                            <NavLink to={`/match${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
+                        </div>
+                        <div className={`flashcard-form`}>
+                            <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
+                                {flashcards.length > 0 ? (
+                                    <React.Fragment>
+                                        <div className={isFront ? "front" : "back"}>
+                                            {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
+                                        </div>
+                                        <div className={!isFront ? "front" : "back"}>
+                                            {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][!isFront ? "front_text" : "back_text"]}
+                                        </div>
+                                    </React.Fragment>
+                                ) : (
+                                    <p>Loading...</p>
+                                )}
+                            </div>
+                            <div className='function-button'>
+                                <Shuffle onClick={handleShuffle}>Shuffle {isShuffled ? 'Off' : 'On'}</Shuffle>
+                                <ArrowBackIos className='slider-button' onClick={handlePrevCard} disabled={currentCardIndex === 0}>Previous</ArrowBackIos>
+                                <span>{`${currentCardIndex + 1}/${flashcards.length}`}</span>
+                                <ArrowForwardIos className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>Next</ArrowForwardIos>
+                                <CropFreeTwoTone onClick={handleZoom}>Zoom</CropFreeTwoTone>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="creator">
-                    <img src={creator.avatar} alt="Creator Avatar" />
-                    <p>{creator.name}</p>
-                </div>
-                <div className="flashcard-list">
-                    <ul>
-                        {flashcards.map((card, index) => (
-                            <li key={index}>
-                                <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
-                                <button onClick={() => handleDeleteConfirmation(card.card_id)}>Xóa</button>
+                    <div className="creator">
+                        <img src={creator.avatar} alt="Creator Avatar" />
+                        <p>{creator.name}</p>
+                    </div>
+                    <div className="flashcard-list">
+                        <ul>
+                            {flashcards.map((card, index) => (
+                                <li key={index}>
+                                    <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
+                                    <button onClick={() => handleDeleteConfirmation(card.card_id)}>Xóa</button>
+                                </li>
+                            ))}
+                            <li>
+                                <input
+                                    type="text"
+                                    placeholder="Thuật ngữ"
+                                    value={newCardData.front_text}
+                                    onChange={(e) => setNewCardData({ ...newCardData, front_text: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Định nghĩa"
+                                    value={newCardData.back_text}
+                                    onChange={(e) => setNewCardData({ ...newCardData, back_text: e.target.value })}
+                                />
+                                <button onClick={handleAddCard}>Thêm thẻ</button>
                             </li>
-                        ))}
-                        <li>
-                            <input
-                                type="text"
-                                placeholder="Thuật ngữ"
-                                value={newCardData.front_text}
-                                onChange={(e) => setNewCardData({ ...newCardData, front_text: e.target.value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Định nghĩa"
-                                value={newCardData.back_text}
-                                onChange={(e) => setNewCardData({ ...newCardData, back_text: e.target.value })}
-                            />
-                            <button onClick={handleAddCard}>Thêm thẻ</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            {showConfirmation && (
-                <div>
-                    <div className="overlay"></div>
-                    <div className="confirmation-box">
-                        <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
-                        <div className="button-container">
-                            <button onClick={handleConfirmDelete}>Xác nhận</button>
-                            <button onClick={handleCancelDelete}>Hủy bỏ</button>
-                        </div>
+                        </ul>
                     </div>
                 </div>
-            )}
+                {showConfirmation && (
+                    <div>
+                        <div className="overlay"></div>
+                        <div className="confirmation-box">
+                            <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
+                            <div className="button-container">
+                                <button onClick={handleConfirmDelete}>Xác nhận</button>
+                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
         </div>
     );
 };
