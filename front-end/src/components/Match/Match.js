@@ -9,8 +9,8 @@ const MatchPage = () => {
   const [matchedIds, setMatchedIds] = useState([]);
   const [unmatchedIds, setUnmatchedIds] = useState([]);
   const [flashcards, setFlashcards] = useState([]);
-  const [selectedCards, setSelectedCards] = useState(Array(6).fill(null)); // Lưu trữ trạng thái được chọn của từng thẻ
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [selectedCards, setSelectedCards] = useState(Array(6).fill(null));
+  // const [showErrorMessage, setShowErrorMessage] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,35 +19,32 @@ const MatchPage = () => {
       try {
         const set_id = new URLSearchParams(location.search).get('set_id');
         const flashcardsData = await getCardsDataFromSet(set_id);
-        // Trộn mảng flashcardsData trước khi lấy 6 phần tử đầu tiên
-        const shuffledFlashcards = shuffleArray(flashcardsData);
-        //Lấy 6 phần tử đầu tiên - tương ứng với 12 thẻ
-        setFlashcards(shuffledFlashcards.slice(0, 6));
+
+        let selectedFlashcards = [];
+        while (selectedFlashcards.length < 12) {
+          // Lấy một mảng ngẫu nhiên 12 phần tử từ flashcardsData
+          const randomCards = shuffleArray(flashcardsData).slice(0, 12 - selectedFlashcards.length);
+          // Loại bỏ các thẻ trùng lặp
+          const uniqueCards = removeDuplicates(randomCards, 'card_id');
+          selectedFlashcards = selectedFlashcards.concat(uniqueCards);
+        }
+        // Trộn mảng cuối cùng
+        const shuffledFlashcards = shuffleArray(selectedFlashcards);
+        setFlashcards(shuffledFlashcards);
       } catch (error) {
         console.error('Lỗi lấy cards:', error);
       }
     };
-
     fetchData();
   }, [location.search]);
 
-  useEffect(() => {
-    // Ẩn thông báo lỗi khi reset trạng thái của các thẻ
-    if (unmatchedIds.length === 0) {
-      setShowErrorMessage(false);
-    }
-  }, [matchedIds, unmatchedIds]);
-
-  useEffect(() => {
-    // Đặt vị trí ngẫu nhiên cho mỗi thẻ
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      const randomX = Math.floor(Math.random() * window.innerWidth);
-      const randomY = Math.floor(Math.random() * window.innerHeight);
-      card.style.left = `${randomX}px`;
-      card.style.top = `${randomY}px`;
-    });
-  }, [flashcards]);
+  const removeDuplicates = (array, key) => {
+    return array.filter((item, index, self) =>
+      index === self.findIndex((t) => (
+        t[key] === item[key]
+      ))
+    );
+  };
 
   const shuffleArray = (array) => {
     const newArray = [...array];
@@ -92,28 +89,30 @@ const MatchPage = () => {
         }, 200);
       } else {
         if (unmatchedIds.length === 0) {
-          setUnmatchedIds([selectedFirstIndex, index]);
-          setShowErrorMessage(true); // Hiển thị thông báo lỗi khi chọn sai thẻ
+          // Thêm cặp card_id và front_text hoặc back_text của các thẻ không khớp vào mảng unmatchedIds
+          setUnmatchedIds(prevUnmatchedIds => [...prevUnmatchedIds, [firstCard.card_id, firstCardType === 'front_text' ? firstCard.front_text : firstCard.back_text]]);
+          setUnmatchedIds(prevUnmatchedIds => [...prevUnmatchedIds, [secondCard.card_id, secondCardType === 'front_text' ? secondCard.front_text : secondCard.back_text]]);
 
+          // setShowErrorMessage(true); // Hiển thị thông báo lỗi khi chọn sai thẻ
           // Ẩn thông báo lỗi sau 2 giây
-          setTimeout(() => {
-            setShowErrorMessage(false);
-          }, 2000);
-        } else {
-          if (!unmatchedIds.includes(selectedFirstIndex)) {
-            setUnmatchedIds(prevUnmatchedIds => [...prevUnmatchedIds, selectedFirstIndex]);
-          }
-          if (!unmatchedIds.includes(index)) {
-            setUnmatchedIds(prevUnmatchedIds => [...prevUnmatchedIds, index]);
-          }
+          // setTimeout(() => {
+          //   setShowErrorMessage(false);
+          // }, 2000);
         }
 
-        // Thêm thẻ unmatched vào mảng
+        // Thêm cặp card_id và front_text hoặc back_text của các thẻ không khớp vào mảng unmatchedIds
         setTimeout(() => {
           setUnmatchedIds(prevUnmatchedIds => {
             const updatedUnmatchedIds = [...prevUnmatchedIds];
-            updatedUnmatchedIds.splice(updatedUnmatchedIds.indexOf(selectedFirstIndex), 1);
-            updatedUnmatchedIds.splice(updatedUnmatchedIds.indexOf(index), 1);
+            const firstPair = [firstCard.card_id, firstCardType === 'front_text' ? firstCard.front_text : firstCard.back_text];
+            const secondPair = [secondCard.card_id, secondCardType === 'front_text' ? secondCard.front_text : secondCard.back_text];
+
+            if (!updatedUnmatchedIds.some(pair => pair[0] === firstPair[0] && pair[1] === firstPair[1])) {
+              updatedUnmatchedIds.push(firstPair);
+            }
+            if (!updatedUnmatchedIds.some(pair => pair[0] === secondPair[0] && pair[1] === secondPair[1])) {
+              updatedUnmatchedIds.push(secondPair);
+            }
             return updatedUnmatchedIds;
           });
         }, 500);
@@ -126,11 +125,23 @@ const MatchPage = () => {
             updatedSelectedCards[index] = null;
             return updatedSelectedCards;
           });
-        }, 200);
+          resetCardStatus();
+          resetUnmatchedIds();
+        }, 500);
       }
     }
+  }
+
+  const resetCardStatus = () => {
+    const cards = document.querySelectorAll('.card-front_text, .card-back_text');
+    cards.forEach(card => {
+      card.classList.remove('no-match'); // Xóa class 'no-match'
+    });
   };
 
+  const resetUnmatchedIds = () => {
+    setUnmatchedIds([]); // Đặt lại mảng unmatchedIds về rỗng
+  };
 
   return (
     <div className="match-page">
@@ -142,33 +153,39 @@ const MatchPage = () => {
       <div className="card-grid">
         {flashcards.slice(0, 6).map((flashcard, index) => (
           <React.Fragment key={index}>
-            <>
-              <div
-                className={`card-front_text 
-                ${selectedCards[index] === 'front_text' ? 'selected' : ''} 
-                ${matchedIds.includes(index) ? 'match' : ''} 
-                ${unmatchedIds.includes(index) ? 'no-match' : ''}`}
-                onClick={() => handleCardClick(index, 'front_text')}
-              >
-                <div className="front_text">{flashcard.front_text}</div>
-              </div>
-              <div
-                className={`card-back_text 
-                ${selectedCards[index] === 'back_text' ? 'selected' : ''} 
-                ${matchedIds.includes(index) ? 'match' : ''} 
-                ${unmatchedIds.includes(index) ? 'no-match' : ''}`}
-                onClick={() => handleCardClick(index, 'back_text')}
-              >
-                <div className="back_text">{flashcard.back_text}</div>
-              </div>
-            </>
+            <div
+              className={`card-front_text 
+              ${selectedCards[index] === 'front_text' ? 'selected' : ''}
+              ${matchedIds.includes(index) ? 'match' : ''}
+              ${unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.front_text) ? 'no-match' : ''}`}
+              onClick={() => handleCardClick(index, 'front_text', flashcard)}
+              style={unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.front_text) ? { animation: 'shake 0.2s ease-in-out' } : matchedIds.includes(index) ? { backgroundColor: 'green', transition: 'background-color 0.2s ease-in-out' } : {}}
+            >
+              <div className="front_text">{flashcard.front_text}</div>
+            </div>
+          </React.Fragment>
+        ))}
+
+        {flashcards.slice(0, 6).map((flashcard, index) => (
+          <React.Fragment key={index}>
+            <div
+              className={`card-back_text 
+              ${selectedCards[index] === 'back_text' ? 'selected' : ''}
+              ${matchedIds.includes(index) ? 'match' : ''}
+              ${selectedCards[index] && unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.back_text) ? 'no-match' : ''} `}
+              onClick={() => handleCardClick(index, 'back_text', flashcard)}
+              style={selectedCards[index] && unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.back_text) ? { animation: 'shake 0.2s ease-in-out' } : matchedIds.includes(index) ? { backgroundColor: 'green', transition: 'background-color 0.2s ease-in-out' } : {}}
+            >
+              <div className="back_text">{flashcard.back_text}</div>
+            </div>
           </React.Fragment>
         ))}
       </div>
-      {showErrorMessage && (
+      {/* {showErrorMessage && (
         <div className="error-message">Bạn đã chọn sai!</div>
-      )}
-    </div>
+      )} */}
+    </div >
+
   );
 };
 

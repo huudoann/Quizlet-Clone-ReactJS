@@ -73,15 +73,14 @@
   .card-back_text.match {
     background-color: green !important;
     color: white;
-    visibility: hidden !important;
+    animation: disappear 0.5s ease forwards;
     pointer-events: none;
   }
 
   .card-front_text.no-match,
   .card-back_text.no-match {
-    // background-color: red;
+    background-color: red;
     color: white;
-    // animation: shake 0.2s ease-in-out;
   }
 
   @keyframes disappear {
