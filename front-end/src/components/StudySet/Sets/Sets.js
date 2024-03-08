@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Sets.scss';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Header from '../../Header/Header';
 import axios from 'axios';
 
@@ -9,6 +9,13 @@ const Sets = () => {
     // code dựa trên data fake
 
     const [sets, setSets] = useState([]);
+    const location = useLocation()
+
+    const [activeLink, setActiveLink] = useState('');
+
+    useEffect(() => {
+        setActiveLink(location.pathname);
+    }, [location.pathname]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,10 +53,10 @@ const Sets = () => {
                 </div>
                 <div className='select-card'>
                     <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className='term'>Học phần</div>
+                        <div className={`term ${activeLink === '/sets' ? 'active' : ''}`}>Học phần</div>
                     </Link>
                     <Link to="/folders" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className='folder'>Thư mục</div>
+                        <div className={`folder ${activeLink === '/folders' ? 'active' : ''}`}>Thư mục</div>
                     </Link>
                 </div>
                 <div className='search-term'>

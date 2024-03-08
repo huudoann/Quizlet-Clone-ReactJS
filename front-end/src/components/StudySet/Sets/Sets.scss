@@ -50,6 +50,12 @@
     &:hover {
         color: white;
     }
+
+}
+
+.active {
+    font-weight: bold;
+    color: white;
 }
 
 .term:hover::after,
@@ -63,6 +69,7 @@
     height: 2px;
     background-color: #acacfc;
 }
+
 
 .search-term {
     width: 50vh;
