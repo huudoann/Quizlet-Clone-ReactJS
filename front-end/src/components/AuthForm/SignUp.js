@@ -4,18 +4,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 const SignUpForm = ({ switchForm }) => {
-    // thêm username, sửa auth-form
-
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    //server không nhận được mail vs username
     const handleSignUp = async () => {
+        if (!username.trim()) {
+            setError("Your username cannot be blank.");
+            return;
+        }
+        else if (!email.trim()) {
+            setError("Your email cannot be blank.");
+            return;
+        }
+        else if (!password.trim()) {
+            setError("Your password cannot be blank.");
+            return;
+        }
+
+        const termsChecked = document.getElementById('squaredcheck').checked;
+        if (!termsChecked) {
+            setError("Please accept Quizlet's Terms of Service and Privacy Policy to continue.");
+            return;
+        }
+
         const userData = {
             username: username,
             email: email,
@@ -92,6 +110,8 @@ const SignUpForm = ({ switchForm }) => {
                     <span>I accept Quizlet's Terms of Services and Privacy Policy</span>
                 </label>
             </div>
+
+            {error && <ErrorMessage message={error} />}
 
             <div className='button'>
                 <button type="button" onClick={handleSignUp}>Sign up</button>

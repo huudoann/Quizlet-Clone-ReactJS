@@ -8,6 +8,12 @@ const Sets = () => {
     // sửa UI
     // code dựa trên data fake
 
+    // sửa css title của set
+    // xóa các url trên link
+    // gọi api đánh giá
+    // gọi api sửa thẻ
+    // 
+
     const [sets, setSets] = useState([]);
     const location = useLocation()
 
