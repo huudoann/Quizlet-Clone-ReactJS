@@ -33,8 +33,19 @@ const HomePage = () => {
         return () => clearInterval(intervalId);
     }, [images.length]);
 
+    // useEffect(() => {
+    //     setOverlayTexts(texts[currentImageIndex]);
+    // }, [currentImageIndex, texts]);
+
     useEffect(() => {
-        setOverlayTexts(texts[currentImageIndex]);
+        const newOverlayTexts = texts[currentImageIndex];
+        setOverlayTexts(prevOverlayTexts => {
+            // So sánh nếu state mới giống với state trước đó thì không cần cập nhật
+            if (prevOverlayTexts[0] === newOverlayTexts[0] && prevOverlayTexts[1] === newOverlayTexts[1]) {
+                return prevOverlayTexts;
+            }
+            return newOverlayTexts;
+        });
     }, [currentImageIndex, texts]);
 
     return (
