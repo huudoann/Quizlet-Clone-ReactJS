@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
 import Header from '../Header/Header';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreateSet = () => {
     // thay navbar
@@ -17,6 +18,7 @@ const CreateSet = () => {
     const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const navigate = useNavigate()
 
     //post dữ liệu về BE
     const handleCreateButtonClick = async () => {
@@ -73,6 +75,8 @@ const CreateSet = () => {
             })
 
             //chuyển về trang có set_id đó
+            navigate(`/flashcard?set_id=${set_id}&title=${encodeURIComponent(setData.title)}`)
+
             return
 
             // console.log('Tạo card thành công:', responseCard.data);
