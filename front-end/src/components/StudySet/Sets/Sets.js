@@ -19,6 +19,10 @@ const Sets = () => {
     }, [location.pathname]);
 
     useEffect(() => {
+        setActiveLink(location.pathname);
+    }, [location.pathname]);
+
+    useEffect(() => {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             const userId = localStorage.getItem('user_id');

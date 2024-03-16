@@ -14,6 +14,8 @@ const Folders = () => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
 
+    console.log("folder is active")
+
     return (
         <div className="folders">
             {<Header />}
