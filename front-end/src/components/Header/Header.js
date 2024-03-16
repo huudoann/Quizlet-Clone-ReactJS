@@ -87,10 +87,6 @@ const Header = () => {
         'Plus',
     );
 
-    const handleLogoutClick = () => {
-        localStorage.clear()
-    }
-
     return (
         <div className='nav-header'>
             <header>
@@ -133,7 +129,7 @@ const Header = () => {
                                         <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
                                     </Link>
                                     <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
-                                    <Link onClick={handleLogoutClick} to="/tos" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                                    <Link to="/tos" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                                         <div className="menu-item">Quyền riêng tư</div>
                                     </Link>
                                     <div className="menu-item" onClick={handleLogout}>Đăng xuất</div>
