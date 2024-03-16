@@ -97,7 +97,7 @@ const LoginForm = ({ switchForm }) => {
       </div>
 
       {/* Switch between Login and SignUp Form */}
-      <button className='switch-status-btn' type='button' onClick={() => switchForm('signup')}>
+      <button className='switch-status-btn' type='button' onClick={() => navigate('/signup')}>
         <span>New to Quizlet? Create an account</span>
       </button>
 

@@ -118,7 +118,7 @@ const SignUpForm = ({ switchForm }) => {
             </div>
 
             {/* Switch between Login and SignUp Form */}
-            <button className='switch-status-btn' type='button' onClick={() => switchForm('login')}>
+            <button className='switch-status-btn' type='button' onClick={() => navigate('/login')}>
                 <span>Already have an account? Log in</span>
             </button>
         </div>
