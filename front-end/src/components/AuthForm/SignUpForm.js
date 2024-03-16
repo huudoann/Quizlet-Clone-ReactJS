@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LogIn from './LogIn.js';
 import SignUp from './SignUp.js';
 import './Auth.scss';
@@ -9,7 +9,7 @@ import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, } fro
 const AuthPage = () => {
   const [currentForm, setCurrentForm] = useState('signup');
   const [isCloseButton, setIsCloseButton] = useState(false);
-  const navigate = useNavigate ();
+  const navigate = useNavigate();
 
 
   const switchForm = (formType) => {
@@ -23,7 +23,7 @@ const AuthPage = () => {
   const toggleCloseButton = () => {
     setIsCloseButton(!isCloseButton);
     navigate('/');
-}
+  }
 
   return (
     <div className="auth-page-container">
@@ -37,8 +37,8 @@ const AuthPage = () => {
 
         {/* Display tabs */}
         <div className="auth-tabs">
-          <button className={currentForm === 'signup' ? 'active' : ''} onClick={() => switchForm('signup')}>Sign Up</button>
-          <button className={currentForm === 'login' ? 'active' : ''} onClick={() => switchForm('login')}>Log In</button>
+          <button className={currentForm === 'signup' ? 'active' : ''} onClick={() => navigate('/signup')}>Sign Up</button>
+          <button className={currentForm === 'login' ? 'active' : ''} onClick={() => navigate('/login')}>Log In</button>
           <button className="close-icon" onClick={toggleCloseButton}><FontAwesomeIcon icon={faTimes} /></button>
         </div>
 

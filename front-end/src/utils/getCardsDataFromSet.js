@@ -26,4 +26,6 @@ const getCardsDataFromSet = async (set_id) => {
     }
 };
 
+
+
 export default getCardsDataFromSet;

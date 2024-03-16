@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomePage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
@@ -11,10 +11,42 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
 
 const HomePage = () => {
-    // sửa lại UI
-    // logic các nút, bao gồm gửi về server
-    // thêm footer
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [overlayTexts, setOverlayTexts] = useState(["", ""]);
+    const images = [
+        "https://assets.quizlet.com/_next/static/media/search.644f9363.png",
+        "https://assets.quizlet.com/_next/static/media/learn.10aa3771.png",
+        "https://assets.quizlet.com/_next/static/media/test.a8904e86.svg"
+    ];
 
+    const texts = [
+        ["Tìm kiếm mạnh mẽ hơn", "Tìm thẻ ghi nhớ bạn cần để học về bất kì chủ đề nào"],
+        ["Cải thiện điểm số với chế độ Học", "Học với các câu hỏi hay hơn, kiểm soát nhiều hơn, và gợi ý"],
+        ["Hãy sẵn sàng cho kì thi", "Kiểm tra với gợi ý và chỉ dẫn học được tăng cường bởi AI"]
+    ];
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 5000);
+
+        return () => clearInterval(intervalId);
+    }, [images.length]);
+
+    // useEffect(() => {
+    //     setOverlayTexts(texts[currentImageIndex]);
+    // }, [currentImageIndex, texts]);
+
+    useEffect(() => {
+        const newOverlayTexts = texts[currentImageIndex];
+        setOverlayTexts(prevOverlayTexts => {
+            // So sánh nếu state mới giống với state trước đó thì không cần cập nhật
+            if (prevOverlayTexts[0] === newOverlayTexts[0] && prevOverlayTexts[1] === newOverlayTexts[1]) {
+                return prevOverlayTexts;
+            }
+            return newOverlayTexts;
+        });
+    }, [currentImageIndex, texts]);
 
     return (
         <div className="home-page">
@@ -22,10 +54,10 @@ const HomePage = () => {
 
             <div className='content'>
                 <div className="start-learn">
-                    <img src="https://images.prismic.io/quizlet-web/MDFkMjA3YzUtMGQyNC00ZDU3LThmMDctZjljZjQ5OTg2N2M0_130dc509-6919-47bc-b27d-17f600a41b0c_intlfirstslice.png?auto=compress,format&rect=0,0,1000,683&w=1000&h=683" alt="Start learning" />
-                    <div className="image-overlay">
-                        <p>Ghi nhớ nhanh hơn, miễn phí !</p>
-                        <Button variant="contained">Học ngay</Button>
+                    <img src={images[currentImageIndex]} alt="Start learning" />
+                    <div className="text-overlay">
+                        <p>{overlayTexts[0]}</p>
+                        <p>{overlayTexts[1]}</p>
                     </div>
                 </div>
 

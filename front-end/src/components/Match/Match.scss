@@ -33,60 +33,63 @@
   }
 
   .card-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 1rem;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
-  .card-front,
-  .card-back {
+  .card-front_text,
+  .card-back_text {
+    flex: 1 0 calc(15% - 1rem);
     color: #ccc;
-    height: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    margin-bottom: 8rem;
+    padding: 4.5rem;
+    margin-left: 1rem;
+    margin-bottom: 2rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     background-color: #262645;
     transition: background-color 0.3s ease;
+    animation: disappear;
+    visibility: visible;
   }
 
-  .card-front:hover,
-  .card-back:hover {
+  .card-front_text:hover,
+  .card-back_text:hover {
     color: #262645;
     background-color: #f0f0f0;
   }
 
-  .card-front.selected,
-  .card-back.selected {
+  .card-front_text.selected,
+  .card-back_text.selected {
     background-color: blue;
   }
 
-  .card-front.match,
-  .card-back.match {
+  .card-front_text.match,
+  .card-back_text.match {
     background-color: green !important;
     color: white;
-    animation: disappear 0.2s ease-in-out !important;
+    animation: disappear 0.5s ease forwards;
+    pointer-events: none;
   }
 
-  .card-front.no-match,
-  .card-back.no-match {
-    background-color: red !important;
+  .card-front_text.no-match,
+  .card-back_text.no-match {
+    background-color: red;
     color: white;
-    animation: shake 0.2s ease-in-out;
   }
 
   @keyframes disappear {
     0% {
-      opacity: 1;
+      opacity: 0;
     }
 
     100% {
       opacity: 0;
-      display: none;
     }
   }
 
@@ -116,5 +119,17 @@
   .back_text {
     font-weight: bold;
     margin: .25rem;
+  }
+
+  .error-message {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
   }
 }

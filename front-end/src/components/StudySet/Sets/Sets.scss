@@ -50,6 +50,12 @@
     &:hover {
         color: white;
     }
+
+}
+
+.active {
+    font-weight: bold;
+    color: white;
 }
 
 .term:hover::after,
@@ -68,6 +74,7 @@
     font-weight: bold;
     color: white;
 }
+
 
 .search-term {
     width: 50vh;

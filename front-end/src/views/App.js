@@ -12,6 +12,7 @@ import SignUpForm from '../components/AuthForm/SignUpForm';
 import LoginForm from '../components/AuthForm/LoginForm';
 import { Folder } from '@mui/icons-material';
 import Folders from '../components/StudySet/Folders/Folders';
+import Tos from '../components/PrivacyPolicy/Tos';
 import '../styles/global.scss';
 
 function App() {
@@ -31,12 +32,12 @@ function App() {
                     <Route exact path='/signup' element={<SignUpForm />} />
                     <Route exact path='/login' element={<LoginForm />} />
                     <Route exact path='/sets' element={<Sets />} />
-                    <Route exact path='/folders' element={<Folder />} />
                     <Route exact path='/create-set' element={<CreateSet />} />
                     <Route exact path='/flashcard' element={<Flashcard />} />
                     <Route exact path='/match' element={<Match />} />
                     <Route exact path='/learn' element={<Learn />} />
                     <Route exact path='/folders' element={<Folders />} />
+                    <Route exact path='/tos' element={<Tos />} />
                 </Routes>
             </div>
         </Router>

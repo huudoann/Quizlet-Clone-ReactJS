@@ -4,14 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 const LoginForm = ({ switchForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email.trim()) {
+      setError("Your username cannot be blank.");
+      return;
+    }
+
     const userData = {
       email: email,
       password: password,
@@ -33,7 +40,7 @@ const LoginForm = ({ switchForm }) => {
       return response.data;
     } catch (error) {
       console.error('Lỗi khi đăng nhập:', error.message);
-      throw error;
+      setError("The login details you entered are incorrect. Try again...");
     }
   };
 
@@ -53,7 +60,7 @@ const LoginForm = ({ switchForm }) => {
           type="text"
           value={email}
           onChange={handleInputChange}
-          placeholder='Enter your username or email'
+          placeholder='Enter your email'
           required />
       </div>
 
@@ -82,6 +89,8 @@ const LoginForm = ({ switchForm }) => {
       <div className='noti-terms'>
         <p>By clicking Log in, you accept Quizlet's Terms of Service and Privacy Policy</p>
       </div>
+
+      {error && <ErrorMessage message={error} />}
 
       <div className='button'>
         <button type="button" onClick={handleLogin}>Log in</button>

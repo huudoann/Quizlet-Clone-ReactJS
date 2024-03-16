@@ -1,66 +1,85 @@
 .home-page {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     min-height: 100vh;
 }
 
-.content {
+.home-page .content {
+
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    /* Để căn hai phần tử con theo đỉnh */
     justify-content: center;
+    // flex-wrap: wrap; /* Cho phép các phần tử con xuống dòng khi không đủ không gian */
+    // margin-top: 100px;
+    // margin-bottom: 190px;
+    // margin-left: 30px;
+    // margin-right: 30px;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 10%;
+    margin-right: 5%;
 }
 
 .start-learn {
     display: flex;
-    justify-content: flex-end; /* Dịch hình ảnh sang bên phải */
+    align-items: center;
+    justify-content: center;
     position: relative;
+    /* Để tạo vị trí tương đối cho văn bản overlay */
 }
 
 .start-learn img {
-    width: 70%; /* Phóng to hình ảnh */
-    max-height: 100%; /* Giữ tỷ lệ khung hình */
-    object-fit: contain;
-    margin-right: 150px; /* Tạo khoảng cách giữa hình ảnh và DateCalendar */
-    margin-bottom: 50px;
-    margin-top: 50px;
+    width: 593px;
+    height: 338px;
+    width: 150%;
+    min-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    position: relative;
 }
 
-.image-overlay {
-    position: absolute;  
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: #0B60B0;
-    font-weight: bold;
-    margin-top: 150px;
-}
-
-.image-overlay p {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.image-overlay button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #ff9800;
-    border: none;
-    border-radius: 5px;
+.text-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 20px;
+    text-align: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
-.image-overlay button:hover {
-    background-color: #ffa726;
-}
-
+.start-learn,
 .date-calendar-container {
-    margin-left: 20px; /* Tạo khoảng cách giữa hình ảnh và DateCalendar */
-    margin-right: 50px;
-    margin-bottom: 50px;
+    flex: 1;
+    /* Đảm bảo cả hai phần tử có cùng độ rộng */
+    margin: 0 2%;
+    /* Khoảng cách giữa các phần tử */
+}
+
+// .date-calendar-container {
+//     margin-left: 20px; 
+//     margin-right: 50px;
+//     margin-bottom: 50px;
+// }
+
+@media (max-width: 64rem) {
+    .home-page .content {
+        flex-direction: column;
+        align-items: center;
+        /* Căn giữa các phần tử khi flex theo chiều dọc */
+    }
+
+    .start-learn,
+    .date-calendar-container {
+        margin: 2% 0;
+        /* Thay đổi margin để tạo khoảng cách giữa các phần tử khi flex theo chiều dọc */
+    }
 }
 
 .date-calendar {

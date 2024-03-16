@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import './Sets.scss';
 import { Link, useLocation } from 'react-router-dom';
 import Header from '../../Header/Header';
+import axios from 'axios';
 
 const Sets = () => {
     // sửa UI
     // code dựa trên data fake
 
-    const [sets, setSets] = useState([]);
+    // sửa css title của set
+    // xóa các url trên link
+    // gọi api đánh giá
+    // gọi api sửa thẻ
+    // 
 
-    //biến State để kiểm soát việc gọi API
-    const location = useLocation();
+    const [sets, setSets] = useState([]);
+    const location = useLocation()
 
     const [activeLink, setActiveLink] = useState('');
 
@@ -19,20 +24,34 @@ const Sets = () => {
     }, [location.pathname]);
 
     useEffect(() => {
+        setActiveLink(location.pathname);
+    }, [location.pathname]);
 
-        const params = new URLSearchParams(location.search);
-        const setsParam = params.get('sets');
+    useEffect(() => {
+        const fetchData = async () => {
+            let token = localStorage.getItem('token');
+            const userId = localStorage.getItem('user_id');
 
-        if (setsParam) {
-            const parsedSets = JSON.parse(decodeURIComponent(setsParam));
-            setSets(parsedSets);
-        }
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                throw new Error('Token không tồn tại trong localStorage');
+            } else {
+                try {
+                    // Thực hiện gọi API ở đây
+                    const response = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    setSets(response.data);
+                } catch (error) {
+                    console.error('Lỗi khi lấy danh sách các set:', error.message);
+                }
+            }
+        };
 
-        else {
-            console.log("useEffect hadn't run")
-        }
-
-    }, [location.search]);
+        fetchData();
+    }, []);
 
     return (
         <div className="sets">
@@ -62,7 +81,7 @@ const Sets = () => {
                         sets.map(set => (
                             <div key={set.setId} className="set-item">
                                 {/* Link to Flashcard page with set_id */}
-                                <Link to={`/flashcard?set_id=${set.setId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to={`/flashcard?set_id=${set.setId}&title=${encodeURIComponent(set.title)}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <h3>{set.title}</h3>
                                 </Link>
                             </div>
