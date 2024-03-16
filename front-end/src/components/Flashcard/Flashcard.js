@@ -6,6 +6,12 @@ import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import axios from 'axios';
 
+
+// sửa css title của set
+// xóa các url trên link
+// gọi api đánh giá
+// gọi api sửa thẻ
+
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);                  //lật thẻ
