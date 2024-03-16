@@ -1,8 +1,10 @@
-.body-folders{
+.body-folders {
     height: 100vh;
     background-color: #0d072d;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
     padding: 20px 50px 20px 50px;
 }
 
@@ -20,11 +22,17 @@
     cursor: pointer;
 }
 
+.active {
+    font-weight: bold;
+    color: white;
+}
+
 .folder-info {
     margin-right: 10px;
 }
 
-.folder-name, .number-term {
+.folder-name,
+.number-term {
     margin-bottom: 5px;
 }
 

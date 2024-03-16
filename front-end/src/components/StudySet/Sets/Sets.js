@@ -12,6 +12,12 @@ const Sets = () => {
     //biến State để kiểm soát việc gọi API
     const location = useLocation();
 
+    const [activeLink, setActiveLink] = useState('');
+
+    useEffect(() => {
+        setActiveLink(location.pathname);
+    }, [location.pathname]);
+
     useEffect(() => {
 
         const params = new URLSearchParams(location.search);
@@ -38,10 +44,10 @@ const Sets = () => {
                 </div>
                 <div className='select-card'>
                     <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className='term'>Học phần</div>
+                        <div className={`term ${activeLink === '/sets' ? 'active' : ''}`}>Học phần</div>
                     </Link>
                     <Link to="/folders" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className='folder'>Thư mục</div>
+                        <div className={`folder ${activeLink === '/folders' ? 'active' : ''}`}>Thư mục</div>
                     </Link>
                 </div>
                 <div className='search-term'>

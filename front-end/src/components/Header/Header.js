@@ -105,6 +105,10 @@ const Header = () => {
         'Plus',
     );
 
+    const handleLogoutClick = () => {
+        localStorage.clear()
+    }
+
     return (
         <div className='nav-header'>
             <header>
@@ -145,7 +149,7 @@ const Header = () => {
                                     {/* Thêm các menu item cho menu người dùng ở đây */}
                                     <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
                                     <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
-                                    <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                                    <Link onClick={handleLogoutClick} to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                                         <div className="menu-item">Đăng xuất</div>
                                     </Link>
                                 </div>
