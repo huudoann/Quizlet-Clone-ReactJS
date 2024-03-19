@@ -6,12 +6,6 @@ import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import axios from 'axios';
 
-
-// sửa css title của set
-// xóa các url trên link
-// gọi api đánh giá
-// gọi api sửa thẻ
-
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);                  //lật thẻ
@@ -200,13 +194,18 @@ const Flashcard = () => {
     }, [flashcards]);
 
     const shuffleArray = (array) => {
+        if (!Array.isArray(array)) {
+            console.error("Input is not an array");
+            return array;
+        }
+
         const newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
         }
         return newArray;
-    }
+    };
 
     const shuffleRemainingCards = () => {
         const remainingCards = isShuffled ? shuffledFlashcards.slice(currentCardIndex) : flashcards.slice(currentCardIndex);
@@ -327,12 +326,16 @@ const Flashcard = () => {
                     </div>
                     <div className="flashcard-list">
                         <ul>
-                            {flashcards.map((card, index) => (
-                                <li key={index}>
-                                    <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
-                                    <button onClick={() => handleDeleteConfirmation(card.card_id)}>Xóa</button>
-                                </li>
-                            ))}
+                            {flashcards && flashcards.length > 0 ? (
+                                flashcards.map((card, index) => (
+                                    <li key={index}>
+                                        <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
+                                        <button onClick={() => handleDeleteConfirmation(card.card_id)}>Xóa</button>
+                                    </li>
+                                ))
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                             <li>
                                 <input
                                     type="text"
@@ -364,7 +367,6 @@ const Flashcard = () => {
                     </div>
                 )}
             </div>
-
         </div>
     );
 };

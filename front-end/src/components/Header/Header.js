@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createSvgIcon } from '@mui/material/utils';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import './Header.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStickyNote, faFolder, faUsers, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faStickyNote, faFolder, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
