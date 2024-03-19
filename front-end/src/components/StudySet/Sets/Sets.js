@@ -76,7 +76,8 @@ const Sets = () => {
                         sets.map(set => (
                             <div key={set.setId} className="set-item">
                                 {/* Link to Flashcard page with set_id */}
-                                <Link to={`/flashcard?set_id=${set.setId}&title=${encodeURIComponent(set.title)}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to={`/flashcard?set_id=${set.setId}`} style={{ textDecoration: 'none', color: 'inherit' }}
+                                    onClick={() => localStorage.setItem('flashcardTitle', set.title)}>
                                     <h3>{set.title}</h3>
                                 </Link>
                             </div>

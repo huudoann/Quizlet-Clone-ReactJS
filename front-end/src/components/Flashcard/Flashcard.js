@@ -31,21 +31,46 @@ const Flashcard = () => {
 
     const flashcardContainerRef = useRef(null);
 
-    const fetchData = async () => {
-        try {
-            const set_id = new URLSearchParams(location.search).get('set_id');
-            const flashcardsData = await getCardsDataFromSet(set_id);
-            setFlashcards(flashcardsData);
-            const title = new URLSearchParams(location.search).get('title');
-            setFlashcardTitle(title);
-        } catch (error) {
-            console.error('Error fetching flashcards:', error);
+    const shuffleArray = (array) => {
+        if (!Array.isArray(array)) {
+            return array;
         }
+
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const newSearchParams = new URLSearchParams(location.search);
+                const set_id = newSearchParams.get('set_id');
+
+                if (!set_id) {
+                    console.error('Không tìm thấy set_id trong URL');
+                    return;
+                }
+
+                const flashcardsData = await getCardsDataFromSet(set_id);
+                const flashcardsArray = Object.values(flashcardsData);
+                setFlashcards(flashcardsArray);
+                const title = localStorage.getItem('flashcardTitle');
+                setFlashcardTitle(title);
+            } catch (error) {
+                console.error('Error fetching flashcards:', error);
+            }
+        };
+
         fetchData();
     }, [location.search]);
+
+    useEffect(() => {
+        setShuffledFlashcards(shuffleArray(flashcards));
+    }, [flashcards]);
 
     //Gọi API thêm thẻ
     const handleAddCard = async () => {
@@ -69,8 +94,8 @@ const Flashcard = () => {
 
             if (response.status === 200) {
                 // Thực hiện các thao tác cập nhật giao diện sau khi thêm thẻ thành công
-                console.log('Thẻ đã được thêm thành công');
-                fetchData();
+                const flashcardsData = await getCardsDataFromSet(set_id); // Lấy lại dữ liệu thẻ sau khi thêm
+                setFlashcards(flashcardsData);
             } else {
                 console.error('Lỗi khi thêm thẻ:', response.statusText);
             }
@@ -190,30 +215,20 @@ const Flashcard = () => {
 
     //tráo thẻ
     useEffect(() => {
-        setShuffledFlashcards(shuffleArray(flashcards));
+        if (flashcards.length > 0) {
+            setShuffledFlashcards(shuffleArray(flashcards));
+            console.log(flashcards)
+        }
     }, [flashcards]);
 
-    const shuffleArray = (array) => {
-        if (!Array.isArray(array)) {
-            console.error("Input is not an array");
-            return array;
-        }
-
-        const newArray = [...array];
-        for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-        }
-        return newArray;
-    };
-
     const shuffleRemainingCards = () => {
-        const remainingCards = isShuffled ? shuffledFlashcards.slice(currentCardIndex) : flashcards.slice(currentCardIndex);
-        const shuffledRemainingCards = shuffleArray(remainingCards);
-        const newFlashcards = [...flashcards.slice(0, currentCardIndex), ...shuffledRemainingCards];
-        setShuffledFlashcards(newFlashcards);
+        if (flashcards.length > 0) {
+            const remainingCards = isShuffled ? shuffledFlashcards.slice(currentCardIndex) : flashcards.slice(currentCardIndex);
+            const shuffledRemainingCards = shuffleArray(remainingCards);
+            const newFlashcards = [...flashcards.slice(0, currentCardIndex), ...shuffledRemainingCards];
+            setShuffledFlashcards(newFlashcards);
+        }
     };
-
     const handleShuffle = () => {
         if (!isShuffled) {
             shuffleRemainingCards();
@@ -291,10 +306,10 @@ const Flashcard = () => {
                             {/* <p>Số điểm trung bình: {averageRating}</p> */}
                         </div>
                         <div className="flashcard-navigation">
-                            <NavLink to={`/flashcard${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
-                            <NavLink to={`/learn${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
-                            <NavLink to={`/test${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
-                            <NavLink to={`/match${location.search}`} activeClassName="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
+                            <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
+                            <NavLink to={`/learn${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
+                            <NavLink to={`/test${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
+                            <NavLink to={`/match${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
                         </div>
                         <div className={`flashcard-form`}>
                             <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
