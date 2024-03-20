@@ -23,7 +23,7 @@ const MatchPage = () => {
         let selectedFlashcards = [];
         while (selectedFlashcards.length < 12) {
           // Lấy một mảng ngẫu nhiên 12 phần tử từ flashcardsData
-          const randomCards = shuffleArray(flashcardsData).slice(0, 12 - selectedFlashcards.length);
+          const randomCards = shuffleArray(flashcardsData.content).slice(0, 12 - selectedFlashcards.length);
           // Loại bỏ các thẻ trùng lặp
           const uniqueCards = removeDuplicates(randomCards, 'card_id');
           selectedFlashcards = selectedFlashcards.concat(uniqueCards);
@@ -73,7 +73,11 @@ const MatchPage = () => {
       const secondCard = flashcards[index];
       const firstCard = flashcards[selectedFirstIndex];
       const firstCardType = selectedCards[selectedFirstIndex];
-      const secondCardType = type;
+      let secondCardType = null;
+
+      if (selectedCards[index] === null) {
+        secondCardType = type;
+      }
 
       if (firstCard.card_id === secondCard.card_id && firstCardType !== secondCardType) {
         setMatchedIds(prevMatchedIds => [...prevMatchedIds, selectedFirstIndex, index]);
@@ -172,9 +176,9 @@ const MatchPage = () => {
               className={`card-back_text 
               ${selectedCards[index] === 'back_text' ? 'selected' : ''}
               ${matchedIds.includes(index) ? 'match' : ''}
-              ${selectedCards[index] && unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.back_text) ? 'no-match' : ''} `}
+              ${unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.back_text) ? 'no-match' : ''} `}
               onClick={() => handleCardClick(index, 'back_text', flashcard)}
-              style={selectedCards[index] && unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.back_text) ? { animation: 'shake 0.2s ease-in-out' } : matchedIds.includes(index) ? { backgroundColor: 'green', transition: 'background-color 0.2s ease-in-out' } : {}}
+              style={unmatchedIds.some(pair => pair[0] === flashcard.card_id && pair[1] === flashcard.back_text) ? { animation: 'shake 0.2s ease-in-out' } : matchedIds.includes(index) ? { backgroundColor: 'green', transition: 'background-color 0.2s ease-in-out' } : {}}
             >
               <div className="back_text">{flashcard.back_text}</div>
             </div>

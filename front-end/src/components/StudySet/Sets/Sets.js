@@ -10,6 +10,7 @@ const Sets = () => {
 
 
     const [sets, setSets] = useState([]);
+    const [username, setUserName] = useState();
     const location = useLocation()
 
     const [activeLink, setActiveLink] = useState('');
@@ -26,6 +27,7 @@ const Sets = () => {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             const userId = localStorage.getItem('user_id');
+            const userName = localStorage.getItem('user_name');
 
             // Kiểm tra xem token có tồn tại không
             if (!token) {
@@ -39,6 +41,7 @@ const Sets = () => {
                         }
                     });
                     setSets(response.data);
+                    setUserName(userName);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
                 }
@@ -54,7 +57,7 @@ const Sets = () => {
             <div className='body-sets'>
                 <div className='user-profile'>
                     <img src='https://e7.pngegg.com/pngimages/7/618/png-clipart-man-illustration-avatar-icon-fashion-men-avatar-face-fashion-girl-thumbnail.png' alt='Avatar' className='avatar' />
-                    <span className='username'>Tên người dùng</span>
+                    <span className='username'>{username}</span>
                 </div>
                 <div className='select-card'>
                     <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>

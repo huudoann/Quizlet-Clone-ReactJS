@@ -29,12 +29,13 @@ const LoginForm = ({ switchForm }) => {
     try {
       const response = await axios.post(apiUrl, userData);
       console.log('Đăng nhập thành công:', response.data);
-
       const token = response.data.token;
       const user_id = response.data.user_id;
+      const username = response.data.username;
       console.log(token);
       localStorage.setItem('token', token);
       localStorage.setItem('user_id', user_id);
+      localStorage.setItem('user_name', username);
       navigate('/lastest');
 
       return response.data;
