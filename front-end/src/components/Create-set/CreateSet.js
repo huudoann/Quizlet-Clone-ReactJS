@@ -75,7 +75,7 @@ const CreateSet = () => {
             })
 
             //chuyển về trang có set_id đó
-            navigate(`/flashcard?set_id=${set_id}&title=${encodeURIComponent(setData.title)}`)
+            navigate(`/flashcard?set_id=${set_id}`)
 
             return
 

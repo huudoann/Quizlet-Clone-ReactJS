@@ -5,12 +5,15 @@ import './Header.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faFolder, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
     const navigate = useNavigate();
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State cho menu người dùng
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
     const menuRef = useRef(null); // Ref cho menu
     const menuUserRef = useRef(null); // Ref cho menu người dùng
@@ -86,6 +89,36 @@ const Header = () => {
         'Plus',
     );
 
+    const handleCreateFolder = async () => {
+
+        const is_public = true;
+
+        const folderData = {
+            title,
+            description,
+            is_public: is_public,
+        };
+
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            throw new Error('Token không tồn tại trong localStorage');
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:8080/api/folder/create-folder`, folderData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            console.log("Tao Folder thanh cong:", response.data);
+
+            navigate(`/folders`);
+        } catch (error) {
+            console.error('Lỗi khi tao hoc phan:', error.message);
+        }
+    };
+
     return (
         <div className='nav-header'>
             <header>
@@ -145,9 +178,9 @@ const Header = () => {
                         <FontAwesomeIcon icon={faTimes} />
                     </div>
                     <h2>Create new folder</h2>
-                    <input type="text" placeholder="Folder name" />
-                    <input type="text" placeholder="Description" />
-                    <button onClick={toggleFolderDialog}>Create</button>
+                    <input type="text" placeholder="Folder name" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <button onClick={handleCreateFolder}>Create</button>
                 </div>
             )}
         </div>
