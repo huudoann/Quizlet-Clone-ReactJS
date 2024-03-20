@@ -54,9 +54,8 @@ const Flashcard = () => {
                     console.error('Không tìm thấy set_id trong URL');
                     return;
                 }
-
                 const flashcardsData = await getCardsDataFromSet(set_id);
-                const flashcardsArray = Object.values(flashcardsData);
+                const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcards(flashcardsArray);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
