@@ -18,7 +18,7 @@ const Flashcard = () => {
     const [slideDirection, setSlideDirection] = useState('left');
     const [rating, setRating] = useState(0);
     const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
-    // const [averageRating, setAverageRating] = useState(0);
+    const [averageRating, setAverageRating] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const location = useLocation();
@@ -142,51 +142,79 @@ const Flashcard = () => {
         setShowConfirmation(false);
     };
 
-    //Gọi API gửi đánh giá
-    // const handleSubmitRating = async () => {
-    //     try {
-    //         let token = localStorage.getItem('token');
+    // Gọi API gửi đánh giá
+    const handleSubmitRating = async () => {
+        try {
+            let token = localStorage.getItem('token');
 
-    //         // Kiểm tra xem token có tồn tại không
-    //         if (!token) {
-    //             window.location.href("/login");
-    //             return null;
-    //             // throw new Error('Token không tồn tại trong localStorage');
-    //         }
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                window.location.href("/login");
+                return null;
+                // throw new Error('Token không tồn tại trong localStorage');
+            }
 
-    //         // Tính toán số điểm dựa trên số sao đã chọn
-    //         const points = rating * 1; // Ví dụ: mỗi sao tương ứng với 2 điểm
 
-    //         // Gửi số điểm đánh giá đến API
-    //         const response = await axios.post('http://localhost:8080/rating', { points }, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`,
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
 
-    //         if (response.status === 200) {
-    //             // Thực hiện các thao tác cập nhật giao diện sau khi gửi đánh giá thành công
-    //             console.log('Đã gửi đánh giá thành công');
-    //         } else {
-    //             console.error('Lỗi khi gửi đánh giá:', response.statusText);
-    //         }
-    //     } catch (error) {
-    //         console.error('Lỗi khi gửi request đánh giá:', error.message);
-    //     }
-    // };
+            // Gửi số điểm đánh giá đến API
+            const set_id = new URLSearchParams(location.search).get('set_id');
+            const point = rating;
+            console.log(point);
+            const userId = localStorage.getItem('user_id');
+            const userRating = {
+                user_id: userId,
+                set_id: set_id,
+                total_stars: point,
+            }
+            const response = await axios.post(`http://localhost:8080/api/review/sets/${set_id}/review`, userRating, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
 
-    // useEffect(() => {
-    //     calculateAverageRating();
-    // }, [flashcards]);
+            if (response.status === 200) {
+                console.log('Đã gửi đánh giá thành công');
+            } else {
+                console.error('Lỗi khi gửi đánh giá:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi request đánh giá:', error.message);
+        }
+    };
 
-    // const calculateAverageRating = () => {
-    //     // Logic để tính toán số điểm trung bình từ dữ liệu
-    //     const data = [/* Dữ liệu về số điểm đánh giá */];
-    //     const totalPoints = data.reduce((acc, curr) => acc + curr.points, 0);
-    //     const average = totalPoints / data.length;
-    //     setAverageRating(average);
-    // };
+    const fetchReviewing = async () => {
+        try {
+            let token = localStorage.getItem('token');
+
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                window.location.href("/login");
+                return null;
+            }
+
+            const set_id = new URLSearchParams(location.search).get('set_id');
+            const response = await axios.get(`http://localhost:8080/api/review/sets/${set_id}/reviews`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.status === 200) {
+                const reviewingData = response.data;
+                setAverageRating(reviewingData);
+            } else {
+                console.error('Lỗi khi lay du lieu đánh giá:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchReviewing();
+    }, [location.search], [flashcards]);
 
 
     const CardsData = {
@@ -216,7 +244,6 @@ const Flashcard = () => {
     useEffect(() => {
         if (flashcards.length > 0) {
             setShuffledFlashcards(shuffleArray(flashcards));
-            console.log(flashcards)
         }
     }, [flashcards]);
 
@@ -290,6 +317,7 @@ const Flashcard = () => {
                         <h1>{flashcardTitle}</h1>
                         <div className="rating">
                             <h4>Đánh giá học phần này: </h4>
+                            <p>({averageRating})</p>
                             {[1, 2, 3, 4, 5].map((value, index) => (
                                 <Star
                                     key={value}
@@ -300,9 +328,9 @@ const Flashcard = () => {
                                 />
                             ))}
                             <button className='rating-button'
-                            // onClick={handleSubmitRating}
+                                onClick={handleSubmitRating}
                             >Gửi Đánh Giá</button>
-                            {/* <p>Số điểm trung bình: {averageRating}</p> */}
+
                         </div>
                         <div className="flashcard-navigation">
                             <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
