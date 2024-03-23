@@ -103,11 +103,11 @@ export default function CustomizedMenus() {
                     <ContentCopy />
                     Flashcard
                 </MenuItem>
-                <MenuItem component={Link} to={`/flashcard${location.search}`} onClick={handleClose} disableRipple>
+                <MenuItem component={Link} to={`/learn${location.search}`} onClick={handleClose} disableRipple>
                     <AutoMode />
                     Learn
                 </MenuItem>
-                <MenuItem component={Link} to={`/flashcard${location.search}`} onClick={handleClose} disableRipple>
+                <MenuItem component={Link} to={`/test${location.search}`} onClick={handleClose} disableRipple>
                     <Quiz />
                     Test
                 </MenuItem>
