@@ -88,8 +88,8 @@ export default function CustomizedMenus() {
                 endIcon={<KeyboardArrowDown />}
 
             >
-                <Compare style={{ paddingRight: '10px' }} />
-                Match
+                <AutoMode style={{ paddingRight: '10px' }} />
+                Learn
             </CustomizedButton>
             <StyledMenu
                 id="demo-customized-menu"
@@ -104,13 +104,15 @@ export default function CustomizedMenus() {
                     <ContentCopy />
                     Flashcard
                 </MenuItem>
-                <MenuItem component={Link} to={`/learn${location.search}`} onClick={handleClose} disableRipple>
-                    <AutoMode />
-                    Learn
-                </MenuItem>
+
                 <MenuItem component={Link} to={`/test${location.search}`} onClick={handleClose} disableRipple>
                     <Quiz />
                     Test
+                </MenuItem>
+
+                <MenuItem component={Link} to={`/match${location.search}`} onClick={handleClose} disableRipple>
+                    <Compare />
+                    Match
                 </MenuItem>
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem component={Link} to="/lastest" onClick={handleClose} disableRipple>

@@ -10,7 +10,6 @@ const MatchPage = () => {
   const [unmatchedIds, setUnmatchedIds] = useState([]);
   const [flashcards, setFlashcards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(Array(6).fill(null));
-  // const [showErrorMessage, setShowErrorMessage] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -31,6 +30,7 @@ const MatchPage = () => {
         // Trộn mảng cuối cùng
         const shuffledFlashcards = shuffleArray(selectedFlashcards);
         setFlashcards(shuffledFlashcards);
+        console.log("Lấy dữ liệu thành công");
       } catch (error) {
         console.error('Lỗi lấy cards:', error);
       }

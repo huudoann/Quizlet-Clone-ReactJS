@@ -1,161 +1,155 @@
-import React, { useState } from 'react';
-import Sidebar from './LearnSideBar.js';
-import allLearnDemo from './LearnDemo.js';
+import React, { useState, useEffect } from 'react';
 import './Learn.scss';
+import { Close } from '@mui/icons-material';
+import DropDownMenu from '../Learn/DropDownMenu';
+import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Learn = () => {
+  const [flashcards, setFlashcards] = useState([]);
+  const [userInput, setUserInput] = useState('');
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [inputDisabled, setInputDisabled] = useState(false);
+  const [formHeight, setFormHeight] = useState('70vh');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const generateInitialState = (type) => {
-    const learn = allLearnDemo[type];
-    return {
-      type,
-      numTerms: learn.length,
-      remaining: learn,
-      incorrect: [],
-      correct: [],
-      gameCompleted: false,
-      messages: []
-    };
-  };
-
-  const [learnState, setLearnState] = useState(generateInitialState('ENGLISH'));
-
-  const handleAnswer = (answer) => {
-    const { remaining, correct, incorrect, numTerms } = learnState;
-    const correctAnswer = remaining[0].definition.toLowerCase();
-    let newRemaining = remaining;
-    let newCorrect = correct;
-    let newIncorrect = incorrect;
-    let messages = [];
-
-    if (answer.toLowerCase() === correctAnswer) {
-      newCorrect = [...correct, learnState.remaining[0]];
-    } else {
-      newIncorrect = [...incorrect, learnState.remaining[0]];
-      messages.push('The correct answer is actually ' + learnState.remaining[0].definition);
+  useEffect(() => {
+    if (!mounted) {
+      setMounted(true);
+      return;
     }
 
-    if (remaining.length === 1) {
-      if (newCorrect.length === numTerms) {
-        setLearnState({ ...learnState, gameCompleted: true });
-      }
-      const numCorrect = newCorrect.length;
-      messages.push('You have gotten ' + numCorrect + ' out of ' + learnState.numTerms + ' correct');
-      setLearnState({
-        ...learnState,
-        remaining: newIncorrect,
-        correct: newCorrect,
-        incorrect: [],
-        messages
-      });
-    } else {
-      newRemaining = remaining.slice(1);
-      setLearnState({
-        ...learnState,
-        remaining: newRemaining,
-        correct: newCorrect,
-        incorrect: newIncorrect,
-        messages
-      });
-    }
-  };
-
-  const restart = () => {
-    const newGame = learnState.correct.length === learnState.numTerms;
-    setLearnState(newGame ? generateInitialState(learnState.type) : { ...learnState, messages: [] });
-  };
-
-  const getType = () => {
-    if (learnState.gameCompleted) return 'restart';
-    if (learnState.remaining.length === learnState.numTerms) return 'continue to next round';
-    return 'continue';
-  };
-
-  const Message = ({ messages, handleClick, type }) => {
-    return (
-      <div className="learn-message">
-        {messages.map((message, i) => <p key={i}>{message}</p>)}
-        <button className='btn' onClick={handleClick}>Click to {type}</button>
-      </div>
-    );
-  };
-
-  const LearnContent = ({ vocab, handleAnswer }) => {
-    const [inputValue, setInputValue] = useState('');
-    const [showingHint, setShowingHint] = useState(false);
-    const [hint, setHint] = useState('');
-    const [inputDisabled, setInputDisabled] = useState(false);
-  
-    const handleInput = (e) => {
-      setInputValue(e.target.value);
-    }
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      handleAnswer(inputValue);
-      setInputValue('');
-    }
-  
-    const showHint = () => {
-      if (vocab[0].definition) {
-        const definition = vocab[0].definition;
-        const hint = definition.charAt(0) + '_'.repeat(definition.length - 1);
-        setHint("Hint: " + hint);
-        setShowingHint(true);
-      }
-      else{
-        if (showingHint){
-          setShowingHint(false);
+    const fetchData = async () => {
+      try {
+        const set_id = new URLSearchParams(location.search).get('set_id');
+        const flashcardsData = await getCardsDataFromSet(set_id);
+        const data = flashcardsData.content;
+        if (data && data.length > 0) {
+          const shuffledFlashcards = shuffleArray(data).slice(0, 7);
+          setFlashcards(shuffledFlashcards);
+          console.log("Lấy dữ liệu thành công", data)
         }
+      } catch (error) {
+        console.error('Lỗi lấy cards:', error);
       }
+    };
+
+    fetchData();
+
+  }, [location.search, mounted]);
+
+  useEffect(() => {
+    const updateFormHeight = () => {
+      const newHeight = document.getElementById('learn-form').scrollHeight + 'px';
+      setFormHeight(newHeight);
+    };
+    updateFormHeight();
+  }, [flashcards, currentIndex, isCorrect]);
+
+  const shuffleArray = (array) => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-  
-    const skip = () => {
-      setInputValue('Skipped');
-      handleAnswer('Skipped');
-      setInputValue('');
+    return newArray;
+  };
+
+  const handleCloseButtonClick = () => {
+    navigate(`/flashcard${location.search}`);
+  };
+
+  const handleInputChange = (e) => {
+    setUserInput(e.target.value);
+    setIsCorrect(null);
+  };
+
+  const handleSkip = () => {
+    // Chuyển sang thẻ kế tiếp nếu người dùng bấm nút Don't know
+    setCurrentIndex(prevIndex => prevIndex + 1);
+    setUserInput('');
+    setIsCorrect(null);
+    setInputDisabled(false); // Enable lại ô input khi chuyển thẻ
+    setFormHeight('70vh'); // Reset chiều cao của form
+  };
+
+  const handleSubmit = () => {
+    if (userInput.trim().toLowerCase() === flashcards[currentIndex].front_text.trim().toLowerCase()) {
+      setIsCorrect(true);
+      setTimeout(() => {
+        // Chuyển sang thẻ kế tiếp sau 2 giây
+        setCurrentIndex(prevIndex => prevIndex + 1);
+        setUserInput('');
+        setIsCorrect(null);
+        setInputDisabled(false);
+        setFormHeight('70vh'); // Reset chiều cao của form
+      }, 2000);
+    } else {
+      setIsCorrect(false);
+      setInputDisabled(true);
+      setFormHeight('90vh');
     }
-  
-    return (
-      <div className='learn-content-container'>
-        <h4>Term:</h4>
-        <h3>{vocab[0].term}</h3>
-        <button className='show-hint' type='button' onClick={showHint}>Show hint</button>
-        {showingHint && <p>{hint}</p>}
-
-        <h4>Your answer:</h4>
-        <form className="answer" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInput}
-            placeholder='Type your answer'
-          />
-          <button className='dont-know' type='button' onClick={skip}>Don't know?</button> 
-          <button className='btn' type='submit'>Answer</button>
-        </form>
-        <small>Type the answer</small>
-      </div>
-    );
-  }
-
-
+  };
 
   return (
-    <main className="learn-container">
-      <Sidebar
-        totalCards={learnState.numTerms}
-        numRemaining={learnState.remaining.length}
-        numCorrect={learnState.correct.length}
-        numIncorrect={learnState.incorrect.length}
-      />
-      {learnState.messages.length ? (
-        <Message messages={learnState.messages} handleClick={restart} type={getType()} />
-      ) : (
-        <LearnContent handleAnswer={handleAnswer} vocab={learnState.remaining} />
-      )}
-    </main>
+    <div className="learn-page">
+      <div className="navigation">
+        <DropDownMenu />
+        <button className="close-button" onClick={handleCloseButtonClick}><Close /></button>
+      </div>
+
+      <div className="learn-form" style={{ height: formHeight }} id="learn-form">
+        {currentIndex < flashcards.length && (
+          <>
+            <div className='defi-box'>
+              <p>Definition:</p>
+              <span>{flashcards[currentIndex].back_text}</span>
+              <button className="hint-button">Show hint</button>
+            </div>
+            <div className='input-box'>
+              {isCorrect === false && (
+                <div className="incorrect-message">
+                  <p>No, sweat, you're still learning</p>
+                </div>
+              )}
+
+              {isCorrect === true && (
+                <div className="correct-message">
+                  <p>Amazing!</p>
+                </div>
+              )}
+
+              <p>Your answer:</p>
+              <input
+                type="text"
+                value={userInput}
+                placeholder='Type the answer'
+                onChange={handleInputChange}
+                onKeyUp={(e) => {
+                  if (e.key === 'Enter') handleSubmit();
+                }}
+                disabled={inputDisabled} // Sử dụng biến state để kiểm soát trạng thái của ô input
+              />
+              {isCorrect === false && (
+                <div className="answer-box">
+                  <p>Correct Answer:</p>
+                  <input type="text" value={flashcards[currentIndex].front_text} readOnly />
+                </div>
+              )}
+              <div className='control-button'>
+                <button className='btn1' onClick={handleSkip}>Don't know?</button>
+                <button onClick={handleSubmit}>Answer</button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
-};
+}
+
 
 export default Learn;
