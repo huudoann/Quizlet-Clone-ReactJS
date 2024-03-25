@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare } from '@mui/icons-material';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare, MoreHoriz, AddCircleOutline, Delete } from '@mui/icons-material';
 import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import axios from 'axios';
@@ -21,15 +21,19 @@ const Flashcard = () => {
     const [averageRating, setAverageRating] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [flashcardTitle, setFlashcardTitle] = useState('');
+    const [showMenu, setShowMenu] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [cardIdToDelete, setCardIdToDelete] = useState(null);
+    const [setIdToDelete, setSetIdToDelete] = useState(null);
     const [newCardData, setNewCardData] = useState({
         front_text: '',
         back_text: ''
     });
 
     const flashcardContainerRef = useRef(null);
+    const set_id = new URLSearchParams(location.search).get('set_id');
 
     const shuffleArray = (array) => {
         if (!Array.isArray(array)) {
@@ -138,10 +142,6 @@ const Flashcard = () => {
         }
     };
 
-    const handleCancelDelete = () => {
-        setShowConfirmation(false);
-    };
-
     // Gọi API gửi đánh giá
     const handleSubmitRating = async () => {
         try {
@@ -153,9 +153,6 @@ const Flashcard = () => {
                 return null;
                 // throw new Error('Token không tồn tại trong localStorage');
             }
-
-
-
             // Gửi số điểm đánh giá đến API
             const set_id = new URLSearchParams(location.search).get('set_id');
             const point = rating;
@@ -208,6 +205,36 @@ const Flashcard = () => {
             }
         } catch (error) {
             console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
+        }
+    };
+
+    const handleDeleteSet = async () => {
+        setShowConfirmation(true);
+        setSetIdToDelete(set_id);
+    };
+
+    const handleConfirmDeleteSet = async () => {
+        setShowConfirmation(false);
+        try {
+            let token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href("/login")
+                return null
+            }
+            const response = await axios.delete(`http://localhost:8080/api/set/${setIdToDelete}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                console.log('Set đã được xóa thành công');
+                navigate('/sets');
+            } else {
+                console.error('Lỗi khi xóa set:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi request xóa set:', error.message);
         }
     };
 
@@ -308,6 +335,14 @@ const Flashcard = () => {
         setRating(value);
     };
 
+    const toggleMenu = () => {
+        setShowMenu(!showMenu);
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirmation(false);
+    };
+
     return (
         <div>
             <Header />
@@ -365,6 +400,15 @@ const Flashcard = () => {
                     <div className="creator">
                         <img src={creator.avatar} alt="Creator Avatar" />
                         <p>{creator.name}</p>
+                        <div className="menu-container">
+                            <button onClick={toggleMenu}><MoreHoriz /></button>
+                            {showMenu && (
+                                <div className="menu">
+                                    <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Add to Folder</button>
+                                    <button onClick={() => handleDeleteSet(set_id)}><Delete />Delete Set</button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="flashcard-list">
                         <ul>
@@ -400,9 +444,22 @@ const Flashcard = () => {
                     <div>
                         <div className="overlay"></div>
                         <div className="confirmation-box">
-                            <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
+                            <div className="message">Bạn có chắc chắn muốn xóa không?</div>
                             <div className="button-container">
                                 <button onClick={handleConfirmDelete}>Xác nhận</button>
+                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {showConfirmation && (
+                    <div>
+                        <div className="overlay"></div>
+                        <div className="confirmation-box">
+                            <div className="message">Bạn có chắc chắn muốn xóa không?</div>
+                            <div className="button-container">
+                                <button onClick={handleConfirmDeleteSet}>Xác nhận</button>
                                 <button onClick={handleCancelDelete}>Hủy bỏ</button>
                             </div>
                         </div>
