@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Tests.scss';
 import { Close } from '@mui/icons-material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import DropDownMenu from './DropDownMenu';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,6 +12,11 @@ const Tests = () => {
     const [mounted, setMounted] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Biến đếm số lượng câu trả lời đúng
+    const [submitted, setSubmitted] = useState(false); // Kiểm tra xem người dùng đã nộp bài thi chưa
+    const [totalQuestions, setTotalQuestions] = useState(0); // Lưu tổng số câu hỏi
+    const [openDialog, setOpenDialog] = useState(false);
 
     useEffect(() => {
         if (!mounted) {
@@ -69,6 +75,22 @@ const Tests = () => {
             updatedAnswers.splice(index * 4, 4, ...shuffledAnswers);
             return updatedAnswers;
         });
+
+        // console.log('Câu trả lời đúng:', correctAnswer);
+        setCorrectAnswersCount(prevCount => prevCount + 1);
+    };
+
+    const handleSubmitButtonClick = () => {
+        setSubmitted(true);
+
+        const totalQuestionsCount = flashcards.length;
+        setTotalQuestions(totalQuestionsCount);
+
+        setOpenDialog(true);
+    };
+
+    const handleDialogClose = () => {
+        setOpenDialog(false);
     };
 
     return (
@@ -101,6 +123,30 @@ const Tests = () => {
                     </div>
                 </div>
             ))}
+
+            {/* Dialog */}
+            <Dialog open={openDialog} onClose={handleDialogClose}>
+                <DialogTitle>Kết quả bài kiểm tra</DialogTitle>
+                <DialogContent>
+                    <div className="results">
+                        <p>Số câu trả lời đúng: {correctAnswersCount} / {totalQuestions}</p>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">
+                        Đóng
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Button "Gửi bài kiểm tra" */}
+            {!submitted && (
+                <Button variant="contained"
+                    onClick={handleSubmitButtonClick}
+                    className="submit-button">
+                    Gửi bài kiểm tra
+                </Button>
+            )}
         </div>
     );
 }

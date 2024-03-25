@@ -1,6 +1,8 @@
 .Tests {
     height: 100vh;
     overflow-y: auto; //cuộn dọc
+    display: flex;
+    flex-direction: column; // Chuyển sang kiểu layout dọc
 
     .navigation {
         display: flex;
@@ -91,5 +93,17 @@
         display: flex;
         justify-content: center;
         width: 100%;
+    }
+
+    .submit-button {
+        background-color: #4255ff;
+        align-self: center; 
+        margin-top: 20px; 
+        font-size: 20px;
+        font-weight: bold;
+
+        &:hover {
+            background-color: #423ed8;
+        }
     }
 }
