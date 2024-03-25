@@ -1,111 +1,95 @@
-.header-tests {
-    position: fixed; /* Giữ cố định header-tests */
-    top: 0; /* Đặt vị trí header-tests ở phía trên cùng của màn hình */
-    left: 0; /* Đặt vị trí header-tests ở phía trái của màn hình */
-    width: 100%; /* Độ rộng header-tests bằng độ rộng của màn hình */
-    z-index: 999; /* Đảm bảo header-tests nằm trên cùng */
-    display: flex;
-    padding: 10px;
-    align-items: center;
-    background-color: #0a092d;
-}
+.Tests {
+    height: 100vh;
+    overflow-y: auto; //cuộn dọc
 
-.button-test {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    border: 1px;
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1rem 1rem;
+    }
 
-    span {
-        font-size: 2rem;
+    .close-button {
+        padding: 8px 10px 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: inherit;
         color: #fff;
-        padding: 0 0.5rem 0.5rem 0.5rem;
+        cursor: pointer;
     }
 
-    padding: .5rem;
-    background-color: #2e3856;
-    border-radius: 5px;
-    font-weight: 200;
-
-    &:hover {
-        box-shadow: inset 0 -2px 0 0 #ccc;
+    .close-button:hover {
+        background-color: lighten(#262645, 20%);
     }
-}
-.title-tests {
-    flex-grow: 1;
-    text-align: center;
-    color: #fff;
-    flex-direction: column;
-    font-style: bold;
-}
 
-.close-button {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 8px 10px 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: inherit;
-    color: #fff;
-    cursor: pointer;
-}
+    .tests-form {
+        width: 60%;
+        height: 60vh;
+        border: 1px solid #2e3856;
+        background-color: #2e3856;
+        border-radius: 10px;
+        display: flex;
+        cursor: pointer;
+        transition: transform 0.5s ease;
+        flex-direction: column;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
 
-.close-button:hover {
-    background-color: lighten(#262645, 20%);
-}
+    .defi-box {
+        height: 50%;
 
-.tests-form {
-    position: absolute; 
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%; 
-    height: 450px; 
-    border: 1px solid #2e3856;
-    background-color: #2e3856;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2rem;
-    cursor: pointer;
-    transition: transform 0.5s ease;
-    flex-direction: column;
-    justify-content: center;
-}
+        p {
+            font-size: 1.25rem;
+            color: #fff;
+            margin: 1.5rem 0 0 1.5rem;
+        }
+    }
 
-.tests-form p {
-    font-size: 1.5rem;
-    color: #fff;
-}
+    .term-box {
+        height: 50%;
 
-.tests-form .buttons-answer {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+        p {
+            font-size: 1.25rem;
+            color: #fff;
+            margin: 1.5rem 0 0 1.5rem;
+        }
+    }
 
-.tests-form .buttons-answer button {
-    margin: 10px; 
-    padding: 15px 30px; 
-    font-size: 1.4rem; 
-    border: 2px solid #5b6383;
-    border-radius: 10px; 
-    background-color: #2e3856;
-    color: white;
-    cursor: pointer;
-}
+    .term-box .buttons-answer {
+        margin-top: .5rem;
+        display: flex;
+        flex-wrap: wrap;
 
-.tests-form .buttons-answer button:hover {
-    border: 2px solid #4454fc;
-}
+        .button-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
 
-.tests-form .buttons-answer div {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+            button {
+                width: 50%;
+            }
+        }
+    }
+
+    .tests-form .buttons-answer button {
+        margin: .5rem 6rem;
+        padding: 1rem 4rem;
+        font-size: 1.25rem;
+        border: 2px solid #5b6383;
+        border-radius: 10px;
+        background-color: #2e3856;
+        color: white;
+        cursor: pointer;
+    }
+
+    .tests-form .buttons-answer button:hover {
+        border: 2px solid #4454fc;
+    }
+
+    .tests-form .buttons-answer div {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
 }

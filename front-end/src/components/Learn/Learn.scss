@@ -9,6 +9,19 @@
     margin: 1rem 1rem;
   }
 
+  .close-button {
+    padding: 8px 10px 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: inherit;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .close-button:hover {
+    background-color: lighten(#262645, 20%);
+  }
+
   .learn-form {
     position: relative;
     top: 50%;
