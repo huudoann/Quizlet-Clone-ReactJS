@@ -1,22 +1,19 @@
 .learn-page {
+  display: flex;
+  flex-direction: column;
+
   .navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .navigation select {
-    padding: .5rem;
-    border-radius: .25rem;
-    border: 1px solid #ccc;
+    margin: 1rem 1rem;
   }
 
   .learn-form {
     position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, 10%);
+    transform: translate(-50%, 0%);
     width: 60%;
     height: 70vh;
     border: 1px solid #2e3856;
@@ -25,23 +22,25 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
+    line-break: auto;
     transition: transform 0.5s ease;
   }
 
   .learn-form p {
-    font-size: 1.5rem;
+    font-size: 1rem;
     color: #fff;
   }
 
   .defi-box {
-    height: 40%;
+    height: 30%;
     text-align: left;
-    margin: 0 0 1rem 1rem;
+    margin: 0 0 1rem 1.75rem;
   }
 
   .defi-box p {
-    margin-bottom: 2rem;
+    margin-bottom: 0.25rem;
+    color: #93a3cf;
   }
 
   .defi-box span {
@@ -52,11 +51,11 @@
   .defi-box .hint-button {
     display: block;
     margin: 1rem 0;
-    padding: .5rem 1rem;
-    font-size: 1.2rem;
+    padding: .5rem .5rem;
+    font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #2e3856;
+    background-color: #2e3857;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -68,8 +67,13 @@
 
   .input-box {
     height: 60%;
-    margin: 0 0 1rem 1rem;
+    margin: 0 0 0.5rem 1.75rem;
     text-align: left;
+
+    p {
+      font-size: 1rem;
+      color: #93a3cf;
+    }
 
     .incorrect-message p {
       color: red;
@@ -81,7 +85,7 @@
   }
 
   .input-box input {
-    width: 93%;
+    width: 94.5%;
     padding: 1rem;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -90,11 +94,12 @@
   .control-button {
     position: absolute;
     bottom: 1.25rem;
-    right: 1.25rem;
+    right: 0;
     display: flex;
     align-items: flex-end;
 
     .btn1 {
+      color: lightskyblue;
       background-color: inherit !important;
     }
 
@@ -104,9 +109,9 @@
   }
 
   .control-button button {
-    margin: .5rem .5rem 0 0;
+    margin: 0rem 1rem 0 0;
     padding: .5rem 1rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border: 1px solid #2e3856;
     border-radius: 5px;
     background-color: #4454fc;
@@ -117,5 +122,44 @@
 
   .control-button button:hover {
     background-color: lighten(#4454fc, $amount: 10%);
+  }
+
+  .next-message {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2e3856;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+
+    p {
+      font-size: 1.5rem;
+    }
+  }
+
+  .summary {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      font-size: 2rem;
+    }
+  }
+
+  .summary button {
+    margin: 0rem 1rem 0 0;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #2e3856;
+    border-radius: 5px;
+    background-color: #4454fc;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
 }
