@@ -3,7 +3,7 @@ import './Folders.scss';
 import { Link, useLocation } from 'react-router-dom';
 import Header from "../../Header/Header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder } from '@fortawesome/free-solid-svg-icons';
+import { faFolder, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const Folders = () => {
@@ -52,8 +52,8 @@ const Folders = () => {
                     <span className='username'>{username}</span>
                 </div>
                 <div className='select-card'>
-                    <Link to="/folders" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className={`term ${activeLink === '/folders' ? 'active' : ''}`}>Học phần</div>
+                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                        <div className={`term ${activeLink === '/sets' ? 'active' : ''}`}>Học phần</div>
                     </Link>
                     <Link to="/folders" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <div className={`folder ${activeLink === '/folders' ? 'active' : ''}`}>Thư mục</div>
@@ -61,15 +61,8 @@ const Folders = () => {
                 </div>
                 <div className='search-term'>
                     <input type="text" placeholder="Tìm kiếm thư mục" />
-                    {/* <div className='icon-search'>
+                    <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
-                    </div> */}
-                </div>
-                <div className='folder-card'>
-                    <div className="number-term">Số học phần</div>
-                    <div className="folder-name">
-                        <FontAwesomeIcon icon={faFolder} className='faFolder' />
-                        Tên thư mục
                     </div>
                 </div>
 

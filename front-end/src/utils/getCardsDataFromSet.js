@@ -12,7 +12,7 @@ const getCardsDataFromSet = async (set_id) => {
             // throw new Error('Token không tồn tại trong localStorage');
         }
 
-        const response = await axios.get(`http://localhost:8080/${set_id}/cards`, {
+        const response = await axios.get(`http://localhost:8080/api/card/${set_id}/cards`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

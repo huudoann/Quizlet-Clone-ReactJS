@@ -3,6 +3,8 @@ import './Sets.scss';
 import { Link, useLocation } from 'react-router-dom';
 import Header from '../../Header/Header';
 import axios from 'axios';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Sets = () => {
     // sửa UI
@@ -69,9 +71,9 @@ const Sets = () => {
                 </div>
                 <div className='search-term'>
                     <input type="text" placeholder="Tìm kiếm học phần" />
-                    {/* <div className='icon-search'>
+                    <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
-                    </div> */}
+                    </div>
                 </div>
 
                 <div className="sets-list">

@@ -5,18 +5,49 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/
 import DropDownMenu from './DropDownMenu';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Tests = () => {
+    const [elapsedTime, setElapsedTime] = useState(3600);
     const [flashcards, setFlashcards] = useState([]);
+    const [selectedAnswers, setSelectedAnswers] = useState([]);
     const [answers, setAnswers] = useState([]);
     const [mounted, setMounted] = useState(false);
-    const navigate = useNavigate();
-    const location = useLocation();
-
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Biến đếm số lượng câu trả lời đúng
     const [submitted, setSubmitted] = useState(false); // Kiểm tra xem người dùng đã nộp bài thi chưa
     const [totalQuestions, setTotalQuestions] = useState(0); // Lưu tổng số câu hỏi
     const [openDialog, setOpenDialog] = useState(false);
+    const [showSubmitConfirmation, setShowSubmitConfirmation] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    //bộ đếm ngược thời gian
+    useEffect(() => {
+        const timerId = setInterval(() => {
+            setElapsedTime(prevTime => {
+                if (prevTime > 0) {
+                    return prevTime - 1;
+                } else {
+                    clearInterval(timerId);
+                    setOpenDialog(true);
+                    return 0;
+                }
+            });
+        }, 1000); // Mỗi giây
+
+        return () => {
+            clearInterval(timerId);
+        };
+    }, []);
+
+    //format thời gian
+    const formatTime = (timeInSeconds) => {
+        const hours = Math.floor(timeInSeconds / 3600);
+        const minutes = Math.floor((timeInSeconds % 3600) / 60);
+        const seconds = timeInSeconds % 60;
+
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
 
     useEffect(() => {
         if (!mounted) {
@@ -32,10 +63,10 @@ const Tests = () => {
                 if (data && data.length > 0) {
                     const shuffledFlashcards = shuffleArray(data).slice(0, 20);
                     setFlashcards(shuffledFlashcards);
-                    console.log("Lấy dữ liệu thành công", data);
+                    console.log("Lấy flashcards thành công", data);
                 }
             } catch (error) {
-                console.error('Lỗi lấy cards:', error);
+                console.error('Lỗi lấy flashcards:', error);
             }
         };
 

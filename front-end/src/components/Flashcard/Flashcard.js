@@ -107,7 +107,6 @@ const Flashcard = () => {
         }
     };
 
-
     //Gọi API xóa thẻ
     const handleDeleteConfirmation = async (cardId) => {
         setShowConfirmation(true);
@@ -238,11 +237,9 @@ const Flashcard = () => {
         }
     };
 
-
     useEffect(() => {
         fetchReviewing();
     }, [location.search], [flashcards]);
-
 
     const CardsData = {
         flashcards,
@@ -282,6 +279,7 @@ const Flashcard = () => {
             setShuffledFlashcards(newFlashcards);
         }
     };
+
     const handleShuffle = () => {
         if (!isShuffled) {
             shuffleRemainingCards();
