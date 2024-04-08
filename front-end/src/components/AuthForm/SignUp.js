@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './SignUp.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Box, TextField, Button, Checkbox, FormControlLabel } from '@mui/material';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -10,27 +9,18 @@ const SignUpForm = ({ switchForm }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState(false);
     const [error, setError] = useState(null);
+    const [termsChecked, setTermsChecked] = useState(false);
     const navigate = useNavigate();
 
     const handleSignUp = async () => {
-        if (!username.trim()) {
-            setError("Your username cannot be blank.");
+        if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim() || !termsChecked) {
+            setError("Không được để trống các trường trên");
             return;
         }
-        else if (!email.trim()) {
-            setError("Your email cannot be blank.");
-            return;
-        }
-        else if (!password.trim()) {
-            setError("Your password cannot be blank.");
-            return;
-        }
-
-        const termsChecked = document.getElementById('squaredcheck').checked;
-        if (!termsChecked) {
-            setError("Please accept Quizlet's Terms of Service and Privacy Policy to continue.");
+        else if (password.trim() !== confirmPassword.trim()) {
+            setError("Mật khẩu không khớp!");
             return;
         }
 
@@ -66,61 +56,88 @@ const SignUpForm = ({ switchForm }) => {
         setEmail(e.target.value);
     };
 
+    const handleTermsChecked = (e) => {
+        setTermsChecked(e.target.checked);
+    };
+
+    const handleClickTOS = (e) => {
+        navigate('/tos');
+    }
+
 
     return (
         <div className="auth-form">
-            <div className='username-container'>
-                <label>Username:</label>
-                <input
-                    type="text"
+            <Box
+                component="form"
+                sx={{
+                    '& .MuiTextField-root': { marginBottom: '1rem', width: '100%' },
+                }}
+                noValidate
+                autoComplete="off"
+            >
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Tên đăng nhập"
                     value={username}
                     onChange={handleInputUsernameChange}
-                    placeholder='Enter your username'
-                    required />
-            </div>
+                    placeholder='Nhập tên người dùng'
+                />
 
-            <div className='email-container'>
-                <label>Email:</label>
-                <input
-                    type="text"
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Email"
                     value={email}
                     onChange={handleInputEmailChange}
-                    placeholder='Enter your email'
-                    required />
-            </div>
-            <div className="password-container">
-                <label>Password:</label>
-                <input
-                    type={showPassword ? 'text' : 'password'}
+                    placeholder='Nhập email của bạn'
+                />
+
+                <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Mật khẩu"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder='Enter your password'
+                    placeholder='Nhập mật khẩu'
+                    type="password"
+                    autoComplete="current-password"
+                />
+
+                <TextField
                     required
+                    id="outlined-password-input"
+                    label="Xác nhận mật khẩu"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder='Xác thực mật khẩu của bạn'
+                    type="password"
+                    autoComplete="current-password"
                 />
-                <FontAwesomeIcon
-                    icon={showPassword ? faEyeSlash : faEye}
-                    className="toggle-password-icon"
-                    onClick={() => setShowPassword(!showPassword)}
+                <FormControlLabel
+                    control={<Checkbox defaultChecked checked={termsChecked} onChange={handleTermsChecked} />}
+                    label={
+                        <span>
+                            I accept
+                            <Button
+                                component="span"
+                                color="primary"
+                                onClick={handleClickTOS}
+                                style={{ textTransform: 'none' }}
+                            >
+                                Terms of Services and Privacy Policy
+                            </Button>
+
+                        </span>
+                    }
                 />
-            </div>
+                {error && <ErrorMessage message={error} />}
+                <Button variant="contained" onClick={handleSignUp} style={{ width: '100%', marginBottom: '1rem', padding: '1rem' }}>Đăng ký</Button>
 
-            <div className='squaredcheck'>
-                <label htmlFor="squaredcheck">
-                    <input type="checkbox" value="None" id="squaredcheck" className="checkbox" name="check" />
-                    <span>I accept Quizlet's Terms of Services and Privacy Policy</span>
-                </label>
-            </div>
-
-            {error && <ErrorMessage message={error} />}
-
-            <div className='button'>
-                <button type="button" onClick={handleSignUp}>Sign up</button>
-            </div>
-
-            {/* Switch between Login and SignUp Form */}
-            <button className='switch-status-btn' type='button' onClick={() => navigate('/login')}>
-                <span>Already have an account? Log in</span>
-            </button>
+                <Button className='switch-status-btn' type='button' onClick={() => navigate('/login')} style={{ width: '100%', border: '1px solid #1976d2', padding: '1rem' }}>
+                    <span>Đã có tài khoản? Đăng nhập ngay!</span>
+                </Button>
+            </Box>
         </div>
     );
 };

@@ -4,7 +4,8 @@ import LogIn from './LogIn.js';
 import SignUp from './SignUp.js';
 import './Auth.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faBell, faUser, faStickyNote, faFolder, faUsers, faTimes, } from '@fortawesome/free-solid-svg-icons';
+import { Button } from '@mui/material';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const AuthPage = () => {
   const [currentForm, setCurrentForm] = useState('signup');
@@ -34,12 +35,11 @@ const AuthPage = () => {
 
       {/* Display status AuthForm*/}
       <div className="auth-form-container">
-
         {/* Display tabs */}
         <div className="auth-tabs">
-          <button className={currentForm === 'signup' ? 'active' : ''} onClick={() => navigate('/signup')}>Sign Up</button>
-          <button className={currentForm === 'login' ? 'active' : ''} onClick={() => navigate('/login')}>Log In</button>
-          <button className="close-icon" onClick={toggleCloseButton}><FontAwesomeIcon icon={faTimes} /></button>
+          <Button className={currentForm === 'signup' ? 'active' : ''} onClick={() => navigate('/signup')}>Sign Up</Button>
+          <Button className={currentForm === 'login' ? 'active' : ''} onClick={() => navigate('/login')}>Log In</Button>
+          <Button className="close-icon" onClick={toggleCloseButton}><FontAwesomeIcon icon={faTimes} /></Button>
         </div>
 
         {currentForm === 'login' ? (

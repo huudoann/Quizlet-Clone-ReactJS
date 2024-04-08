@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './LogIn.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Box, TextField, Button } from '@mui/material';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -15,8 +14,11 @@ const LoginForm = ({ switchForm }) => {
 
   const handleLogin = async () => {
     if (!email.trim()) {
-      setError("Your username cannot be blank.");
+      setError("Your username cannot be blank!");
       return;
+    }
+    else if (!password.trim()) {
+      setError("Your password cannot be blank!")
     }
 
     const userData = {
@@ -54,54 +56,42 @@ const LoginForm = ({ switchForm }) => {
   };
 
   return (
-    <div className="auth-form">
-      <div className='username-email-container'>
-        <label>Email:</label>
-        <input
-          type="text"
+    <div className='auth-form'>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { marginBottom: '1rem', width: '100%' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          required
+          id="outlined-required"
+          label="Tên đăng nhập"
           value={email}
           onChange={handleInputChange}
-          placeholder='Enter your email'
-          required />
-      </div>
+          placeholder='Nhập email người dùng'
+        />
 
-      <div className="password-container">
-        <div className="header-of-password">
-          <label>Password:</label>
-
-          <span className="forgot-password" onClick={handleForgotPassword}>Forgot Password?</span>
-        </div>
-
-
-        <input
-          type={showPassword ? 'text' : 'password'}
+        <TextField
+          required
+          id="outlined-password-input"
+          label="Mật khẩu"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder='Enter your password'
-          required
+          placeholder='Nhập mật khẩu'
+          type="password"
+          autoComplete="current-password"
         />
-        <FontAwesomeIcon
-          icon={showPassword ? faEyeSlash : faEye}
-          className="toggle-password-icon"
-          onClick={() => setShowPassword(!showPassword)}
-        />
-      </div>
 
-      <div className='noti-terms'>
-        <p>By clicking Log in, you accept Quizlet's Terms of Service and Privacy Policy</p>
-      </div>
+        {error && <ErrorMessage message={error} />}
+        <Button variant="contained" onClick={handleLogin} style={{ width: '100%', marginBottom: '1rem', padding: '1rem' }}>Đăng nhập</Button>
 
-      {error && <ErrorMessage message={error} />}
-
-      <div className='button'>
-        <button type="button" onClick={handleLogin}>Log in</button>
-      </div>
-
-      {/* Switch between Login and SignUp Form */}
-      <button className='switch-status-btn' type='button' onClick={() => navigate('/signup')}>
-        <span>New to Quizlet? Create an account</span>
-      </button>
-
+        <Button className='switch-status-btn' type='button' onClick={() => navigate('/')} style={{ width: '100%', border: '1px solid #1976d2', padding: '1rem' }}>
+          <span>Chưa có tài khoản? Đăng ký ngay!</span>
+        </Button>
+      </Box>
     </div>
   );
 };

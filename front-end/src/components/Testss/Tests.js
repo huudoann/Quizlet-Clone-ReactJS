@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Tests.scss';
 import { Close } from '@mui/icons-material';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop } from '@mui/material';
 import DropDownMenu from './DropDownMenu';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,15 +14,16 @@ const Tests = () => {
     const [answers, setAnswers] = useState([]);
     const [mounted, setMounted] = useState(false);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Biến đếm số lượng câu trả lời đúng
+    const [userScore, setUserScore] = useState(0);
     const [submitted, setSubmitted] = useState(false); // Kiểm tra xem người dùng đã nộp bài thi chưa
     const [totalQuestions, setTotalQuestions] = useState(0); // Lưu tổng số câu hỏi
     const [openDialog, setOpenDialog] = useState(false);
-    const [showSubmitConfirmation, setShowSubmitConfirmation] = useState(false);
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
-    //bộ đếm ngược thời gian
     useEffect(() => {
+        // useEffect cho bộ đếm ngược thời gian
         const timerId = setInterval(() => {
             setElapsedTime(prevTime => {
                 if (prevTime > 0) {
@@ -50,6 +51,7 @@ const Tests = () => {
     };
 
     useEffect(() => {
+        //Lấy flashcards từ API
         if (!mounted) {
             setMounted(true);
             return;
@@ -57,6 +59,7 @@ const Tests = () => {
 
         const fetchData = async () => {
             try {
+                // Lấy set_id từ query params
                 const set_id = new URLSearchParams(location.search).get('set_id');
                 const flashcardsData = await getCardsDataFromSet(set_id);
                 const data = flashcardsData.content;
@@ -75,6 +78,7 @@ const Tests = () => {
     }, [location.search, mounted]);
 
     useEffect(() => {
+        // useEffect sinh câu hỏi và đáp án
         if (flashcards.length > 0) {
             flashcards.forEach((flashcard, index) => {
                 generateAnswers(flashcard, index);
@@ -106,34 +110,72 @@ const Tests = () => {
             updatedAnswers.splice(index * 4, 4, ...shuffledAnswers);
             return updatedAnswers;
         });
+    };
+    const handleAnswerSelection = (index, answerIndex) => {
+        const selectedAnswerIndex = index * 4 + answerIndex;
 
-        // console.log('Câu trả lời đúng:', correctAnswer);
-        setCorrectAnswersCount(prevCount => prevCount + 1);
+        // Cập nhật đáp án người dùng đã chọn
+        setSelectedAnswers(prevState => {
+            const updatedState = { ...prevState };
+            updatedState[index] = selectedAnswerIndex;
+            return updatedState;
+        });
+
+        const selectedAnswer = flashcards[index].front_text; // Lấy câu trả lời được chọn
+        const correctAnswer = answers[selectedAnswerIndex]; // Lấy đáp án được chọn từ mảng answers
+        if (selectedAnswer === correctAnswer) {
+            setCorrectAnswersCount(prevCount => prevCount + 1); // Tăng số câu trả lời đúng lên 1 nếu đúng
+        }
     };
 
     const handleSubmitButtonClick = () => {
-        setSubmitted(true);
-
-        const totalQuestionsCount = flashcards.length;
-        setTotalQuestions(totalQuestionsCount);
-
-        setOpenDialog(true);
+        setConfirmDialogOpen(true);
     };
 
     const handleDialogClose = () => {
         setOpenDialog(false);
     };
 
+    const handleConfirmDialogClose = (confirmed) => {
+        if (confirmed) {
+            // Nếu người dùng xác nhận nộp bài, thì hiển thị dialog kết quả
+            setOpenDialog(true);
+            setSubmitted(true);
+            const totalQuestionsCount = flashcards.length;
+            setTotalQuestions(totalQuestionsCount);
+
+            // Tính số câu trả lời đúng sau khi người dùng xác nhận nộp bài
+            let correctCount = 0;
+            selectedAnswers.forEach((selectedAnswerIndex, index) => {
+                const selectedAnswer = answers[selectedAnswerIndex];
+                const correctAnswer = flashcards[index].front_text;
+                if (selectedAnswer === correctAnswer) {
+                    correctCount++;
+                }
+            });
+            setCorrectAnswersCount(correctCount);
+
+            setConfirmDialogOpen(false);
+        } else {
+            setConfirmDialogOpen(false);
+        }
+    };
+
+
     return (
         <div className="Tests">
             <div className="navigation">
                 <DropDownMenu />
+                <div className="elapsed-time">
+                    <p>Thời gian còn lại: {formatTime(elapsedTime)}</p>
+                </div>
                 <button className="close-button" onClick={handleCloseButtonClick}><Close /></button>
             </div>
 
             {flashcards.map((flashcard, index) => (
                 <div className="tests-form" key={index}>
                     <div className='defi-box'>
+                        <p>Câu {index + 1}:</p>
                         <p>Definition</p>
                         <p className="back-text">{flashcard.back_text}</p>
                     </div>
@@ -141,13 +183,14 @@ const Tests = () => {
                         <p className='select-term'>Chọn thuật ngữ đúng</p>
                         <div className="buttons-answer">
                             <div className="button-row">
-                                {answers.slice(index * 4, index * 4 + 2).map((answer, answerIndex) => (
-                                    <button key={answerIndex}>{answer}</button>
-                                ))}
-                            </div>
-                            <div className="button-row">
-                                {answers.slice(index * 4 + 2, index * 4 + 4).map((answer, answerIndex) => (
-                                    <button key={answerIndex + 2}>{answer}</button>
+                                {answers.slice(index * 4, index * 4 + 4).map((answer, answerIndex) => (
+                                    <button
+                                        key={answerIndex}
+                                        className={selectedAnswers[index] === index * 4 + answerIndex ? 'clicked' : ''}
+                                        onClick={() => handleAnswerSelection(index, answerIndex)}
+                                    >
+                                        {answer}
+                                    </button>
                                 ))}
                             </div>
                         </div>
@@ -155,7 +198,23 @@ const Tests = () => {
                 </div>
             ))}
 
-            {/* Dialog */}
+            {/* Dialog xác nhận khi nộp bài */}
+            <Dialog open={confirmDialogOpen} onClose={() => handleConfirmDialogClose(false)}>
+                <DialogTitle>Xác nhận</DialogTitle>
+                <DialogContent>
+                    <p>Bạn có chắc chắn muốn nộp bài không?</p>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => handleConfirmDialogClose(false)} color="primary">
+                        Hủy
+                    </Button>
+                    <Button onClick={() => handleConfirmDialogClose(true)} color="primary">
+                        Đồng ý
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Dialog kết quả bài kiểm tra */}
             <Dialog open={openDialog} onClose={handleDialogClose}>
                 <DialogTitle>Kết quả bài kiểm tra</DialogTitle>
                 <DialogContent>
@@ -170,12 +229,16 @@ const Tests = () => {
                 </DialogActions>
             </Dialog>
 
+            {/* Mờ nền */}
+            <Backdrop open={confirmDialogOpen || openDialog} />
+
             {/* Button "Gửi bài kiểm tra" */}
             {!submitted && (
                 <Button variant="contained"
                     onClick={handleSubmitButtonClick}
-                    className="submit-button">
-                    Gửi bài kiểm tra
+                    className="submit-button"
+                    style={{ marginBottom: '1rem' }}>
+                    Nộp bài
                 </Button>
             )}
         </div>

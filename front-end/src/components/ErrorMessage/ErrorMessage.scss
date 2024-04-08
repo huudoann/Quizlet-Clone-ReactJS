@@ -1,5 +1,6 @@
 .error-message {
-    width: 100%;
+    width: inherit;
+    text-align: center;
     color: red !important;
     border: 2px solid red;
     border-radius: 10px;
