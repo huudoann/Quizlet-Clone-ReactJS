@@ -5,6 +5,7 @@ import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentC
 import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -405,6 +406,17 @@ const Flashcard = () => {
                     <div className="creator">
                         <img src={creator.avatar} alt="Creator Avatar" />
                         <p>{creator.name}</p>
+                        <Link to="/edit-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                                <symbol id="edit" viewBox="0 0 24 24">
+                                    <path d="M3.43865 17.9013C3.47528 17.7269 3.56185 17.567 3.68781 17.4411L15.5903 5.53862L18.4614 8.40973L6.55892 20.3122C6.43296 20.4381 6.27307 20.5247 6.09874 20.5613L4.10683 20.9798C3.45856 21.116 2.88398 20.5414 3.02017 19.8932L3.43865 17.9013Z"></path>
+                                    <path d="M17.5914 3.53752L16.6899 4.43901L19.561 7.31013L20.4625 6.40863C21.1792 5.69194 21.1792 4.52995 20.4625 3.81326L20.1867 3.53752C19.4701 2.82083 18.3081 2.82083 17.5914 3.53752Z"></path>
+                                </symbol>
+                            </svg>
+                            <svg className="AssemblyIcon AssemblyIcon--medium" role="presentation">
+                                <use xlinkHref="#edit" />
+                            </svg>
+                        </Link>
                         <div className="menu-container">
                             <button onClick={toggleMenu}><MoreHoriz /></button>
                             {showMenu && (
