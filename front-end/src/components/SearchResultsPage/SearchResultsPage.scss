@@ -6,7 +6,12 @@
     }
 
     .search-results-page-container {
-        padding:2% 10% 10% ;
+        width: 1170px;
+        max-width: calc(100vw - 48px);
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        padding-left: 10%;
     }
 
     .search-results-page-content {
@@ -16,8 +21,8 @@
 
     .set-items {
         margin-top: 20px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 20px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
     }
 }

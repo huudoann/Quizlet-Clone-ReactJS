@@ -1,7 +1,6 @@
 .set-item {
     color: white;
-    height: 150px;
-    width: 350px;
+    width: 26%;
     border-radius: 20px;
     padding: 20px;
     background-color: #2E3856;
@@ -18,21 +17,19 @@
 
     .set-item-content {
         margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #rating {
+        font-size: 22px;
     }
 
     .set-item-descriptions {
         margin-top: 10px;
         display: flex;
         gap: 30px;
-    }
-
-    #number-of-words {
-        width: 100px;
-        color: #2E3856;
-        border-radius: 10px;
-        background-color: white;
-        padding: 2px;
-        font-weight: 500;
     }
 
     .set-item-footer {
