@@ -84,28 +84,29 @@
       }
 
       .flashcard-navigation {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         justify-content: space-between;
         align-items: center;
         margin-bottom: 25px;
         border: 1px;
+      }
 
-        span {
-          font-size: 2rem;
-          padding: 0 0.5rem 0.5rem 0.5rem;
-        }
+      .flashcard-navigation span {
+        font-size: 1.5rem;
+        place-self: center;
+      }
 
-        a {
-          flex-grow: 1;
-          padding: .5rem;
-          background-color: #2e3856;
-          border-radius: 5px;
-          font-weight: 500;
+      .flashcard-navigation a {
+        display: flex;
+        padding: .5rem;
+        background-color: #2e3856;
+        border-radius: 5px;
+        font-weight: 500;
+      }
 
-          &:hover {
-            box-shadow: inset 0 -2px 0 0 #ccc;
-          }
-        }
+      .flashcard-navigation a:hover {
+        box-shadow: inset 0 -2px 0 0 #ccc;
       }
 
       .flashcard-form {
@@ -314,11 +315,10 @@
       width: 30%;
       font-weight: bold;
       padding: 1rem .5rem 1rem .5rem;
-      text-wrap: wrap;
+      word-wrap: break-word;
     }
 
     .flashcard-list li span {
-      width: 50%;
       flex-grow: 1;
       font-weight: bold;
       padding: 1rem;
@@ -328,17 +328,11 @@
     }
 
     .flashcard-list button {
-      border-radius: 5px;
-      background-color: lighten($color: #2e3856, $amount: 20%);
+      background-color: inherit;
       color: #fff;
-      border: 1px solid #1f273e;
-      padding: 8px 16px;
+      border: none;
+      padding: 4px 8px;
       cursor: pointer;
-      font-weight: bold;
-    }
-
-    .flashcard-list button:hover {
-      background-color: #1f273e;
     }
 
     .flashcard-list [type="text"] {
@@ -399,15 +393,22 @@
     backdrop-filter: blur(5px);
     z-index: 9998;
   }
+
+  .AssemblyIcon--larger {
+    height: 2rem;
+    width: 2rem;
+  }
+
   .AssemblyIcon--medium {
     height: 1.5rem;
     width: 1.5rem;
   }
+
   .AssemblyIcon {
     color: inherit;
     display: inline-block;
     fill: currentColor;
-    transition: all .12s cubic-bezier(.47,0,.745,.715);
+    transition: all .12s cubic-bezier(.47, 0, .745, .715);
     flex-shrink: 0;
   }
 }

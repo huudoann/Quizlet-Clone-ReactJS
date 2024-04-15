@@ -28,8 +28,6 @@
             font-weight: bold;
             color: white;
             box-shadow: inset 0 -3px 0 0 lighten(#2e3856, 50%);
-            border-end-start-radius: 5px;
-            border-end-end-radius: 5px;
         }
 
         .homepage-btn,
@@ -41,8 +39,7 @@
 
             &:hover {
                 box-shadow: inset 0 -3px 0 0 #acacfc;
-                border-end-start-radius: 5px;
-                border-end-end-radius: 5px;
+
             }
 
         }

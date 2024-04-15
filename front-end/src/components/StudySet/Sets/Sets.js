@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Sets.scss';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../Header/Header';
 import axios from 'axios';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,8 @@ const Sets = () => {
 
     const [sets, setSets] = useState([]);
     const [username, setUserName] = useState();
-    const location = useLocation()
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [activeLink, setActiveLink] = useState('');
 
@@ -82,7 +83,8 @@ const Sets = () => {
                                 className="set-item-button"
                                 onClick={() => {
                                     localStorage.setItem('flashcardTitle', set.title);
-                                    window.location.href = `/flashcard?set_id=${set.setId}`;
+                                    localStorage.setItem('set_id', set.setId);
+                                    navigate('/flashcard');
                                 }}
                             >
                                 <h3>{set.title}</h3>
