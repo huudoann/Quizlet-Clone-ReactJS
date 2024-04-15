@@ -12,6 +12,7 @@ import LoginForm from '../components/AuthForm/LoginForm';
 import Folders from '../components/StudySet/Folders/Folders';
 import Tos from '../components/PrivacyPolicy/Tos';
 import Tests from '../components/Testss/Tests';
+import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage';
 import '../styles/global.scss';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                     <Route exact path='/match' element={<Match />} />
                     <Route exact path='/folders' element={<Folders />} />
                     <Route exact path='/tos' element={<Tos />} />
+                    <Route exact path='/search-results-page' element={<SearchResultsPage />} />
                 </Routes>
             </div>
         </Router>
