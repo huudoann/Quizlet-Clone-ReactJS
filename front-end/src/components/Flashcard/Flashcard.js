@@ -27,13 +27,15 @@ const Flashcard = () => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [cardIdToDelete, setCardIdToDelete] = useState(null);
     const [setIdToDelete, setSetIdToDelete] = useState(null);
+    const set_id = new URLSearchParams(location.search).get('set_id');
     const [newCardData, setNewCardData] = useState({
         front_text: '',
-        back_text: ''
+        back_text: '',
+        is_known: false,
+        updated_at: new Date(),
     });
 
     const flashcardContainerRef = useRef(null);
-    const set_id = new URLSearchParams(location.search).get('set_id');
 
     const shuffleArray = (array) => {
         if (!Array.isArray(array)) {
@@ -48,6 +50,7 @@ const Flashcard = () => {
         return newArray;
     };
 
+    //gọi API lấy tất cả thẻ theo set_id
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -87,16 +90,15 @@ const Flashcard = () => {
                 // throw new Error('Token không tồn tại trong localStorage');
             }
             const set_id = new URLSearchParams(location.search).get('set_id');
-            const createCardApiUrl = `http://localhost:8080/${set_id}/create_card`
+            const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`
             const response = await axios.post(createCardApiUrl, newCardData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
                 },
             });
 
             if (response.status === 200) {
-                // Thực hiện các thao tác cập nhật giao diện sau khi thêm thẻ thành công
+                //Thực hiện các thao tác cập nhật giao diện sau khi thêm thẻ thành công
                 const flashcardsData = await getCardsDataFromSet(set_id); // Lấy lại dữ liệu thẻ sau khi thêm
                 setFlashcards(flashcardsData);
             } else {
@@ -121,7 +123,7 @@ const Flashcard = () => {
                 window.location.href("/login")
                 return null
             }
-            const response = await axios.delete(`http://localhost:8080/cards/${cardIdToDelete}`, {
+            const response = await axios.delete(`http://localhost:8080/api/card/${cardIdToDelete}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -178,6 +180,7 @@ const Flashcard = () => {
         }
     };
 
+    //gọi API lấy review
     const fetchReviewing = async () => {
         try {
             let token = localStorage.getItem('token');
@@ -207,6 +210,7 @@ const Flashcard = () => {
         }
     };
 
+    //gọi API xóa set
     const handleDeleteSet = async () => {
         setShowConfirmation(true);
         setSetIdToDelete(set_id);
@@ -333,6 +337,7 @@ const Flashcard = () => {
         setRating(value);
     };
 
+    //Ẩn/hiện dialog
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     };

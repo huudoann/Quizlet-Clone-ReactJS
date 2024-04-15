@@ -1,3 +1,4 @@
+.folders {
     .body-folders {
         height: 100vh;
         background-color: #0d072d;
@@ -8,43 +9,115 @@
         padding: 20px 50px 20px 50px;
     }
 
-    .folder-card {
+    .user-profile {
         display: flex;
-        border: 1px solid #313756;
-        background-color: #313756;
+        align-items: center;
+    }
+
+    .avatar {
+        width: 70px;
+        /* Điều chỉnh kích thước avatar theo ý muốn */
+        height: 70px;
+        /* Điều chỉnh kích thước avatar theo ý muốn */
+        border-radius: 50%;
+        /* Để hình ảnh thành hình tròn */
+        margin-right: 10px;
+        /* Khoảng cách giữa avatar và tên người dùng */
+    }
+
+    .username {
         color: white;
+        font-size: 16px;
         font-weight: bold;
-        border-radius: 5px;
-        margin-top: 30px;
-        width: 150vh;
-        padding: 10px 30px;
-        flex-direction: column;
+        /* Điều chỉnh kích thước của tên người dùng theo ý muốn */
+    }
+
+    .select-card {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+        border-bottom: 2px solid #282e3e;
+
+    }
+
+    .term,
+    .folder {
         cursor: pointer;
+        color: #8493b4;
+        font-weight: bold;
+        position: relative;
+
+        &:hover {
+            color: white;
+        }
+
+    }
+
+    .term:hover::after,
+    .folder:hover::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0rem;
+        width: 100%;
+        height: 2px;
+        background-color: #acacfc;
     }
 
     .active {
         font-weight: bold;
         color: white;
+        box-shadow: inset 0 -2px 0 0 lighten(#2e3856, 50%);
     }
 
-    .folder-info {
-        margin-right: 10px;
+
+    .search-term {
+        width: 50vh;
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        flex-grow: 1;
+        height: 50px;
+        padding-top: 20px;
+        position: relative;
+
+        input[type="text"] {
+            flex-grow: 2;
+            padding: 1rem;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            background-color: #303c54;
+
+            &::placeholder {
+                color: #fff;
+                font-weight: 700;
+                font-size: 1rem;
+            }
+        }
+
+        .icon-search {
+            position: absolute;
+            right: 10px;
+            top: 5%;
+            transform: translateY(50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            svg {
+                color: #acacfc;
+                font-size: 20px;
+            }
+        }
+
     }
 
-    .folder-name,
-    .number-term {
-        margin-bottom: 5px;
-    }
-
-    .faFolder {
-        font-size: 24px;
-        margin-right: 10px;
-    }
-
-    .active {
-        font-weight: bold;
-        color: white;
-    }
 
     .folders-list {
         display: flex;
@@ -68,8 +141,8 @@
             }
         }
 
-        .set-item:hover {
-            cursor: pointer;
+        .folder-item:hover {
             box-shadow: inset 0 -3px 0 0 lighten(#2e3856, 50%);
         }
     }
+}
