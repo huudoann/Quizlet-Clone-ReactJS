@@ -13,6 +13,8 @@ import Folders from '../components/StudySet/Folders/Folders';
 import Tos from '../components/PrivacyPolicy/Tos';
 import Tests from '../components/Testss/Tests';
 import '../styles/global.scss';
+import { Edit } from '@mui/icons-material';
+import EditSet from '../components/EditSet/EditSet';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,6 +37,7 @@ function App() {
                     <Route exact path='/match' element={<Match />} />
                     <Route exact path='/folders' element={<Folders />} />
                     <Route exact path='/tos' element={<Tos />} />
+                    <Route exact path='/edit-set' element={<EditSet />} />
                 </Routes>
             </div>
         </Router>

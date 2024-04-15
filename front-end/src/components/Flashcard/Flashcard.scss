@@ -399,5 +399,15 @@
     z-index: 9998;
     /* Z-index cao hơn hộp thoại để hiển thị phía sau */
   }
-
+  .AssemblyIcon--medium {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  .AssemblyIcon {
+    color: inherit;
+    display: inline-block;
+    fill: currentColor;
+    transition: all .12s cubic-bezier(.47,0,.745,.715);
+    flex-shrink: 0;
+  }
 }
