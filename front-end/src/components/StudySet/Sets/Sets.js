@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Sets.scss';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import Header from '../../Header/Header';
 import axios from 'axios';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Input } from '@mui/material';
 
 const Sets = () => {
     // sửa UI
@@ -25,6 +26,7 @@ const Sets = () => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
 
+    //gọi API lấy tất cả các set
     useEffect(() => {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
@@ -62,15 +64,11 @@ const Sets = () => {
                     <span className='username'>{username}</span>
                 </div>
                 <div className='select-card'>
-                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className={`term ${activeLink === '/sets' ? 'active' : ''}`}>Học phần</div>
-                    </Link>
-                    <Link to="/folders" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className={`folder ${activeLink === '/folders' ? 'active' : ''}`}>Thư mục</div>
-                    </Link>
+                    <NavLink to={`/sets`} className="term" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><Button>Học phần</Button></NavLink>
+                    <NavLink to={`/folders`} className="folder" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><Button>Thư mục</Button></NavLink>
                 </div>
                 <div className='search-term'>
-                    <input type="text" placeholder="Tìm kiếm học phần" />
+                    <Input type="text" placeholder="Tìm kiếm học phần" style={{ width: '100%' }} />
                     <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
                     </div>
@@ -79,7 +77,7 @@ const Sets = () => {
                 <div className="sets-list">
                     {sets.length > 0 ? (
                         sets.map(set => (
-                            <button
+                            <Button
                                 key={set.setId}
                                 className="set-item-button"
                                 onClick={() => {
@@ -88,7 +86,7 @@ const Sets = () => {
                                 }}
                             >
                                 <h3>{set.title}</h3>
-                            </button>
+                            </Button>
                         ))
                     ) : (
                         <p>Không có sets nào được tìm thấy.</p>

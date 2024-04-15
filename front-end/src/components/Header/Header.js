@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createSvgIcon } from '@mui/material/utils';
 import PersonIcon from '@mui/icons-material/Person';
 import './Header.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { Button, Input } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faFolder, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -125,17 +126,18 @@ const Header = () => {
                 <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                     <div className="name-app">Quizlet</div> </Link>
 
-                <div className='home-library-container'>
-                    <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className='homepage-btn'>Home</div>
-                    </Link>
-                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }} onClick={handleLibraryClick}>
-                        <div className='library-menu' onClick={handleLibraryClick}>Library</div>
-                    </Link>
-                </div>
+                {/* <div className='home-library-container'> */}
+                <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '1rem' }}>
+                    <Button>Trang chủ</Button>
+                </NavLink>
+
+                <NavLink to={"/sets"} className="library-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
+                    <Button>Thư viện</Button>
+                </NavLink>
+                {/* </div> */}
 
                 <div className="search">
-                    <input type="text" placeholder="Search for anything..." />
+                    <Input type="text" placeholder="Search for anything..." style={{ width: '100%' }} />
                     <div className="button-right">
                         <div className="icon-container icon-container-plus" onClick={toggleMenu}>
                             <PlusIcon />
@@ -145,13 +147,10 @@ const Header = () => {
                                         <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
                                     </Link>
                                     <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
-                                    {/* <div className="menu-item"><FontAwesomeIcon icon={faUsers} /> Lớp </div> */}
                                 </div>
                             )}
                         </div>
-                        {/* <div className="icon-container icon-container-bell">
-                            <NotificationsIcon />
-                        </div> */}
+
                         <div className="icon-container icon-container-user" onClick={toggleUserMenu}>
                             <PersonIcon />
                             {isUserMenuOpen && (

@@ -305,7 +305,7 @@
       justify-content: space-between;
       margin-bottom: 1rem;
       padding: .5rem 1rem .5rem 1rem;
-      border: 1px solid #eee;
+      // border: 1px solid #eee;
       border-radius: 5px;
       background-color: #2e3856;
     }
@@ -314,6 +314,7 @@
       width: 30%;
       font-weight: bold;
       padding: 1rem .5rem 1rem .5rem;
+      text-wrap: wrap;
     }
 
     .flashcard-list li span {
@@ -397,7 +398,6 @@
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     z-index: 9998;
-    /* Z-index cao hơn hộp thoại để hiển thị phía sau */
   }
   .AssemblyIcon--medium {
     height: 1.5rem;

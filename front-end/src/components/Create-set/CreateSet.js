@@ -23,13 +23,16 @@ const CreateSet = () => {
     //post dữ liệu về BE
     const handleCreateButtonClick = async () => {
         const isPublic = isPublicSelected;
+        const user_id = localStorage.getItem("user_id");
 
         const setData = {
+            user_id,
             title,
             description,
             is_public: isPublic
         };
 
+        //gọi API tạo set
         const createSetApiUrl = 'http://localhost:8080/api/set/create-set';
         const token = localStorage.getItem('token'); // Lấy token từ local storage
 
@@ -58,12 +61,8 @@ const CreateSet = () => {
 
             console.log(cardData)
 
-            const createCardApiUrl = `http://localhost:8080/${set_id}/create_card`;
-            // const responseCard = await axios.post(createCardApiUrl, cardData, {
-            //     headers: {
-            //         'Authorization': `Bearer ${token}`
-            //     }
-            // });
+            //gọi API tạo card
+            const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`;
 
             cardData.map(async (card) => {
                 const responseCard = await axios.post(createCardApiUrl, card, {

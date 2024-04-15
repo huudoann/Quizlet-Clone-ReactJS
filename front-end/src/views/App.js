@@ -12,9 +12,9 @@ import LoginForm from '../components/AuthForm/LoginForm';
 import Folders from '../components/StudySet/Folders/Folders';
 import Tos from '../components/PrivacyPolicy/Tos';
 import Tests from '../components/Testss/Tests';
-import '../styles/global.scss';
-import { Edit } from '@mui/icons-material';
+import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage';
 import EditSet from '../components/EditSet/EditSet';
+import '../styles/global.scss';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,6 +37,7 @@ function App() {
                     <Route exact path='/match' element={<Match />} />
                     <Route exact path='/folders' element={<Folders />} />
                     <Route exact path='/tos' element={<Tos />} />
+                    <Route exact path='/search-results-page' element={<SearchResultsPage />} />
                     <Route exact path='/edit-set' element={<EditSet />} />
                 </Routes>
             </div>

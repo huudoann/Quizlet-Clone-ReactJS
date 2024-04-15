@@ -47,6 +47,12 @@ const LoginForm = ({ switchForm }) => {
     }
   };
 
+  const handleEnterPress = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   const handleInputChange = (e) => {
     setEmail(e.target.value);
   };
@@ -71,6 +77,7 @@ const LoginForm = ({ switchForm }) => {
           label="Tên đăng nhập"
           value={email}
           onChange={handleInputChange}
+          onKeyDown={handleEnterPress}
           placeholder='Nhập email người dùng'
         />
 
@@ -80,6 +87,7 @@ const LoginForm = ({ switchForm }) => {
           label="Mật khẩu"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleEnterPress}
           placeholder='Nhập mật khẩu'
           type="password"
           autoComplete="current-password"

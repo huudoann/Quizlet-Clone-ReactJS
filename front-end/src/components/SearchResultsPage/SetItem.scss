@@ -1,0 +1,64 @@
+.set-item {
+    color: white;
+    height: 150px;
+    width: 350px;
+    border-radius: 20px;
+    padding: 20px;
+    background-color: #2E3856;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Thêm transition để tạo hiệu ứng chuyển đổi màu sắc */
+
+    // &:hover {
+    //     background-color: #586380; /* Màu sắc khi hover vào .set-item */
+    // }
+
+    .set-item-title {
+        font-size: 30px;
+    }
+
+    .set-item-content {
+        margin-top: 20px;
+    }
+
+    .set-item-descriptions {
+        margin-top: 10px;
+        display: flex;
+        gap: 30px;
+    }
+
+    #number-of-words {
+        width: 100px;
+        color: #2E3856;
+        border-radius: 10px;
+        background-color: white;
+        padding: 2px;
+        font-weight: 500;
+    }
+
+    .set-item-footer {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .preview-button {
+        cursor: pointer;
+        font-size: 15px;
+        width: 40%;
+        height: 30%;
+        color: white;
+        background-color: #2E3856;
+        border: 3px solid #586380;
+        border-radius: 10px;
+        padding: 5px;
+        transition: background-color 0.3s ease; /* Thêm transition để tạo hiệu ứng chuyển đổi màu sắc */
+
+        /* Màu sắc khi hover vào nút */
+        &:hover {
+            background-color: #282E3E;
+        }
+        &:hover:not(.preview-button) {
+            background-color: #586380;
+        }
+    }
+}

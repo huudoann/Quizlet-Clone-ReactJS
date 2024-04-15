@@ -64,6 +64,12 @@ const SignUpForm = ({ switchForm }) => {
         navigate('/tos');
     }
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSignUp();
+        }
+    };
+
 
     return (
         <div className="auth-form">
@@ -81,6 +87,7 @@ const SignUpForm = ({ switchForm }) => {
                     label="Tên đăng nhập"
                     value={username}
                     onChange={handleInputUsernameChange}
+                    onKeyDown={handleEnterPress}
                     placeholder='Nhập tên người dùng'
                 />
 
@@ -90,6 +97,7 @@ const SignUpForm = ({ switchForm }) => {
                     label="Email"
                     value={email}
                     onChange={handleInputEmailChange}
+                    onKeyDown={handleEnterPress}
                     placeholder='Nhập email của bạn'
                 />
 
@@ -99,6 +107,7 @@ const SignUpForm = ({ switchForm }) => {
                     label="Mật khẩu"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleEnterPress}
                     placeholder='Nhập mật khẩu'
                     type="password"
                     autoComplete="current-password"
@@ -110,6 +119,7 @@ const SignUpForm = ({ switchForm }) => {
                     label="Xác nhận mật khẩu"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    onKeyDown={handleEnterPress}
                     placeholder='Xác thực mật khẩu của bạn'
                     type="password"
                     autoComplete="current-password"

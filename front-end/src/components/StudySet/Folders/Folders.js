@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import './Folders.scss';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import Header from "../../Header/Header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import { Button, Input } from "@mui/material";
 
 const Folders = () => {
     const location = useLocation()
@@ -42,6 +43,10 @@ const Folders = () => {
     useEffect(() => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
+
+    const isActiveSet = activeLink === '/sets';
+    const isActiveFolder = activeLink === '/folders';
+
     return (
         <div className="folders">
             {<Header />}
@@ -52,15 +57,11 @@ const Folders = () => {
                     <span className='username'>{username}</span>
                 </div>
                 <div className='select-card'>
-                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className={`term ${activeLink === '/sets' ? 'active' : ''}`}>Học phần</div>
-                    </Link>
-                    <Link to="/folders" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <div className={`folder ${activeLink === '/folders' ? 'active' : ''}`}>Thư mục</div>
-                    </Link>
+                    <NavLink to={`/sets`} className="term" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><Button>Học phần</Button></NavLink>
+                    <NavLink to={`/folders`} className="folder" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><Button>Thư mục</Button></NavLink>
                 </div>
                 <div className='search-term'>
-                    <input type="text" placeholder="Tìm kiếm thư mục" />
+                    <Input type="text" placeholder="Tìm kiếm thư mục" style={{ width: '100%' }} />
                     <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
                     </div>
@@ -69,16 +70,13 @@ const Folders = () => {
                 <div className="folders-list">
                     {folders.length > 0 ? (
                         folders.map(folder => (
-                            <div key={folder.setId} className="folder-item">
-                                {/* Link to trang folder chứa các set của folder đó 
-                                
-                                
-                                */}
+                            <Button key={folder.setId} className="folder-item">
+
                                 <Link to={`/flashcard?set_id=${folder.setId}`} style={{ textDecoration: 'none', color: 'inherit' }}
                                     onClick={() => localStorage.setItem('flashcardTitle', folder.title)}>
                                     <h3>{folder.title}</h3>
                                 </Link>
-                            </div>
+                            </Button>
                         ))
                     ) : (
                         <p>Không có folders nào được tìm thấy.</p>
