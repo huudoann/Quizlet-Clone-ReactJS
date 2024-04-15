@@ -373,7 +373,9 @@ const Flashcard = () => {
                         <div className="flashcard-navigation">
                             <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><ContentCopy color="primary"></ContentCopy> <span>Flashcards</span></NavLink>
                             <NavLink to={`/learn${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><AutoMode color="primary"></AutoMode> <span>Learn</span></NavLink>
-                            <NavLink to={`/test${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}><Quiz color="primary"></Quiz> <span>Test</span></NavLink>
+                            <NavLink to={`/test${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}>
+                                <Quiz color="primary"></Quiz>
+                                <span>Test</span></NavLink>
                             <NavLink to={`/match${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}><Compare color="primary"></Compare> <span>Match</span></NavLink>
                         </div>
                         <div className={`flashcard-form`}>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createSvgIcon } from '@mui/material/utils';
 import PersonIcon from '@mui/icons-material/Person';
 import './Header.scss';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button, Input } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faFolder, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
@@ -15,13 +15,11 @@ const Header = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State cho menu người dùng
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
+    const location = useLocation();
     const menuRef = useRef(null); // Ref cho menu
     const menuUserRef = useRef(null); // Ref cho menu người dùng
 
-    const handleLibraryClick = () => {
-
-    };
+    const isActive = location.pathname.includes('/folders') || location.pathname.includes('/sets');
 
     useEffect(() => {
         // Hàm xử lý sự kiện click ra ngoài menu
@@ -128,11 +126,11 @@ const Header = () => {
 
                 {/* <div className='home-library-container'> */}
                 <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '1rem' }}>
-                    <Button>Trang chủ</Button>
+                    <Button style={{ color: 'white' }}>Trang chủ</Button>
                 </NavLink>
 
-                <NavLink to={"/sets"} className="library-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
-                    <Button>Thư viện</Button>
+                <NavLink to={"/sets"} className="library-btn" activeclassName={isActive ? 'active' : ''} style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
+                    <Button style={{ color: 'white' }}>Thư viện</Button>
                 </NavLink>
                 {/* </div> */}
 

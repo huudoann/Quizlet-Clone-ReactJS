@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./SearchResultsPage.scss";
 import Header from "../Header/Header";
 import SetItem from "./SetItem";
+import axios from "axios";
 
 const sets = [
   {
@@ -32,26 +33,32 @@ const sets = [
 
 
 const SearchResultsPage = () => {
-  // const [sets, setSets] = useState();
+  const [sets, setSets] = useState();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:8080/api/set/get-all-sets`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       const data = await response.json();
-  //       setSets(data);
-  //     } catch (error) {
-  //       console.error("Lỗi khi lấy dữ liệu exam-result:", error.message);
-  //     }
-  //   };
-  //   fetchData();
-  //   console.log(sets);
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      let token = localStorage.getItem('token');
+
+      // Kiểm tra xem token có tồn tại không
+      if (!token) {
+        throw new Error('Token không tồn tại trong localStorage');
+      } else {
+        try {
+          // Thực hiện gọi API ở đây
+          const response = await axios.get(`http://localhost:8080/api/set/get-all-sets`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          setSets(response.data);
+        } catch (error) {
+          console.error('Lỗi khi lấy danh sách các set:', error.message);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="search-results-page">
@@ -61,8 +68,9 @@ const SearchResultsPage = () => {
         <div className="search-results-page-content">
           Học phần
           <div className="set-items">
-            {sets.map((set) => (
+            {sets && sets.map((set) => (
               <SetItem
+                key={set.id} // Đảm bảo sử dụng key duy nhất cho mỗi phần tử trong map
                 title={set.title}
                 numberOfWords={set.numberOfWords}
                 rating={set.rating}
