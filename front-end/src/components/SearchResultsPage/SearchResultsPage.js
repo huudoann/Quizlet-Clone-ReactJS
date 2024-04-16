@@ -70,11 +70,10 @@ const SearchResultsPage = () => {
           <div className="set-items">
             {sets && sets.map((set) => (
               <SetItem
-                key={set.id} // Đảm bảo sử dụng key duy nhất cho mỗi phần tử trong map
+                set_id={set.set_id}
                 title={set.title}
-                numberOfWords={set.numberOfWords}
                 rating={set.rating}
-                username={set.username}
+                username={set.user}
               />
             ))}
           </div>
