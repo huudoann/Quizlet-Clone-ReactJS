@@ -51,6 +51,7 @@ const CreateSet = () => {
 
             const set_id = response.data.set_id; // Lưu set_id từ phản hồi
             console.log(set_id)
+            localStorage.setItem("set_id", set_id);
 
             // Gửi dữ liệu các cards
             const cardData = inputElements.map(input => ({
@@ -74,7 +75,7 @@ const CreateSet = () => {
             })
 
             //chuyển về trang có set_id đó
-            navigate(`/flashcard?set_id=${set_id}`)
+            navigate(`/flashcard`)
 
             return
 
