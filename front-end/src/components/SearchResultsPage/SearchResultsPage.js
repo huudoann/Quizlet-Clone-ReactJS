@@ -4,48 +4,21 @@ import Header from "../Header/Header";
 import SetItem from "./SetItem";
 import axios from "axios";
 
-const sets = [
-  {
-    title: "vocab",
-    numberOfWords: "6",
-    rating: "4",
-    username: "Nguyen Quoc Khanh"
-  },
-  {
-    title: "vocab",
-    numberOfWords: "12",
-    rating: "5",
-    username: "Nguyen Van Hai"
-  },
-  {
-    title: "vocab",
-    numberOfWords: "12",
-    rating: "5",
-    username: "Nguyen Van Hai"
-  },
-  {
-    title: "vocab",
-    numberOfWords: "12",
-    rating: "5",
-    username: "Nguyen Van Hai"
-  }
-]
-
-
 const SearchResultsPage = () => {
   const [sets, setSets] = useState();
+
+  let filterTitle = localStorage.getItem('filterTitle');
 
   useEffect(() => {
     const fetchData = async () => {
       let token = localStorage.getItem('token');
-
       // Kiểm tra xem token có tồn tại không
       if (!token) {
         throw new Error('Token không tồn tại trong localStorage');
       } else {
         try {
           // Thực hiện gọi API ở đây
-          const response = await axios.get(`http://localhost:8080/api/set/get-all-sets`, {
+          const response = await axios.get(`http://localhost:8080/api/set/title/${filterTitle}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -58,6 +31,7 @@ const SearchResultsPage = () => {
     };
 
     fetchData();
+    console.log(sets);
   }, []);
 
   return (
