@@ -19,7 +19,7 @@ const Header = () => {
     const menuRef = useRef(null); // Ref cho menu
     const menuUserRef = useRef(null); // Ref cho menu người dùng
 
-    const isActive = location.pathname.includes('/folders') || location.pathname.includes('/sets');
+    const isActive = location.pathname.includes('folders') || location.pathname.includes('sets');
 
     useEffect(() => {
         // Hàm xử lý sự kiện click ra ngoài menu
@@ -121,18 +121,18 @@ const Header = () => {
     return (
         <div className='nav-header'>
             <header>
-                <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                    <div className="name-app">Quizlet</div> </Link>
+                <div className='home-library-container'>
+                    <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                        <div className="name-app">Quizlet</div> </Link>
 
-                {/* <div className='home-library-container'> */}
-                <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '1rem' }}>
-                    <Button style={{ color: 'white' }}>Trang chủ</Button>
-                </NavLink>
+                    <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '1rem' }}>
+                        <Button style={{ color: 'white' }}>Trang chủ</Button>
+                    </NavLink>
 
-                <NavLink to={"/sets"} className="library-btn" activeclassName={isActive ? 'active' : ''} style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
-                    <Button style={{ color: 'white' }}>Thư viện</Button>
-                </NavLink>
-                {/* </div> */}
+                    <NavLink to={"/sets"} className="library-btn" activeclassName={isActive ? "active" : ''} style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
+                        <Button style={{ color: 'white' }}>Thư viện</Button>
+                    </NavLink>
+                </div>
 
                 <div className="search">
                     <Input type="text" placeholder="Search for anything..." style={{ width: '100%' }} />
