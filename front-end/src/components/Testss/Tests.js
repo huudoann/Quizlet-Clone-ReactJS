@@ -60,7 +60,7 @@ const Tests = () => {
         const fetchData = async () => {
             try {
                 // Lấy set_id từ query params
-                const set_id = new URLSearchParams(location.search).get('set_id');
+                const set_id = localStorage.getItem('set_id');
                 const flashcardsData = await getCardsDataFromSet(set_id);
                 const data = flashcardsData.content;
                 if (data && data.length > 0) {

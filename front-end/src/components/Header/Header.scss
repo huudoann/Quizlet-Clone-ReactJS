@@ -8,9 +8,10 @@
         border-bottom: 2px solid #282e3e;
 
         .name-app {
-            font-size: 40px;
+            font-size: 2rem;
             color: white;
             font-weight: bold;
+            padding: 0;
         }
 
         .home-library-container {
@@ -26,12 +27,13 @@
 
         .homepage-btn,
         .library-btn {
-            padding: .5rem;
+            padding: .75rem;
             flex-grow: 1;
-            font-weight: 500;
             position: relative;
 
             button {
+                font-size: 14px;
+                font-weight: 500;
                 height: max-content;
             }
 
@@ -42,8 +44,6 @@
             }
 
         }
-
-
 
         .homepage-btn:hover::after,
         .library-btn:hover::after {
@@ -60,6 +60,10 @@
             align-items: center;
             margin-left: auto;
             flex-grow: 1;
+
+            .css-bz5ng3-MuiInputBase-root-MuiInput-root::after {
+                border-bottom: none !important;
+            }
 
             input[type="text"] {
                 width: 100%;
@@ -114,6 +118,7 @@
 
         .menu {
             display: flex;
+            flex-direction: column;
             position: absolute;
             flex-wrap: wrap;
             top: 100%;
@@ -125,12 +130,14 @@
             z-index: 999;
             text-align: center;
             color: black;
-            width: 130px;
+            width: max-content;
 
             .menu-item {
                 display: flex;
+                justify-content: flex-start;
+                flex-grow: 1;
                 align-items: center;
-                padding: 5px;
+                padding: .5rem 2rem .5rem 1rem;
                 color: white;
                 font-weight: bold;
                 cursor: pointer;

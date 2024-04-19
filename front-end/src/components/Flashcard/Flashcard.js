@@ -8,7 +8,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
 import IconSprite from '../Icon/IconSprite';
-import { Button } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@mui/material';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -21,11 +23,12 @@ const Flashcard = () => {
     const [shouldAnimate, setShouldAnimate] = useState(false);
     const [slideDirection, setSlideDirection] = useState('left');
     const [rating, setRating] = useState(0);
-    const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
+    const [selectedStars, setSelectedStars] = useState(0);
     const [averageRating, setAverageRating] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [showMenu, setShowMenu] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -163,15 +166,19 @@ const Flashcard = () => {
                 window.location.href = "/login";
                 return null;
             }
-            // Gửi số điểm đánh giá đến API
+
             const set_id = localStorage.getItem('set_id');
-            const point = rating;
-            // console.log(point);
+            if (!set_id) {
+                console.error('Không tìm thấy set_id');
+                return;
+            }
+
+            // Gửi số điểm đánh giá đến API
             const userId = localStorage.getItem('user_id');
             const userRating = {
                 user_id: userId,
                 set_id: set_id,
-                totalStars: point,
+                totalStars: selectedStars, // Thay rating thành selectedStars
             }
 
             const response = await axios.post(`http://localhost:8080/api/review/sets/${set_id}/review`, userRating, {
@@ -182,7 +189,6 @@ const Flashcard = () => {
 
             if (response.status === 200) {
                 console.log('Đã gửi đánh giá thành công');
-                // console.log(userRating);
                 // Cập nhật số điểm đánh giá sau khi gửi thành công
                 fetchReviewing();
             } else {
@@ -344,13 +350,16 @@ const Flashcard = () => {
     };
 
     //xử lý phần đánh giá
-    const handleStarHover = (index) => {
-        setHoveredStarIndex(index);
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
     };
 
     const handleStarClick = (value) => {
-        setRating(value);
-        console.log(value);
+        setSelectedStars(value);
     };
 
     //Ẩn/hiện dialog
@@ -371,23 +380,34 @@ const Flashcard = () => {
                         <h1>{flashcardTitle}</h1>
                         <div className="rating">
                             <h4>Đánh giá học phần này: </h4>
-                            <p>({averageRating})</p>
-                            {[1, 2, 3, 4, 5].map((value, index) => (
-                                <Star
-                                    key={value}
-                                    onMouseEnter={() => handleStarHover(index)}
-                                    onMouseLeave={() => handleStarHover(-1)}
-                                    onClick={() => handleStarClick(value)}
-                                    className={index <= (hoveredStarIndex !== -1 ? hoveredStarIndex : rating - 1) ? 'filled' : ''}
-                                />
-                            ))}
-                            <button className='rating-button'
-                                onClick={handleSubmitRating}
-                            >Gửi Đánh Giá</button>
+                            {/* <p>({averageRating})</p> */}
+                            <Button className="rating-button" onClick={handleOpenDialog}>
+                                <FontAwesomeIcon icon={faStar} /> {averageRating || 'Đánh giá'}
+                            </Button>
 
+                            {/* Dialog để người dùng đánh giá */}
+                            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                                <DialogTitle>Đánh giá học phần này</DialogTitle>
+                                <DialogContent>
+                                    <div className="star-rating">
+                                        {[1, 2, 3, 4, 5].map((value) => (
+                                            <FontAwesomeIcon
+                                                key={value}
+                                                icon={faStar}
+                                                className={value <= selectedStars ? 'filled' : ''}
+                                                onClick={() => handleStarClick(value)}
+                                            />
+                                        ))}
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDialog}>Hủy</Button>
+                                    <Button onClick={handleSubmitRating}>Gửi</Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
                         <div className="flashcard-navigation">
-                            <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}>
+                            <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', boxShadow: 'inset 0 -2px 0 0 #ccc' }}>
                                 <IconSprite>
                                     <symbol id="study-flashcards-twilight" viewBox="0 0 32 32">
                                         <path d="M7.72705 12.8246C7.72705 11.2646 8.97351 10 10.5111 10H27.2157C28.7533 10 29.9998 11.2646 29.9998 12.8246V25.1754C29.9998 26.7354 28.7533 28 27.2157 28H10.5111C8.97351 28 7.72705 26.7354 7.72705 25.1754V12.8246Z" fill="#7583FF"></path>

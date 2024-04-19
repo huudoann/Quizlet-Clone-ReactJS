@@ -42,19 +42,19 @@
       .rating {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-
-        h4 {
-          margin-right: 1rem;
-        }
       }
 
-      .rating .MuiSvgIcon-root {
+      .rating h4 {
+        margin-right: 1rem;
+      }
+
+      .rating .fa-star {
         cursor: pointer;
-        font-size: 2rem;
+        font-size: 1rem;
+        transition: color 0.3s ease;
       }
 
-      .rating .MuiSvgIcon-root:hover {
+      .rating .fa-star:hover {
         color: gold;
       }
 
@@ -71,7 +71,6 @@
         border-radius: 5px;
         cursor: pointer;
         font-weight: 500;
-
         transition: background-color 0.3s ease;
       }
 
@@ -81,6 +80,22 @@
 
       .rating-button:focus {
         outline: none;
+      }
+
+      .star-rating {
+        display: flex;
+        justify-content: center;
+      }
+
+      .star-rating svg {
+        font-size: 2rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .star-rating svg:hover,
+      .star-rating svg.filled {
+        color: gold;
       }
 
       .flashcard-navigation {
