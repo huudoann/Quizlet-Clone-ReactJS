@@ -14,19 +14,17 @@ const EditSet = () => {
     const [sttCount, setSttCount] = useState('1'); // Biến đếm số thứ tự
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [flashcards, setFlashcards] = useState([]);
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [flashcardDescription, setFlashcardDescription] = useState('');
     const [flashcardsArray, setFlashcardsArray] = useState([]);
-    const [showConfirmation, setShowConfirmation] = useState(false);
-    const [cardIdToDelete, setCardIdToDelete] = useState(null);
     const location = useLocation();
     const navigate = useNavigate()
+    const [numberOfOldCard, serNumberOfOldCard] = useState(0)
     const [set_id, setSetId] = useState('');
     const [token, setToken] = useState('');
     const [isClickAddCard, setIsClickAddCard] = useState(false);
 
-    console.log({ flashcardsArray });
+    // console.log({ flashcardsArray });
     //gọi API lấy tất cả thẻ theo set_id
     useEffect(() => {
         const fetchData = async () => {
@@ -42,15 +40,11 @@ const EditSet = () => {
                 const flashcardsData = await getCardsDataFromSet(set_id);
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcardsArray(flashcardsArray);
-                console.log("flashcardsArray", flashcardsArray);
-                console.log(localStorage);
                 const title = localStorage.getItem('flashcardTitle');
                 const description = localStorage.getItem('description');
                 setFlashcardDescription(description);
-                console.log("aaa", description);
                 setFlashcardTitle(title);
-                console.log(title);
-
+                serNumberOfOldCard(flashcardsArray.length)
                 const token = localStorage.getItem('token'); // Lấy token từ local storage
                 if (!token) {
                     window.location.href = "/login"
@@ -75,31 +69,34 @@ const EditSet = () => {
         const newCard = {
             front_text: "",
             back_text: "",
-            card_id: Date.now(),
         }
         setFlashcardsArray(prevInputs => [...prevInputs, newCard]);
 
     };
 
     const addCard = async (isClickAddCard) => {
-        con
-        const newCard = {   
-        console.log({ isClickAddCard });
+        let newFlashcards = []
         if (isClickAddCard) {
             const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`;
-            const newCard = await axios.post(createCardApiUrl, flashcardsArray[flashcardsArray.length - 1], {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            const numberOfNewCard =  flashcardsArray.length - numberOfOldCard
+            console.log({numberOfOldCard,numberOfNewCard });
+            console.log({flashcardsArray: flashcardsArray.slice(-numberOfNewCard) });
+            flashcardsArray.slice(-numberOfNewCard).forEach(async(
+                card ) => {
+                    const newCard = await axios.post(createCardApiUrl, card, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    newFlashcards = [...newFlashcards, newCard.data]
                 }
-            });
-            console.log({ newCard });
-            setFlashcardsArray(prevInputs => [...prevInputs, newCard.data]);
+            )
+                setFlashcardsArray(prevInputs => [...prevInputs, newFlashcards]);
         } else {
             return
         }
 
     }
-
 
 
     const handleInputChange = (index, part, event) => {
@@ -112,40 +109,8 @@ const EditSet = () => {
         setFlashcardsArray(newInputs);
     };
 
-    const removeInputElement = (id) => {
-        setFlashcardsArray(prevInputs => {
-            // Lọc bỏ ô nhập có id trùng khớp
-            const updatedInputs = prevInputs.filter(input => input.id !== id);
-            // Cập nhật lại số thứ tự cho các ô nhập còn lại
-            return updatedInputs.map((input, index) => ({ ...input, stt: index + 1 }));
-        });
-    };
-
-    const handleCancelDelete = () => {
-        setShowConfirmation(false);
-    };
-
-
-
-    //post dữ liệu về BE
-    const handleCompletedButtonClick = async () => {
-        console.log({ token });
-        addCard(isClickAddCard);
-        flashcardsArray.forEach(async (card, index) => {
-            const updateCardApiUrl = `http://localhost:8080/api/card/edit/${card.card_id}`;
-            const responseCard = await axios.put(updateCardApiUrl, { front_text: card.front_text, back_text: card.back_text }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            console.log({ responseCard })
-        })
-        navigate(`/flashcard`)
-    }
-
-
-    // Hàm xử lý khi click vào nút private
-    const handlePrivateClick = () => {
+       // Hàm xử lý khi click vào nút private
+       const handlePrivateClick = () => {
         setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
         setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
     };
@@ -156,40 +121,37 @@ const EditSet = () => {
         setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
     };
 
-    //Gọi API xóa thẻ
-    const handleDeleteConfirmation = async (cardId) => {
-        setShowConfirmation(true);
-        setCardIdToDelete(cardId);
-    };
-
-    const handleConfirmDelete = async () => {
-        setShowConfirmation(false);
-        try {
-            const response = await axios.delete(`http://localhost:8080/api/card/${cardIdToDelete}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            if (response.status === 200) {
-                // Thực hiện các thao tác cập nhật giao diện sau khi xóa thẻ thành công
-                console.log('Thẻ đã được xóa thành công');
-                console.log(flashcardsArray);
-                // Cập nhật danh sách thẻ sau khi xóa
-                const updatedFlashcards = flashcards.filter(card => card.card_id !== cardIdToDelete);
-                setFlashcards(updatedFlashcards);
-            } else {
-                console.error('Lỗi khi xóa thẻ:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Lỗi khi gửi request xóa thẻ:', error.message);
+    //post dữ liệu về BE
+    const handleCompletedButtonClick = async () => {
+        addCard(isClickAddCard);
+        if (isClickAddCard) {
+            const numberOfNewCard =  flashcardsArray.length - numberOfOldCard
+            flashcardsArray.slice(0, numberOfNewCard).forEach(async (card, index) => {
+                const updateCardApiUrl = `http://localhost:8080/api/card/edit/${card.card_id}`;
+                const responseCard = await axios.put(updateCardApiUrl, { front_text: card.front_text, back_text: card.back_text }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                console.log({ responseCard })
+            })
+            navigate(`/flashcard`)
+        } else {
+            flashcardsArray.forEach(async (card, index) => {
+                const updateCardApiUrl = `http://localhost:8080/api/card/edit/${card.card_id}`;
+                const responseCard = await axios.put(updateCardApiUrl, { front_text: card.front_text, back_text: card.back_text }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                console.log({ responseCard })
+            })
+            navigate(`/flashcard`)
         }
-    };
+    }
 
 
-
-
-
+ 
 
     return (
         <div className='edit-set'>
@@ -276,12 +238,12 @@ const EditSet = () => {
                                     onChange={(e) => handleInputChange(index, 'back_text', e)}
                                     value={flashcard.back_text}
                                 />
-                                <IconButton
-                                    aria-label="delete" size="large"
+                                {/* <IconButton
+                                    ariaLabel="delete" size="large"
                                     className="delete-icon"
                                     onClick={() => handleDeleteConfirmation(flashcard.card_id)}>
                                     <DeleteIcon fontSize="inherit" />
-                                </IconButton>
+                                </IconButton> */}
                             </div>
                         ))
                     }
@@ -297,18 +259,7 @@ const EditSet = () => {
                 >
                     + Thêm thẻ
                 </Button>
-                {showConfirmation && (
-                    <div>
-                        <div className="overlay"></div>
-                        <div className="confirmation-box">
-                            <div className="message">Bạn có chắc chắn muốn xóa không?</div>
-                            <div className="button-container">
-                                <button onClick={handleConfirmDelete}>Xác nhận</button>
-                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                
             </div>
         </div>
     );
