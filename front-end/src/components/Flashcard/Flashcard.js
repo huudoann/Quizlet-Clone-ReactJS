@@ -69,6 +69,7 @@ const Flashcard = () => {
                 setFlashcards(flashcardsArray);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
+                console.log(localStorage);
             } catch (error) {
                 console.error('Error fetching flashcards:', error);
             }

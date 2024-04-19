@@ -1,89 +1,148 @@
 import React, { useState, useEffect } from 'react';
 import './EditSet.scss';
 import Header from '../Header/Header';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, TextField, IconButton, Button } from '@mui/material';
+import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import axios from 'axios';
 import { ArrowBack } from '@mui/icons-material';
 
 const EditSet = () => {
     const [isPrivateSelected, setIsPrivateSelected] = useState(false); // State cho nút private
     const [isPublicSelected, setIsPublicSelected] = useState(false); // State cho nút public
-    const [inputElements, setInputElements] = useState([]);
-    const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
+    const [sttCount, setSttCount] = useState('1'); // Biến đếm số thứ tự
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [flashcards, setFlashcards] = useState([]);
+    const [flashcardTitle, setFlashcardTitle] = useState('');
+    const [flashcardDescription, setFlashcardDescription] = useState('');
+    const [flashcardsArray, setFlashcardsArray] = useState([]);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [cardIdToDelete, setCardIdToDelete] = useState(null);
+    const location = useLocation();
     const navigate = useNavigate()
+    const [set_id, setSetId] = useState('');
+    const [token, setToken] = useState('');
+    const [isClickAddCard, setIsClickAddCard] = useState(false);
+
+    console.log({ flashcardsArray });
+    //gọi API lấy tất cả thẻ theo set_id
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const set_id = localStorage.getItem('set_id');
+                if (!set_id) {
+                    console.error('Không tìm thấy set_id trong URL');
+                    return;
+                } else {
+                    setSetId(set_id);
+                }
+
+                const flashcardsData = await getCardsDataFromSet(set_id);
+                const flashcardsArray = Object.values(flashcardsData.content);
+                setFlashcardsArray(flashcardsArray);
+                console.log("flashcardsArray", flashcardsArray);
+                console.log(localStorage);
+                const title = localStorage.getItem('flashcardTitle');
+                const description = localStorage.getItem('description');
+                setFlashcardDescription(description);
+                console.log("aaa", description);
+                setFlashcardTitle(title);
+                console.log(title);
+
+                const token = localStorage.getItem('token'); // Lấy token từ local storage
+                if (!token) {
+                    window.location.href = "/login"
+                    return null
+                } else {
+                    setToken(token);
+                }
+
+            } catch (error) {
+                console.error('Error fetching flashcards:', error);
+            }
+        };
+
+        fetchData();
+    }, [location.search]);
+
+    useEffect(() => {
+        setSttCount(flashcardsArray.length + 1);
+    }, [flashcardsArray]);
+
+    const addInputElement = () => {
+        const newCard = {
+            front_text: "",
+            back_text: "",
+            card_id: Date.now(),
+        }
+        setFlashcardsArray(prevInputs => [...prevInputs, newCard]);
+
+    };
+
+    const addCard = async (isClickAddCard) => {
+        con
+        const newCard = {   
+        console.log({ isClickAddCard });
+        if (isClickAddCard) {
+            const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`;
+            const newCard = await axios.post(createCardApiUrl, flashcardsArray[flashcardsArray.length - 1], {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            console.log({ newCard });
+            setFlashcardsArray(prevInputs => [...prevInputs, newCard.data]);
+        } else {
+            return
+        }
+
+    }
+
+
+
+    const handleInputChange = (index, part, event) => {
+        const newInputs = flashcardsArray.map((flashcard, i) => {
+            if (i === index) {
+                return { ...flashcard, [part]: event.target.value };
+            }
+            return flashcard;
+        });
+        setFlashcardsArray(newInputs);
+    };
+
+    const removeInputElement = (id) => {
+        setFlashcardsArray(prevInputs => {
+            // Lọc bỏ ô nhập có id trùng khớp
+            const updatedInputs = prevInputs.filter(input => input.id !== id);
+            // Cập nhật lại số thứ tự cho các ô nhập còn lại
+            return updatedInputs.map((input, index) => ({ ...input, stt: index + 1 }));
+        });
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirmation(false);
+    };
+
+
 
     //post dữ liệu về BE
-    // const handleCreateButtonClick = async () => {
-    //     const isPublic = isPublicSelected;
+    const handleCompletedButtonClick = async () => {
+        console.log({ token });
+        addCard(isClickAddCard);
+        flashcardsArray.forEach(async (card, index) => {
+            const updateCardApiUrl = `http://localhost:8080/api/card/edit/${card.card_id}`;
+            const responseCard = await axios.put(updateCardApiUrl, { front_text: card.front_text, back_text: card.back_text }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            console.log({ responseCard })
+        })
+        navigate(`/flashcard`)
+    }
 
-    //     const setData = {
-    //         title,
-    //         description,
-    //         is_public: isPublic
-    //     };
-
-    //     const createSetApiUrl = 'http://localhost:8080/api/set/create-set';
-    //     const token = localStorage.getItem('token'); // Lấy token từ local storage
-
-    //     if (!token) {
-    //         throw new Error('Token không tồn tại trong localStorage');
-    //     }
-
-    //     try {
-    //         const response = await axios.post(createSetApiUrl, setData, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}` // Thêm token vào header Authorization
-    //             }
-    //         });
-    //         console.log('Tạo học phần thành công:', response.data);
-
-
-    //         const set_id = response.data.set_id; // Lưu set_id từ phản hồi
-    //         console.log(set_id)
-
-    //         // Gửi dữ liệu các cards
-    //         const cardData = inputElements.map(input => ({
-    //             front_text: input.content1,
-    //             back_text: input.content2,
-    //             is_known: false
-    //         }));
-
-    //         console.log(cardData)
-
-    //         const createCardApiUrl = `http://localhost:8080/${set_id}/create_card`;
-    //         // const responseCard = await axios.post(createCardApiUrl, cardData, {
-    //         //     headers: {
-    //         //         'Authorization': `Bearer ${token}`
-    //         //     }
-    //         // });
-
-    //         cardData.map(async (card) => {
-    //             const responseCard = await axios.post(createCardApiUrl, card, {
-    //                 headers: {
-    //                     'Authorization': `Bearer ${token}`
-    //                 }
-    //             });
-    //             console.log(responseCard)
-    //         })
-
-    //         //chuyển về trang có set_id đó
-    //         navigate(`/flashcard?set_id=${set_id}`)
-
-    //         return
-
-    //         // console.log('Tạo card thành công:', responseCard.data);
-
-    //         // return responseCard.data;
-    //     } catch (error) {
-    //         console.error('Lỗi khi tạo:', error.message);
-    //         throw error;
-    //     }
-
-    // };
 
     // Hàm xử lý khi click vào nút private
     const handlePrivateClick = () => {
@@ -97,32 +156,40 @@ const EditSet = () => {
         setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
     };
 
-    useEffect(() => {
-        setSttCount(inputElements.length + 1);
-    }, [inputElements]);
-
-    const addInputElement = () => {
-        setInputElements(prevInputs => [...prevInputs, { id: Date.now(), content1: '', content2: '', stt: sttCount }]);
+    //Gọi API xóa thẻ
+    const handleDeleteConfirmation = async (cardId) => {
+        setShowConfirmation(true);
+        setCardIdToDelete(cardId);
     };
 
-    const handleInputChange = (id, part, event) => {
-        const newInputs = inputElements.map(input => {
-            if (input.id === id) {
-                return { ...input, [part]: event.target.value };
+    const handleConfirmDelete = async () => {
+        setShowConfirmation(false);
+        try {
+            const response = await axios.delete(`http://localhost:8080/api/card/${cardIdToDelete}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                // Thực hiện các thao tác cập nhật giao diện sau khi xóa thẻ thành công
+                console.log('Thẻ đã được xóa thành công');
+                console.log(flashcardsArray);
+                // Cập nhật danh sách thẻ sau khi xóa
+                const updatedFlashcards = flashcards.filter(card => card.card_id !== cardIdToDelete);
+                setFlashcards(updatedFlashcards);
+            } else {
+                console.error('Lỗi khi xóa thẻ:', response.statusText);
             }
-            return input;
-        });
-        setInputElements(newInputs);
+        } catch (error) {
+            console.error('Lỗi khi gửi request xóa thẻ:', error.message);
+        }
     };
 
-    const removeInputElement = (id) => {
-        setInputElements(prevInputs => {
-            // Lọc bỏ ô nhập có id trùng khớp
-            const updatedInputs = prevInputs.filter(input => input.id !== id);
-            // Cập nhật lại số thứ tự cho các ô nhập còn lại
-            return updatedInputs.map((input, index) => ({ ...input, stt: index + 1 }));
-        });
-    };
+
+
+
+
 
     return (
         <div className='edit-set'>
@@ -140,7 +207,9 @@ const EditSet = () => {
                         </span>
                     </Link>
                     <div>
-                        <Button variant="contained" className='completed' >
+                        <Button variant="contained" className='completed' onClick={() => {
+                            handleCompletedButtonClick()
+                        }}>
                             Hoàn tất
                         </Button>
                     </div>
@@ -157,14 +226,14 @@ const EditSet = () => {
                         className='enter-title'
                         label="Nhập tiêu đề"
                         variant="outlined"
-                        value={title}
+                        value={flashcardTitle}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <TextField
                         className='add-description'
                         label="Thêm mô tả"
                         variant="outlined"
-                        value={description}
+                        value={flashcardDescription}
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </Box>
@@ -184,58 +253,62 @@ const EditSet = () => {
                     </Button>
                 </div>
                 <div className='card'>
-                    {inputElements.map(input => (
-                        <div key={input.id} className="item-card">
-                            <input
-                                type="text"
-                                placeholder="STT"
-                                value={input.stt}
-                                readOnly
-                                className="stt-input"
-                            />
-                            <TextField
-                                className="input-terms"
-                                label="Thuật ngữ"
-                                variant="standard"
-                                value={input.content1}
-                                onChange={(e) => handleInputChange(input.id, "content1", e)}
-                            />
-                            {/* <input
+                    {
+                        flashcardsArray.map((flashcard, index) => (
+                            <div key={index} className="item-card">
+                                <input
                                     type="text"
-                                    placeholder="Thuật ngữ"
-                                    value={input.content1}
-                                    onChange={(e) => handleInputChange(input.id, "content1", e)}
+                                    placeholder="STT"
+                                    value={index + 1}
+                                    className="stt-input"
+                                />
+                                <TextField
                                     className="input-terms"
-                                /> */}
-                            <TextField
-                                className="input-define"
-                                label="Định nghĩa"
-                                variant="standard"
-                                value={input.content2}
-                                onChange={(e) => handleInputChange(input.id, "content2", e)}
-                            />
-                            {/* <input
-                                    type="text"
-                                    placeholder="Định nghĩa"
-                                    value={input.content2}
-                                    onChange={(e) => handleInputChange(input.id, "content2", e)}
+                                    label="Thuật ngữ"
+                                    variant="standard"
+                                    value={flashcard.front_text}
+                                    onChange={(e) => handleInputChange(index, 'front_text', e)}
+                                />
+                                <TextField
                                     className="input-define"
-                                /> */}
-                            <IconButton
-                                aria-label="delete" size="large"
-                                className="delete-icon"
-                                onClick={() => removeInputElement(input.id)}>
-                                <DeleteIcon fontSize="inherit" />
-                            </IconButton>
-                        </div>
-                    ))}
+                                    label="Định nghĩa"
+                                    variant="standard"
+                                    onChange={(e) => handleInputChange(index, 'back_text', e)}
+                                    value={flashcard.back_text}
+                                />
+                                <IconButton
+                                    aria-label="delete" size="large"
+                                    className="delete-icon"
+                                    onClick={() => handleDeleteConfirmation(flashcard.card_id)}>
+                                    <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                            </div>
+                        ))
+                    }
+
                 </div>
                 <Button variant="contained"
-                    onClick={() => { addInputElement(); setSttCount(prevCount => prevCount + 1); }}
+                    onClick={() => {
+                        addInputElement();
+                        setSttCount(prevCount => prevCount + 1);
+                        setIsClickAddCard(true);
+                    }}
                     className="add-card-button"
                 >
                     + Thêm thẻ
                 </Button>
+                {showConfirmation && (
+                    <div>
+                        <div className="overlay"></div>
+                        <div className="confirmation-box">
+                            <div className="message">Bạn có chắc chắn muốn xóa không?</div>
+                            <div className="button-container">
+                                <button onClick={handleConfirmDelete}>Xác nhận</button>
+                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

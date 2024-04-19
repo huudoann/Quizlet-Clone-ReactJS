@@ -48,11 +48,11 @@ const CreateSet = () => {
             });
             console.log('Tạo học phần thành công:', response.data);
 
-
             const set_id = response.data.set_id; // Lưu set_id từ phản hồi
             console.log(set_id)
             localStorage.setItem("set_id", set_id);
-
+            localStorage.setItem("title", title);
+            localStorage.setItem("description", description);
             // Gửi dữ liệu các cards
             const cardData = inputElements.map(input => ({
                 front_text: input.content1,
