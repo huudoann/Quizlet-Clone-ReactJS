@@ -61,7 +61,6 @@ const Flashcard = () => {
         const fetchData = async () => {
             try {
                 const set_id = localStorage.getItem('set_id');
-
                 if (!set_id) {
                     console.error('Không tìm thấy set_id trong URL');
                     return;
@@ -73,7 +72,7 @@ const Flashcard = () => {
                 // localStorage.setItem("flashcardDescription", flashcardsData.desc);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
-                console.log(localStorage);
+                // console.log(localStorage);
             } catch (error) {
                 console.error('Error fetching flashcards:', error);
             }
@@ -145,7 +144,7 @@ const Flashcard = () => {
 
             if (response.status === 200) {
                 // Thực hiện các thao tác cập nhật giao diện sau khi xóa thẻ thành công
-                console.log('Thẻ đã được xóa thành công');
+                // console.log('Thẻ đã được xóa thành công');
                 // Cập nhật danh sách thẻ sau khi xóa
                 const updatedFlashcards = flashcards.filter(card => card.card_id !== cardIdToDelete);
                 setFlashcards(updatedFlashcards);
@@ -219,11 +218,11 @@ const Flashcard = () => {
                 },
             });
 
-            console.log("lay rv tc");
+            // console.log("lay rv tc");
             if (response.status === 200) {
                 const reviewingData = response.data;
                 setAverageRating(reviewingData);
-                console.log(response);
+                // console.log(response);
             } else {
                 console.error('Lỗi khi lay du lieu đánh giá:', response.statusText);
             }
