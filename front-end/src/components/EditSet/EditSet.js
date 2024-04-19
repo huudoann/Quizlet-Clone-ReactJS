@@ -82,9 +82,6 @@ const EditSet = () => {
     };
 
     const addCard = async (isClickAddCard) => {
-        con
-        const newCard = {   
-        console.log({ isClickAddCard });
         if (isClickAddCard) {
             const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`;
             const newCard = await axios.post(createCardApiUrl, flashcardsArray[flashcardsArray.length - 1], {
