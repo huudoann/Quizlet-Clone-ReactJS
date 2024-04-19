@@ -15,11 +15,13 @@ const Header = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State cho menu người dùng
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [currentPage, setCurrentPage] = useState('');
     const location = useLocation();
     const menuRef = useRef(null); // Ref cho menu
     const menuUserRef = useRef(null); // Ref cho menu người dùng
 
-    const isActive = location.pathname.includes('/folders') || location.pathname.includes('/sets');
+    const isActive = location.pathname.includes('folders') || location.pathname.includes('sets');
 
     useEffect(() => {
         // Hàm xử lý sự kiện click ra ngoài menu
@@ -118,33 +120,61 @@ const Header = () => {
         }
     };
 
+    //xử lý phần tìm kiếm
+    useEffect(() => {
+        setCurrentPage(location.pathname);
+    }, [location.pathname]);
+
+    const handleSearchInputChange = (event) => {
+        setSearchKeyword(event.target.value);
+    };
+
+    const handleSearchKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            localStorage.setItem('filterTitle', searchKeyword);
+            if (currentPage === '/search-results-page') {
+                window.location.reload();
+            } else {
+                navigate('/search-results-page');
+            }
+        }
+    };
+
     return (
         <div className='nav-header'>
             <header>
-                <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                    <div className="name-app">Quizlet</div> </Link>
+                <div className='home-library-container'>
+                    <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit', border: 'none' }}>
+                        <Button className="name-app" sx={{ textTransform: 'none' }}>Quizlet</Button>
+                    </Link>
 
-                {/* <div className='home-library-container'> */}
-                <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '1rem' }}>
-                    <Button style={{ color: 'white' }}>Trang chủ</Button>
-                </NavLink>
+                    <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}>
+                        <Button style={{ color: 'white' }}>Trang chủ</Button>
+                    </NavLink>
 
-                <NavLink to={"/sets"} className="library-btn" activeclassName={isActive ? 'active' : ''} style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
-                    <Button style={{ color: 'white' }}>Thư viện</Button>
-                </NavLink>
-                {/* </div> */}
+                    <NavLink to={"/sets"} className={isActive ? "library-btn active" : "library-btn"} style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
+                        <Button style={{ color: 'white' }}>Thư viện</Button>
+                    </NavLink>
+                </div>
 
                 <div className="search">
-                    <Input type="text" placeholder="Search for anything..." style={{ width: '100%' }} />
+                    <Input
+                        type="text"
+                        placeholder="Search for anything..."
+                        style={{ width: '100%', border: 'none !important' }}
+                        value={searchKeyword}
+                        onChange={handleSearchInputChange}
+                        onKeyDown={handleSearchKeyDown}
+                    />
                     <div className="button-right">
                         <div className="icon-container icon-container-plus" onClick={toggleMenu}>
                             <PlusIcon />
                             {isMenuOpen && (
                                 <div ref={menuRef} className="menu" onClick={(e) => e.stopPropagation()}>
                                     <Link to="/create-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                                        <div className="menu-item"><FontAwesomeIcon icon={faStickyNote} /> Học phần </div>
+                                        <Button className="menu-item" sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faStickyNote} /> Học phần </Button>
                                     </Link>
-                                    <div className="menu-item" onClick={toggleFolderDialog}><FontAwesomeIcon icon={faFolder} /> Thư mục </div>
+                                    <Button className="menu-item" onClick={toggleFolderDialog} sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faFolder} /> Thư mục </Button>
                                 </div>
                             )}
                         </div>
@@ -154,14 +184,18 @@ const Header = () => {
                             {isUserMenuOpen && (
                                 <div ref={menuUserRef} className="menu" onClick={(e) => e.stopPropagation()}>
                                     {/* Thêm các menu item cho menu người dùng ở đây */}
-                                    <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                                        <div className="menu-item"><FontAwesomeIcon icon={faUser} />Hồ sơ</div>
-                                    </Link>
-                                    <div className="menu-item"><FontAwesomeIcon icon={faCog} />Cài đặt</div>
-                                    <Link to="/tos" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                                        <div className="menu-item">Quyền riêng tư</div>
-                                    </Link>
-                                    <div className="menu-item" onClick={handleLogout}>Đăng xuất</div>
+
+                                    <Button className="menu-item" sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faUser} />
+                                        <Link to="/sets" style={{ color: 'inherit', textDecoration: 'inherit' }} >Hồ sơ</Link>
+
+                                    </Button>
+
+                                    <Button className="menu-item" sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faCog} />Cài đặt</Button>
+
+                                    <Button className="menu-item" sx={{ textTransform: 'none' }}><Link to="/tos" style={{ color: 'inherit', textDecoration: 'inherit' }}>Quyền riêng tư</Link>
+                                    </Button>
+
+                                    <Button className="menu-item" sx={{ textTransform: 'none' }} onClick={handleLogout}>Đăng xuất</Button>
                                 </div>
                             )}
                         </div>

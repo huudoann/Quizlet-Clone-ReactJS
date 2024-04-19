@@ -42,19 +42,19 @@
       .rating {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-
-        h4 {
-          margin-right: 1rem;
-        }
       }
 
-      .rating .MuiSvgIcon-root {
+      .rating h4 {
+        margin-right: 1rem;
+      }
+
+      .rating .fa-star {
         cursor: pointer;
-        font-size: 2rem;
+        font-size: 1rem;
+        transition: color 0.3s ease;
       }
 
-      .rating .MuiSvgIcon-root:hover {
+      .rating .fa-star:hover {
         color: gold;
       }
 
@@ -71,7 +71,6 @@
         border-radius: 5px;
         cursor: pointer;
         font-weight: 500;
-
         transition: background-color 0.3s ease;
       }
 
@@ -81,6 +80,22 @@
 
       .rating-button:focus {
         outline: none;
+      }
+
+      .star-rating {
+        display: flex;
+        justify-content: center;
+      }
+
+      .star-rating svg {
+        font-size: 2rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .star-rating svg:hover,
+      .star-rating svg.filled {
+        color: gold;
       }
 
       .flashcard-navigation {
@@ -174,10 +189,6 @@
           transition: transform 0.3s ease;
         }
 
-        .slider-button:hover {
-          transform: scale(1.1);
-        }
-
         .function-button {
           width: 100%;
           display: flex;
@@ -186,11 +197,34 @@
           position: relative;
           cursor: pointer;
           white-space: nowrap;
+
+          svg {
+            margin: 0 !important;
+
+          }
         }
 
         .function-button button {
-          flex-grow: 1;
-          margin: 0 5px;
+          justify-content: center;
+          border-radius: 50%;
+          padding: 1rem;
+          border: 1px solid #ccc;
+          background-color: #0a092d;
+          color: #ffffff;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+        }
+
+        .function-button button:hover {
+          background-color: #2e3856;
+        }
+
+        .function-button button:disabled {
+          background-color: #0a092d;
+          color: #101539;
+          cursor: not-allowed;
         }
       }
     }
@@ -335,17 +369,40 @@
       cursor: pointer;
     }
 
-    .flashcard-list [type="text"] {
+    .flashcard-list .edit-form {
+      display: flex;
       flex-grow: 1;
+      flex-wrap: wrap;
+      justify-content: space-between;
       border-radius: 5px;
-      padding: 14px;
-      background-color: lighten($color: #2e3856, $amount: 20%);
-      border: none;
-      margin-right: 10px;
-      color: #fff;
+      background-color: #2e3856;
 
-      &::placeholder {
+      span input {
+        width: 95%;
+        border-radius: 5px;
+        padding: 14px;
+        background-color: lighten($color: #2e3856, $amount: 20%);
+        border: none;
+        margin-right: 10px;
         color: #fff;
+
+        &::placeholder {
+          color: #fff;
+        }
+      }
+
+      strong input {
+        width: 85%;
+        border-radius: 5px;
+        padding: 14px;
+        background-color: lighten($color: #2e3856, $amount: 20%);
+        border: none;
+        margin-right: 10px;
+        color: #fff;
+
+        &::placeholder {
+          color: #fff;
+        }
       }
     }
   }
@@ -410,5 +467,29 @@
     fill: currentColor;
     transition: all .12s cubic-bezier(.47, 0, .745, .715);
     flex-shrink: 0;
+  }
+
+  .change-card-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+    button {
+      border-radius: 7px;
+      background-color: inherit;
+      color: #fff;
+      border: 1px solid lighten(#ccc, 50%) !important;
+      padding: 1rem 2rem !important;
+      cursor: pointer;
+      font-weight: bold;
+
+      &:hover {
+        background-color: lighten($color: #101539, $amount: 10%);
+      }
+    }
+
+
   }
 }

@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Star, ArrowBackIos, ArrowForwardIos, Shuffle, CropFreeTwoTone, ContentCopy, AutoMode, Quiz, Compare, MoreHoriz, AddCircleOutline, Delete } from '@mui/icons-material';
+import { Star, MoreHoriz, AddCircleOutline, Delete, Edit, Cancel, Done } from '@mui/icons-material';
 import Header from '../Header/Header';
 import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
 import IconSprite from '../Icon/IconSprite';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@mui/material';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -21,22 +23,23 @@ const Flashcard = () => {
     const [shouldAnimate, setShouldAnimate] = useState(false);
     const [slideDirection, setSlideDirection] = useState('left');
     const [rating, setRating] = useState(0);
-    const [hoveredStarIndex, setHoveredStarIndex] = useState(-1);
+    const [selectedStars, setSelectedStars] = useState(0);
     const [averageRating, setAverageRating] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [showMenu, setShowMenu] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showDelCardConfirmation, setShowDelCardConfirmation] = useState(false);
+    const [showDelSetComfirmation, setShowDelSetConfirmation] = useState(false);
     const [cardIdToDelete, setCardIdToDelete] = useState(null);
     const [setIdToDelete, setSetIdToDelete] = useState(null);
     const set_id = localStorage.getItem('set_id');
-    const [newCardData, setNewCardData] = useState({
+    const [editedCardIndex, setEditedCardIndex] = useState(null);
+    const [editedCardData, setEditedCardData] = useState({
         front_text: '',
         back_text: '',
-        is_known: false,
-        updated_at: new Date(),
     });
 
     const flashcardContainerRef = useRef(null);
@@ -67,6 +70,8 @@ const Flashcard = () => {
                 const flashcardsData = await getCardsDataFromSet(set_id);
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcards(flashcardsArray);
+                // console.log(flashcardsData);
+                // localStorage.setItem("flashcardDescription", flashcardsData.desc);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
                 console.log(localStorage);
@@ -83,44 +88,50 @@ const Flashcard = () => {
     }, [flashcards]);
 
     //Gọi API thêm thẻ
-    const handleAddCard = async () => {
+    const handleChangeCard = async () => {
+        navigate('/edit-set')
+    };
+
+    //Gọi API sửa thẻ
+    const handleEditCard = (index) => {
+        setEditedCardIndex(index);
+    };
+
+    const handleSaveEdit = async (cardId) => {
         try {
-            let token = localStorage.getItem('token');
-
-            // Kiểm tra xem token có tồn tại không
-            if (!token) {
-                window.location.href("/login")
-                return null;
-                // throw new Error('Token không tồn tại trong localStorage');
-            }
-            const set_id = localStorage.getItem('set_id');
-            const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`
-            const response = await axios.post(createCardApiUrl, newCardData, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
+            // Gửi yêu cầu PUT với dữ liệu chỉnh sửa
+            const response = await axios.put(`http://localhost:8080/api/card/edit/${cardId}`, editedCardData);
             if (response.status === 200) {
-                //Thực hiện các thao tác cập nhật giao diện sau khi thêm thẻ thành công
-                const flashcardsData = await getCardsDataFromSet(set_id); // Lấy lại dữ liệu thẻ sau khi thêm
-                setFlashcards(flashcardsData);
+                // Nếu gửi thành công, cập nhật lại flashcards và ẩn form chỉnh sửa
+                const updatedFlashcards = flashcards.map(card => {
+                    if (card.card_id === cardId) {
+                        return {
+                            ...card,
+                            front_text: editedCardData.front_text,
+                            back_text: editedCardData.back_text,
+                        };
+                    }
+                    return card;
+                });
+                setFlashcards(updatedFlashcards);
+                setEditedCardIndex(null);
+                console.log("Sửa thành công");
             } else {
-                console.error('Lỗi khi thêm thẻ:', response.statusText);
+                console.error('Lỗi khi lưu chỉnh sửa:', response.statusText);
             }
         } catch (error) {
-            console.error('Lỗi khi gửi request thêm thẻ:', error.message);
+            console.error('Lỗi khi gửi yêu cầu lưu chỉnh sửa:', error.message);
         }
     };
 
     //Gọi API xóa thẻ
     const handleDeleteConfirmation = async (cardId) => {
-        setShowConfirmation(true);
+        setShowDelCardConfirmation(true);
         setCardIdToDelete(cardId);
     };
 
     const handleConfirmDelete = async () => {
-        setShowConfirmation(false);
+        setShowDelCardConfirmation(false);
         try {
             let token = localStorage.getItem('token');
             if (!token) {
@@ -147,27 +158,31 @@ const Flashcard = () => {
         }
     };
 
-    // Gọi API gửi đánh giá
+    //gọi API gửi đánh giá
     const handleSubmitRating = async () => {
         try {
             let token = localStorage.getItem('token');
 
             // Kiểm tra xem token có tồn tại không
             if (!token) {
-                window.location.href("/login");
+                window.location.href = "/login";
                 return null;
-                // throw new Error('Token không tồn tại trong localStorage');
             }
-            // Gửi số điểm đánh giá đến API
+
             const set_id = localStorage.getItem('set_id');
-            const point = rating;
-            console.log(point);
+            if (!set_id) {
+                console.error('Không tìm thấy set_id');
+                return;
+            }
+
+            // Gửi số điểm đánh giá đến API
             const userId = localStorage.getItem('user_id');
             const userRating = {
                 user_id: userId,
                 set_id: set_id,
-                total_stars: point,
+                totalStars: selectedStars, // Thay rating thành selectedStars
             }
+
             const response = await axios.post(`http://localhost:8080/api/review/sets/${set_id}/review`, userRating, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -176,6 +191,8 @@ const Flashcard = () => {
 
             if (response.status === 200) {
                 console.log('Đã gửi đánh giá thành công');
+                // Cập nhật số điểm đánh giá sau khi gửi thành công
+                fetchReviewing();
             } else {
                 console.error('Lỗi khi gửi đánh giá:', response.statusText);
             }
@@ -207,6 +224,7 @@ const Flashcard = () => {
             if (response.status === 200) {
                 const reviewingData = response.data;
                 setAverageRating(reviewingData);
+                console.log(response);
             } else {
                 console.error('Lỗi khi lay du lieu đánh giá:', response.statusText);
             }
@@ -217,12 +235,12 @@ const Flashcard = () => {
 
     //gọi API xóa set
     const handleDeleteSet = async () => {
-        setShowConfirmation(true);
+        setShowDelSetConfirmation(true);
         setSetIdToDelete(set_id);
     };
 
     const handleConfirmDeleteSet = async () => {
-        setShowConfirmation(false);
+        setShowDelSetConfirmation(false);
         try {
             let token = localStorage.getItem('token');
             if (!token) {
@@ -334,12 +352,16 @@ const Flashcard = () => {
     };
 
     //xử lý phần đánh giá
-    const handleStarHover = (index) => {
-        setHoveredStarIndex(index);
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
     };
 
     const handleStarClick = (value) => {
-        setRating(value);
+        setSelectedStars(value);
     };
 
     //Ẩn/hiện dialog
@@ -348,7 +370,8 @@ const Flashcard = () => {
     };
 
     const handleCancelDelete = () => {
-        setShowConfirmation(false);
+        setShowDelCardConfirmation(false);
+        setShowDelSetConfirmation(false);
     };
 
     return (
@@ -360,23 +383,34 @@ const Flashcard = () => {
                         <h1>{flashcardTitle}</h1>
                         <div className="rating">
                             <h4>Đánh giá học phần này: </h4>
-                            <p>({averageRating})</p>
-                            {[1, 2, 3, 4, 5].map((value, index) => (
-                                <Star
-                                    key={value}
-                                    onMouseEnter={() => handleStarHover(index)}
-                                    onMouseLeave={() => handleStarHover(-1)}
-                                    onClick={() => handleStarClick(value)}
-                                    className={index <= (hoveredStarIndex !== -1 ? hoveredStarIndex : rating - 1) ? 'filled' : ''}
-                                />
-                            ))}
-                            <button className='rating-button'
-                                onClick={handleSubmitRating}
-                            >Gửi Đánh Giá</button>
+                            {/* <p>({averageRating})</p> */}
+                            <Button className="rating-button" onClick={handleOpenDialog}>
+                                <FontAwesomeIcon icon={faStar} /> {averageRating || 'Đánh giá'}
+                            </Button>
 
+                            {/* Dialog để người dùng đánh giá */}
+                            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                                <DialogTitle>Đánh giá học phần này</DialogTitle>
+                                <DialogContent>
+                                    <div className="star-rating">
+                                        {[1, 2, 3, 4, 5].map((value) => (
+                                            <FontAwesomeIcon
+                                                key={value}
+                                                icon={faStar}
+                                                className={value <= selectedStars ? 'filled' : ''}
+                                                onClick={() => handleStarClick(value)}
+                                            />
+                                        ))}
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDialog}>Hủy</Button>
+                                    <Button onClick={handleSubmitRating}>Gửi</Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
                         <div className="flashcard-navigation">
-                            <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}>
+                            <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', boxShadow: 'inset 0 -2px 0 0 #ccc' }}>
                                 <IconSprite>
                                     <symbol id="study-flashcards-twilight" viewBox="0 0 32 32">
                                         <path d="M7.72705 12.8246C7.72705 11.2646 8.97351 10 10.5111 10H27.2157C28.7533 10 29.9998 11.2646 29.9998 12.8246V25.1754C29.9998 26.7354 28.7533 28 27.2157 28H10.5111C8.97351 28 7.72705 26.7354 7.72705 25.1754V12.8246Z" fill="#7583FF"></path>
@@ -434,7 +468,7 @@ const Flashcard = () => {
                                 )}
                             </div>
                             <div className='function-button'>
-                                <Button onClick={handleShuffle} style={{ position: 'absolute', left: '0' }}>
+                                <Button onClick={handleShuffle} className="small-button" >
                                     <IconSprite >
                                         <symbol id="shuffle" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M10.1371 8.81625L4.97691 3.7875C4.5267 3.34875 3.79942 3.34875 3.34921 3.7875C2.89899 4.22625 2.89899 4.935 3.34921 5.37375L8.49784 10.3912L10.1371 8.81625ZM15.632 3.95625L17.0058 5.295L3.33766 18.615C2.88745 19.0537 2.88745 19.7625 3.33766 20.2013C3.78788 20.64 4.51515 20.64 4.96537 20.2013L18.645 6.8925L20.0188 8.23125C20.3766 8.58 21 8.3325 21 7.82625V3.5625C21 3.2475 20.746 3 20.4228 3H16.0476C15.5281 3 15.2742 3.6075 15.632 3.95625ZM15.0317 13.5863L13.404 15.1725L17.0173 18.6937L15.632 20.0437C15.2742 20.3925 15.5281 21 16.0476 21H20.4228C20.746 21 21 20.7525 21 20.4375V16.1737C21 15.6675 20.3766 15.42 20.0188 15.78L18.645 17.1188L15.0317 13.5863Z"></path>
@@ -464,18 +498,14 @@ const Flashcard = () => {
                                     <Icon name="arrow-right" className="AssemblyIcon AssemblyIcon--larger" />
                                 </Button>
 
-
-                                <Button onClick={handleZoom} style={{ position: 'absolute', right: '0' }}>
+                                <Button onClick={handleZoom} className="small-button">
                                     <IconSprite >
                                         <symbol id="fullscreen" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M3.14286 12.2857C2.51429 12.2857 2 12.8 2 13.4286V16.8571C2 17.4857 2.51429 18 3.14286 18H6.57143C7.2 18 7.71429 17.4857 7.71429 16.8571C7.71429 16.2286 7.2 15.7143 6.57143 15.7143H4.28571V13.4286C4.28571 12.8 3.77143 12.2857 3.14286 12.2857ZM3.14286 7.71429C3.77143 7.71429 4.28571 7.2 4.28571 6.57143V4.28571H6.57143C7.2 4.28571 7.71429 3.77143 7.71429 3.14286C7.71429 2.51429 7.2 2 6.57143 2H3.14286C2.51429 2 2 2.51429 2 3.14286V6.57143C2 7.2 2.51429 7.71429 3.14286 7.71429ZM15.7143 15.7143H13.4286C12.8 15.7143 12.2857 16.2286 12.2857 16.8571C12.2857 17.4857 12.8 18 13.4286 18H16.8571C17.4857 18 18 17.4857 18 16.8571V13.4286C18 12.8 17.4857 12.2857 16.8571 12.2857C16.2286 12.2857 15.7143 12.8 15.7143 13.4286V15.7143ZM12.2857 3.14286C12.2857 3.77143 12.8 4.28571 13.4286 4.28571H15.7143V6.57143C15.7143 7.2 16.2286 7.71429 16.8571 7.71429C17.4857 7.71429 18 7.2 18 6.57143V3.14286C18 2.51429 17.4857 2 16.8571 2H13.4286C12.8 2 12.2857 2.51429 12.2857 3.14286Z"></path>
                                         </symbol>
                                     </IconSprite>
                                     <Icon name="fullscreen" className="AssemblyIcon AssemblyIcon--larger" />
-
                                 </Button>
-
-
                             </div>
                         </div>
                     </div>
@@ -496,8 +526,8 @@ const Flashcard = () => {
                             <button onClick={toggleMenu}><MoreHoriz /></button>
                             {showMenu && (
                                 <div className="menu">
-                                    <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Add to Folder</button>
-                                    <button onClick={() => handleDeleteSet(set_id)}><Delete />Delete Set</button>
+                                    <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Thêm vào thư mục</button>
+                                    <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
                                 </div>
                             )}
                         </div>
@@ -507,36 +537,68 @@ const Flashcard = () => {
                             {flashcards && flashcards.length > 0 ? (
                                 flashcards.map((card, index) => (
                                     <li key={index}>
-                                        <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
-                                        <button onClick={() => handleDeleteConfirmation(card.card_id)}><Delete /></button>
+                                        {editedCardIndex === index ? (
+                                            <div className="edit-form">
+                                                {/* Form chỉnh sửa */}
+                                                <strong>
+                                                    <input
+                                                        type="text"
+                                                        value={editedCardData.front_text}
+                                                        onChange={(e) => setEditedCardData({ ...editedCardData, front_text: e.target.value })}
+                                                        style={{ flexGrow: '1' }}
+                                                    />
+                                                </strong>
+                                                <span>
+                                                    <input
+                                                        type="text"
+                                                        value={editedCardData.back_text}
+                                                        onChange={(e) => setEditedCardData({ ...editedCardData, back_text: e.target.value })}
+                                                    />
+                                                </span>
+
+                                                <button onClick={() => handleSaveEdit(card.card_id)}><Done /></button>
+                                                <button onClick={() => setEditedCardIndex(null)}><Cancel /></button>
+                                            </div>
+                                        ) : (
+                                            // Hiển thị nội dung thông thường của thẻ
+                                            <>
+                                                <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
+                                                <button onClick={() => handleEditCard(index)}><Edit /></button>
+                                                <button onClick={() => handleDeleteConfirmation(card.card_id)}><Delete /></button>
+                                            </>
+                                        )}
                                     </li>
                                 ))
                             ) : (
                                 <p>Loading...</p>
                             )}
-                            <li>
-                                <input
-                                    type="text"
-                                    placeholder="Thuật ngữ"
-                                    value={newCardData.front_text}
-                                    onChange={(e) => setNewCardData({ ...newCardData, front_text: e.target.value })}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Định nghĩa"
-                                    value={newCardData.back_text}
-                                    onChange={(e) => setNewCardData({ ...newCardData, back_text: e.target.value })}
-                                />
-                                <button onClick={handleAddCard}>Thêm thẻ</button>
-                            </li>
+                            <div className="change-card-btn">
+                                <Button onClick={handleChangeCard}>Chỉnh sửa</Button>
+                            </div >
                         </ul>
                     </div>
                 </div>
-                {showConfirmation && (
+
+                {/* xóa set */}
+                {showDelSetComfirmation && (
                     <div>
                         <div className="overlay"></div>
                         <div className="confirmation-box">
-                            <div className="message">Bạn có chắc chắn muốn xóa không?</div>
+                            <div className="message">Bạn có chắc chắn muốn xóa học phần này không?</div>
+                            <div className="button-container">
+                                <button onClick={handleConfirmDeleteSet}>Xác nhận</button>
+                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* xóa thẻ */}
+                {showDelCardConfirmation && (
+                    <div>
+                        <div className="overlay"></div>
+                        <div className="confirmation-box">
+                            <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
                             <div className="button-container">
                                 <button onClick={handleConfirmDelete}>Xác nhận</button>
                                 <button onClick={handleCancelDelete}>Hủy bỏ</button>

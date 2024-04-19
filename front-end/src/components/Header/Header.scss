@@ -5,37 +5,38 @@
         background-color: #0a092d;
         color: white;
         padding: 10px 10px 0 10px;
-        border-bottom: 0.5px solid white;
+        border-bottom: 2px solid #282e3e;
 
         .name-app {
-            font-size: 40px;
+            font-size: 2rem;
             color: white;
             font-weight: bold;
+            padding: 0;
         }
 
-        // .home-library-container {
-        //     display: flex;
-        //     align-items: center;
-
-        //     .active {
-        //         font-weight: bold;
-        //         color: white;
-        //         box-shadow: inset 0 -3px 0 0 lighten(#2e3856, 50%);
-        //     }
-        // }
+        .home-library-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
 
         .active {
-            font-weight: bold;
-            color: white;
             box-shadow: inset 0 -3px 0 0 lighten(#2e3856, 50%);
         }
 
         .homepage-btn,
         .library-btn {
-            height: 100%;
-            font-size: 3rem;
-            font-weight: 500;
+            padding: .75rem;
+            flex-grow: 1;
             position: relative;
+
+            button {
+                font-size: 14px;
+                font-weight: 500;
+                height: max-content;
+            }
+
 
             &:hover {
                 box-shadow: inset 0 -3px 0 0 #acacfc;
@@ -59,6 +60,10 @@
             align-items: center;
             margin-left: auto;
             flex-grow: 1;
+
+            .css-bz5ng3-MuiInputBase-root-MuiInput-root::after {
+                border-bottom: none !important;
+            }
 
             input[type="text"] {
                 width: 100%;
@@ -113,6 +118,7 @@
 
         .menu {
             display: flex;
+            flex-direction: column;
             position: absolute;
             flex-wrap: wrap;
             top: 100%;
@@ -124,12 +130,14 @@
             z-index: 999;
             text-align: center;
             color: black;
-            width: 130px;
+            width: max-content;
 
             .menu-item {
                 display: flex;
+                justify-content: flex-start;
+                flex-grow: 1;
                 align-items: center;
-                padding: 5px;
+                padding: .5rem 2rem .5rem 1rem;
                 color: white;
                 font-weight: bold;
                 cursor: pointer;
