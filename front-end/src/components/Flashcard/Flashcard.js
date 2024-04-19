@@ -31,7 +31,8 @@ const Flashcard = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showDelCardConfirmation, setShowDelCardConfirmation] = useState(false);
+    const [showDelSetComfirmation, setShowDelSetConfirmation] = useState(false);
     const [cardIdToDelete, setCardIdToDelete] = useState(null);
     const [setIdToDelete, setSetIdToDelete] = useState(null);
     const set_id = localStorage.getItem('set_id');
@@ -124,12 +125,12 @@ const Flashcard = () => {
 
     //Gọi API xóa thẻ
     const handleDeleteConfirmation = async (cardId) => {
-        setShowConfirmation(true);
+        setShowDelCardConfirmation(true);
         setCardIdToDelete(cardId);
     };
 
     const handleConfirmDelete = async () => {
-        setShowConfirmation(false);
+        setShowDelCardConfirmation(false);
         try {
             let token = localStorage.getItem('token');
             if (!token) {
@@ -233,12 +234,12 @@ const Flashcard = () => {
 
     //gọi API xóa set
     const handleDeleteSet = async () => {
-        setShowConfirmation(true);
+        setShowDelSetConfirmation(true);
         setSetIdToDelete(set_id);
     };
 
     const handleConfirmDeleteSet = async () => {
-        setShowConfirmation(false);
+        setShowDelSetConfirmation(false);
         try {
             let token = localStorage.getItem('token');
             if (!token) {
@@ -368,7 +369,8 @@ const Flashcard = () => {
     };
 
     const handleCancelDelete = () => {
-        setShowConfirmation(false);
+        setShowDelCardConfirmation(false);
+        setShowDelSetConfirmation(false);
     };
 
     return (
@@ -523,8 +525,8 @@ const Flashcard = () => {
                             <button onClick={toggleMenu}><MoreHoriz /></button>
                             {showMenu && (
                                 <div className="menu">
-                                    <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Add to Folder</button>
-                                    <button onClick={() => handleDeleteSet(set_id)}><Delete />Delete Set</button>
+                                    <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Thêm vào thư mục</button>
+                                    <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
                                 </div>
                             )}
                         </div>
@@ -576,11 +578,26 @@ const Flashcard = () => {
                     </div>
                 </div>
 
-                {showConfirmation && (
+                {/* xóa set */}
+                {showDelSetComfirmation && (
                     <div>
                         <div className="overlay"></div>
                         <div className="confirmation-box">
-                            <div className="message">Bạn có chắc chắn muốn xóa không?</div>
+                            <div className="message">Bạn có chắc chắn muốn xóa học phần này không?</div>
+                            <div className="button-container">
+                                <button onClick={handleConfirmDeleteSet}>Xác nhận</button>
+                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* xóa thẻ */}
+                {showDelCardConfirmation && (
+                    <div>
+                        <div className="overlay"></div>
+                        <div className="confirmation-box">
+                            <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
                             <div className="button-container">
                                 <button onClick={handleConfirmDelete}>Xác nhận</button>
                                 <button onClick={handleCancelDelete}>Hủy bỏ</button>

@@ -98,6 +98,14 @@
         &.clicked {
             background-color: #87CEFA;
         }
+
+        &.correct {
+            background-color: lightgreen;
+        }
+
+        &.incorrect {
+            background-color: lightcoral;
+        }
     }
 
     .tests-form .buttons-answer button:hover {

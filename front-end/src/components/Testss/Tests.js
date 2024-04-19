@@ -19,6 +19,8 @@ const Tests = () => {
     const [totalQuestions, setTotalQuestions] = useState(0); // Lưu tổng số câu hỏi
     const [openDialog, setOpenDialog] = useState(false);
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+    const [showResults, setShowResults] = useState(false); // Hiển thị kết quả hay không
+    const [timerRunning, setTimerRunning] = useState(true); // Kiểm tra thời gian đếm ngược có đang chạy hay không
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -26,7 +28,7 @@ const Tests = () => {
         // useEffect cho bộ đếm ngược thời gian
         const timerId = setInterval(() => {
             setElapsedTime(prevTime => {
-                if (prevTime > 0) {
+                if (prevTime > 0 && timerRunning) {
                     return prevTime - 1;
                 } else {
                     clearInterval(timerId);
@@ -39,7 +41,7 @@ const Tests = () => {
         return () => {
             clearInterval(timerId);
         };
-    }, []);
+    }, [timerRunning]);
 
     //format thời gian
     const formatTime = (timeInSeconds) => {
@@ -51,7 +53,6 @@ const Tests = () => {
     };
 
     useEffect(() => {
-        //Lấy flashcards từ API
         if (!mounted) {
             setMounted(true);
             return;
@@ -59,7 +60,6 @@ const Tests = () => {
 
         const fetchData = async () => {
             try {
-                // Lấy set_id từ query params
                 const set_id = localStorage.getItem('set_id');
                 const flashcardsData = await getCardsDataFromSet(set_id);
                 const data = flashcardsData.content;
@@ -111,7 +111,11 @@ const Tests = () => {
             return updatedAnswers;
         });
     };
+
     const handleAnswerSelection = (index, answerIndex) => {
+        // Nếu đã hiển thị kết quả, không cho phép chọn đáp án
+        if (showResults) return;
+
         const selectedAnswerIndex = index * 4 + answerIndex;
 
         // Cập nhật đáp án người dùng đã chọn
@@ -130,10 +134,13 @@ const Tests = () => {
 
     const handleSubmitButtonClick = () => {
         setConfirmDialogOpen(true);
+        setTimerRunning(false); // Dừng thời gian đếm ngược
     };
 
     const handleDialogClose = () => {
         setOpenDialog(false);
+        // Khi đóng dialog kết quả, hiển thị kết quả
+        setShowResults(true);
     };
 
     const handleConfirmDialogClose = (confirmed) => {
@@ -146,7 +153,9 @@ const Tests = () => {
 
             // Tính số câu trả lời đúng sau khi người dùng xác nhận nộp bài
             let correctCount = 0;
-            selectedAnswers.forEach((selectedAnswerIndex, index) => {
+            // Lặp qua các thuộc tính của object selectedAnswers
+            Object.keys(selectedAnswers).forEach((index) => {
+                const selectedAnswerIndex = selectedAnswers[index];
                 const selectedAnswer = answers[selectedAnswerIndex];
                 const correctAnswer = flashcards[index].front_text;
                 if (selectedAnswer === correctAnswer) {
@@ -160,7 +169,6 @@ const Tests = () => {
             setConfirmDialogOpen(false);
         }
     };
-
 
     return (
         <div className="Tests">
@@ -186,7 +194,17 @@ const Tests = () => {
                                 {answers.slice(index * 4, index * 4 + 4).map((answer, answerIndex) => (
                                     <button
                                         key={answerIndex}
-                                        className={selectedAnswers[index] === index * 4 + answerIndex ? 'clicked' : ''}
+                                        className={
+                                            showResults
+                                                ? selectedAnswers[index] === index * 4 + answerIndex
+                                                    ? answer === flashcard.front_text
+                                                        ? 'correct'
+                                                        : 'incorrect'
+                                                    : ''
+                                                : selectedAnswers[index] === index * 4 + answerIndex
+                                                    ? 'clicked'
+                                                    : ''
+                                        }
                                         onClick={() => handleAnswerSelection(index, answerIndex)}
                                     >
                                         {answer}

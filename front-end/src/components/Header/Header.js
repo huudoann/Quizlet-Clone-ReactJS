@@ -15,6 +15,8 @@ const Header = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State cho menu người dùng
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [currentPage, setCurrentPage] = useState('');
     const location = useLocation();
     const menuRef = useRef(null); // Ref cho menu
     const menuUserRef = useRef(null); // Ref cho menu người dùng
@@ -118,6 +120,26 @@ const Header = () => {
         }
     };
 
+    //xử lý phần tìm kiếm
+    useEffect(() => {
+        setCurrentPage(location.pathname);
+    }, [location.pathname]);
+
+    const handleSearchInputChange = (event) => {
+        setSearchKeyword(event.target.value);
+    };
+
+    const handleSearchKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            localStorage.setItem('filterTitle', searchKeyword);
+            if (currentPage === '/search-results-page') {
+                window.location.reload();
+            } else {
+                navigate('/search-results-page');
+            }
+        }
+    };
+
     return (
         <div className='nav-header'>
             <header>
@@ -136,7 +158,14 @@ const Header = () => {
                 </div>
 
                 <div className="search">
-                    <Input type="text" placeholder="Search for anything..." style={{ width: '100%', border: 'none !important' }} />
+                    <Input
+                        type="text"
+                        placeholder="Search for anything..."
+                        style={{ width: '100%', border: 'none !important' }}
+                        value={searchKeyword}
+                        onChange={handleSearchInputChange}
+                        onKeyDown={handleSearchKeyDown}
+                    />
                     <div className="button-right">
                         <div className="icon-container icon-container-plus" onClick={toggleMenu}>
                             <PlusIcon />
