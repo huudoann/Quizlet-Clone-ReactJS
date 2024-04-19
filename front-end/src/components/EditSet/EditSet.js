@@ -75,7 +75,10 @@ const EditSet = () => {
     };
 
     const addCard = async (isClickAddCard) => {
+<<<<<<< HEAD
         let newFlashcards = []
+=======
+>>>>>>> 00fb14248507f8712feaced8d6493219c566185a
         if (isClickAddCard) {
             const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`;
             const numberOfNewCard =  flashcardsArray.length - numberOfOldCard
