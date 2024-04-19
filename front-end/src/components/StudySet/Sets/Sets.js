@@ -46,6 +46,7 @@ const Sets = () => {
                         }
                     });
                     setSets(response.data);
+                    console.log(response);
                     setUserName(userName);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
@@ -91,7 +92,7 @@ const Sets = () => {
                             </Button>
                         ))
                     ) : (
-                        <p>Không có sets nào được tìm thấy.</p>
+                        <p style={{ color: '#fff', fontSize: '2rem' }}>Bạn chưa tạo học phần nào.</p>
                     )}
                 </div>
             </div>

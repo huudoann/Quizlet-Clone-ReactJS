@@ -22,7 +22,6 @@ const Flashcard = () => {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [shouldAnimate, setShouldAnimate] = useState(false);
     const [slideDirection, setSlideDirection] = useState('left');
-    const [rating, setRating] = useState(0);
     const [selectedStars, setSelectedStars] = useState(0);
     const [averageRating, setAverageRating] = useState(0);
     const [flashcards, setFlashcards] = useState([]);

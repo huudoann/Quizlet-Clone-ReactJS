@@ -76,7 +76,7 @@ const Folders = () => {
                             </Button>
                         ))
                     ) : (
-                        <p>Không có folders nào được tìm thấy.</p>
+                        <p style={{ color: '#fff', fontSize: '2rem' }}>Bạn chưa tạo thư mục nào.</p>
                     )}
                 </div>
             </div>

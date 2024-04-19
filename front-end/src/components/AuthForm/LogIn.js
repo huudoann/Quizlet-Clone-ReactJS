@@ -74,7 +74,7 @@ const LoginForm = ({ switchForm }) => {
         <TextField
           required
           id="outlined-required"
-          label="Tên đăng nhập"
+          label="Email"
           value={email}
           onChange={handleInputChange}
           onKeyDown={handleEnterPress}

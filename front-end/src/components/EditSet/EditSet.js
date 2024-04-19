@@ -26,7 +26,7 @@ const EditSet = () => {
     const [token, setToken] = useState('');
     const [isClickAddCard, setIsClickAddCard] = useState(false);
 
-    console.log({ flashcardsArray });
+    // console.log({ flashcardsArray });
     //gọi API lấy tất cả thẻ theo set_id
     useEffect(() => {
         const fetchData = async () => {
@@ -76,6 +76,7 @@ const EditSet = () => {
             front_text: "",
             back_text: "",
             card_id: Date.now(),
+            is_known: 'false'
         }
         setFlashcardsArray(prevInputs => [...prevInputs, newCard]);
 
@@ -84,6 +85,7 @@ const EditSet = () => {
     const addCard = async (isClickAddCard) => {
         if (isClickAddCard) {
             const createCardApiUrl = `http://localhost:8080/api/card/${set_id}/create_card`;
+            console.log("them", flashcardsArray[flashcardsArray.length - 1]);
             const newCard = await axios.post(createCardApiUrl, flashcardsArray[flashcardsArray.length - 1], {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -94,7 +96,6 @@ const EditSet = () => {
         } else {
             return
         }
-
     }
 
 

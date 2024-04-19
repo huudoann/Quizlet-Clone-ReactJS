@@ -38,9 +38,9 @@ const SearchResultsPage = () => {
     <div className="search-results-page">
       < Header />
       <div className="search-results-page-container">
-        <div className="search-results-page-header">Kết quả cho "vocab"</div>
+        <div className="search-results-page-header">Kết quả cho "{localStorage.getItem('filterTitle')}"</div>
         <div className="search-results-page-content">
-          Học phần
+          <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách học phần:</span>
           <div className="set-items">
             {sets && sets.map((set) => (
               <SetItem
