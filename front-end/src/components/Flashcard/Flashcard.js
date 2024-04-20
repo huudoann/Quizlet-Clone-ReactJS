@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Flashcard.scss';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Star, MoreHoriz, AddCircleOutline, Delete, Edit, Cancel, Done } from '@mui/icons-material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { MoreHoriz, AddCircleOutline, Delete, Edit, Cancel, Done } from '@mui/icons-material';
 import Header from '../Header/Header';
-import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
@@ -28,7 +29,6 @@ const Flashcard = () => {
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [showMenu, setShowMenu] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
-    const location = useLocation();
     const navigate = useNavigate();
     const [showDelCardConfirmation, setShowDelCardConfirmation] = useState(false);
     const [showDelSetComfirmation, setShowDelSetConfirmation] = useState(false);
@@ -60,15 +60,14 @@ const Flashcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const set_id = localStorage.getItem('set_id');
                 if (!set_id) {
-                    console.error('Không tìm thấy set_id trong URL');
+                    console.error('Không tìm thấy set_id trong local');
                     return;
                 }
-                const flashcardsData = await getCardsDataFromSet(set_id);
+                const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcards(flashcardsArray);
-                // console.log(flashcardsData);
+                console.log(flashcardsData);
                 // localStorage.setItem("flashcardDescription", flashcardsData.desc);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
@@ -79,7 +78,7 @@ const Flashcard = () => {
         };
 
         fetchData();
-    }, [location.search]);
+    }, [set_id]);
 
     useEffect(() => {
         setShuffledFlashcards(shuffleArray(flashcards));
@@ -264,7 +263,7 @@ const Flashcard = () => {
 
     useEffect(() => {
         fetchReviewing();
-    }, [location.search], [flashcards]);
+    }, [set_id], [flashcards]);
 
     const CardsData = {
         flashcards,
@@ -408,7 +407,7 @@ const Flashcard = () => {
                             </Dialog>
                         </div>
                         <div className="flashcard-navigation">
-                            <NavLink to={`/flashcard${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', boxShadow: 'inset 0 -2px 0 0 #ccc' }}>
+                            <NavLink to={`/flashcard`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', boxShadow: 'inset 0 -2px 0 0 #ccc' }}>
                                 <IconSprite>
                                     <symbol id="study-flashcards-twilight" viewBox="0 0 32 32">
                                         <path d="M7.72705 12.8246C7.72705 11.2646 8.97351 10 10.5111 10H27.2157C28.7533 10 29.9998 11.2646 29.9998 12.8246V25.1754C29.9998 26.7354 28.7533 28 27.2157 28H10.5111C8.97351 28 7.72705 26.7354 7.72705 25.1754V12.8246Z" fill="#7583FF"></path>
@@ -417,7 +416,7 @@ const Flashcard = () => {
                                 </IconSprite>
                                 <Icon name="study-flashcards-twilight" className="AssemblyIcon AssemblyIcon--larger" />
                                 <span>Flashcards</span></NavLink>
-                            <NavLink to={`/learn${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}>
+                            <NavLink to={`/learn`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}>
                                 <IconSprite>
                                     <symbol id="study-learn-twilight" viewBox="0 0 32 32">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4382 3.59133C12.0988 1.86065 9.53452 1.48966 7.70851 2.73508C6.35638 3.6573 5.76474 5.22246 6.08552 6.68675C1.72912 10.8021 0.637202 17.3182 3.87885 22.5891C7.08103 27.7957 13.5062 30.1541 19.4026 28.7697C20.8007 30.185 23.1247 30.4186 24.8161 29.265C26.6593 28.0079 27.0851 25.5576 25.7315 23.8085C24.392 22.0779 21.8278 21.7069 20.0018 22.9523C19.0335 23.6127 18.4543 24.6034 18.3224 25.6523C13.907 26.5767 9.18612 24.7646 6.82903 20.932C4.48648 17.1231 5.16237 12.4327 8.17514 9.32516C9.51726 10.0007 11.2072 9.9451 12.5229 9.04779C14.366 7.79065 14.7919 5.34035 13.4382 3.59133ZM9.81309 5.54667C10.046 5.3878 10.3727 5.44596 10.5268 5.64501C10.6666 5.82565 10.6339 6.0891 10.4181 6.2363C10.1855 6.39498 9.85872 6.33693 9.70463 6.13783C9.56476 5.95711 9.59755 5.69368 9.81309 5.54667ZM22.1063 25.7638C22.3392 25.605 22.6659 25.6631 22.82 25.8622C22.9598 26.0428 22.9271 26.3063 22.7113 26.4535C22.4786 26.6122 22.1519 26.5541 21.9978 26.355C21.8579 26.1743 21.8907 25.9108 22.1063 25.7638Z" fill="#4255FF"></path>
@@ -429,7 +428,7 @@ const Flashcard = () => {
                                 </IconSprite>
                                 <Icon name="study-learn-twilight" className="AssemblyIcon AssemblyIcon--larger" />
                                 <span>Learn</span></NavLink>
-                            <NavLink to={`/test${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}>
+                            <NavLink to={`/test`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', marginLeft: '0.5rem' }}>
                                 <IconSprite>
                                     <symbol fill="none" id="study-test-twilight" viewBox="0 0 32 32" class="__web-inspector-hide-shortcut__">
                                         <path d="M8.67554 6.37019C8.67554 5.06107 9.78985 3.99982 11.1644 3.99982H19.6433C20.3216 3.99982 20.9706 4.2635 21.44 4.72987L26.65 9.90607C27.0942 10.3474 27.3422 10.9351 27.3422 11.5464V22.9628C27.3422 24.2719 26.2279 25.3332 24.8533 25.3332H11.1644C9.78985 25.3332 8.67554 24.2719 8.67554 22.9628V6.37019Z" fill="#7583FF"></path>
@@ -440,7 +439,7 @@ const Flashcard = () => {
                                 </IconSprite>
                                 <Icon name="study-test-twilight" className="AssemblyIcon AssemblyIcon--larger" />
                                 <span>Test</span></NavLink>
-                            <NavLink to={`/match${location.search}`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}>
+                            <NavLink to={`/match`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}>
                                 <IconSprite>
                                     <symbol fill="none" id="study-match-twilight" viewBox="0 0 32 32">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M4.66664 4C3.19388 4 1.99997 5.26414 1.99997 6.82353V15.2941C1.99997 16.8535 3.19388 18.1177 4.66664 18.1177H23.3333C24.8061 18.1177 26 16.8535 26 15.2941V6.82353C26 5.26414 24.8061 4 23.3333 4H4.66664ZM8.66659 9.64704C7.93021 9.64704 7.33325 10.2791 7.33325 11.0588C7.33325 11.8385 7.93021 12.4706 8.66659 12.4706H19.3333C20.0696 12.4706 20.6666 11.8385 20.6666 11.0588C20.6666 10.2791 20.0696 9.64704 19.3333 9.64704H8.66659Z" fill="#4255FF"></path>

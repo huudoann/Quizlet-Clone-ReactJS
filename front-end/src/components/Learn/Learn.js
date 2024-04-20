@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Learn.scss';
 import { Close } from '@mui/icons-material';
 import DropDownMenu from '../Learn/DropDownMenu';
-import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
 
 const Learn = () => {
   const [flashcards, setFlashcards] = useState([]);
@@ -16,19 +17,14 @@ const Learn = () => {
   const [showNextMessage, setShowNextMessage] = useState(false);
   const [hintShown, setHintShown] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const refInput = useRef(null);
+  const set_id = localStorage.getItem('set_id');
 
   useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
-      return;
-    }
 
     const fetchData = async () => {
       try {
-        const set_id = localStorage.getItem('set_id');
-        const flashcardsData = await getCardsDataFromSet(set_id);
+        const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
         const data = flashcardsData.content;
         if (data && data.length > 0) {
           const shuffledFlashcards = shuffleArray(data).slice(0, 7);
@@ -42,7 +38,7 @@ const Learn = () => {
 
     fetchData();
 
-  }, [location.search, mounted]);
+  }, [set_id]);
 
   useEffect(() => {
     const updateFormHeight = () => {
@@ -81,7 +77,7 @@ const Learn = () => {
   };
 
   const handleCloseButtonClick = () => {
-    navigate(`/flashcard${location.search}`);
+    navigate(`/flashcard`);
   };
 
   const handleInputChange = (e) => {

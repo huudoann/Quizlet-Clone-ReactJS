@@ -3,9 +3,9 @@ import './Tests.scss';
 import { Close } from '@mui/icons-material';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop } from '@mui/material';
 import DropDownMenu from './DropDownMenu';
-import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
 
 const Tests = () => {
     const [elapsedTime, setElapsedTime] = useState(3600);
@@ -14,7 +14,6 @@ const Tests = () => {
     const [answers, setAnswers] = useState([]);
     const [mounted, setMounted] = useState(false);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Biến đếm số lượng câu trả lời đúng
-    const [userScore, setUserScore] = useState(0);
     const [submitted, setSubmitted] = useState(false); // Kiểm tra xem người dùng đã nộp bài thi chưa
     const [totalQuestions, setTotalQuestions] = useState(0); // Lưu tổng số câu hỏi
     const [openDialog, setOpenDialog] = useState(false);
@@ -22,7 +21,7 @@ const Tests = () => {
     const [showResults, setShowResults] = useState(false); // Hiển thị kết quả hay không
     const [timerRunning, setTimerRunning] = useState(true); // Kiểm tra thời gian đếm ngược có đang chạy hay không
     const navigate = useNavigate();
-    const location = useLocation();
+    const set_id = localStorage.getItem('set_id');
 
     useEffect(() => {
         // useEffect cho bộ đếm ngược thời gian
@@ -53,15 +52,10 @@ const Tests = () => {
     };
 
     useEffect(() => {
-        if (!mounted) {
-            setMounted(true);
-            return;
-        }
 
         const fetchData = async () => {
             try {
-                const set_id = localStorage.getItem('set_id');
-                const flashcardsData = await getCardsDataFromSet(set_id);
+                const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
                 const data = flashcardsData.content;
                 if (data && data.length > 0) {
                     const shuffledFlashcards = shuffleArray(data).slice(0, 20);
@@ -75,7 +69,7 @@ const Tests = () => {
 
         fetchData();
 
-    }, [location.search, mounted]);
+    }, [set_id]);
 
     useEffect(() => {
         // useEffect sinh câu hỏi và đáp án
@@ -96,7 +90,7 @@ const Tests = () => {
     };
 
     const handleCloseButtonClick = () => {
-        navigate(`/flashcard${location.search}`);
+        navigate(`/flashcard`);
     };
 
     const generateAnswers = (flashcard, index) => {

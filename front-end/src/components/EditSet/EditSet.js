@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './EditSet.scss';
 import Header from '../Header/Header';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, TextField, IconButton, Button } from '@mui/material';
-import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
-import axios from 'axios';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
 import { ArrowBack } from '@mui/icons-material';
+import axios from 'axios';
 
 const EditSet = () => {
     const [isPrivateSelected, setIsPrivateSelected] = useState(false); // State cho nút private
@@ -17,7 +17,6 @@ const EditSet = () => {
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [flashcardDescription, setFlashcardDescription] = useState('');
     const [flashcardsArray, setFlashcardsArray] = useState([]);
-    const location = useLocation();
     const navigate = useNavigate()
     const [numberOfOldCard, serNumberOfOldCard] = useState(0)
     const [set_id, setSetId] = useState('');
@@ -38,7 +37,7 @@ const EditSet = () => {
                     setSetId(set_id);
                 }
 
-                const flashcardsData = await getCardsDataFromSet(set_id);
+                const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcardsArray(flashcardsArray);
                 const title = localStorage.getItem('flashcardTitle');
@@ -60,7 +59,7 @@ const EditSet = () => {
         };
 
         fetchData();
-    }, [location.search]);
+    }, [set_id]);
 
     useEffect(() => {
         setSttCount(flashcardsArray.length + 1);
@@ -71,7 +70,8 @@ const EditSet = () => {
             front_text: "",
             back_text: "",
             card_id: Date.now(),
-            is_known: 'false'
+            is_known: 'false',
+            updated_at: Date.now()
         }
         setFlashcardsArray(prevInputs => [...prevInputs, newCard]);
 

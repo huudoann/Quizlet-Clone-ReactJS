@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import './LogIn.scss';
 import { Box, TextField, Button } from '@mui/material';
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
+import axios from 'axios';
 
 const LoginForm = ({ switchForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
