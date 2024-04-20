@@ -85,6 +85,8 @@ const Sets = () => {
                                 onClick={() => {
                                     localStorage.setItem('flashcardTitle', set.title);
                                     localStorage.setItem('set_id', set.setId);
+                                    localStorage.setItem('description', set.description)
+                                    localStorage.setItem('public', set.public);
                                     navigate('/flashcard');
                                 }}
                             >

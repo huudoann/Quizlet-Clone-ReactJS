@@ -40,6 +40,9 @@ const Flashcard = () => {
         front_text: '',
         back_text: '',
     });
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
 
     const flashcardContainerRef = useRef(null);
 
@@ -68,6 +71,7 @@ const Flashcard = () => {
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcards(flashcardsArray);
                 console.log(flashcardsData);
+                setTotalPages(flashcardsData.totalPages);
                 // localStorage.setItem("flashcardDescription", flashcardsData.desc);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
@@ -371,6 +375,29 @@ const Flashcard = () => {
         setShowDelSetConfirmation(false);
     };
 
+    //xử lý chuyển trang
+    useEffect(() => {
+        setShowLoadMoreButton(currentPage < totalPages - 1);
+    }, [currentPage, totalPages]);
+
+    const handleLoadMore = async () => {
+        try {
+            const nextPageData = await Request.Server.get(endPoint.getAllCardsInSet(set_id), { params: { page: currentPage + 1 } });
+            const newFlashcards = Object.values(nextPageData.content);
+            setFlashcards(prevFlashcards => [...prevFlashcards, ...newFlashcards]);
+            setCurrentPage(prevPage => prevPage + 1);
+            setTotalPages(nextPageData.totalPages);
+            console.log(nextPageData);
+        } catch (error) {
+            console.error('Error loading more flashcards:', error);
+        }
+    };
+
+    const handleEditSet = () => {
+        navigate('/edit-set');
+    }
+
+
     return (
         <div>
             <Header />
@@ -570,8 +597,12 @@ const Flashcard = () => {
                                 <p>Loading...</p>
                             )}
                             <div className="change-card-btn">
-                                <Button onClick={handleChangeCard}>Chỉnh sửa</Button>
-                            </div >
+                                {showLoadMoreButton ? (
+                                    <button onClick={handleLoadMore}>Xem thêm</button>
+                                ) : (
+                                    <button onClick={handleEditSet}>Chỉnh sửa</button>
+                                )}
+                            </div>
                         </ul>
                     </div>
                 </div>
