@@ -9,7 +9,7 @@
         font-size: 15px;
         margin-top: 40px;
         display: flex;
-        gap: 800px;
+        gap: 700px;
     }
 
     .folder-details {
@@ -43,18 +43,6 @@
         }
     }
 
-    .learn-button {
-        padding: 5px;
-        font-size: 30px;
-        cursor: pointer;
-        border: 2px solid #586380;
-        border-radius: 100px;
-
-        &:hover {
-            background-color: #282E3E;
-        }
-    }
-
     .share-button {
         padding: 5px;
         font-size: 30px;
@@ -67,13 +55,25 @@
         }   
     }
 
-    .more-options-button {
+    .edit-button {
         padding: 5px;
         font-size: 30px;
         cursor: pointer;
         border: 2px solid #586380;
         border-radius: 100px;
         
+        &:hover {
+            background-color: #282E3E;
+        }   
+    }
+
+    .delete-folder-button {
+        padding: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        border: 2px solid #586380;
+        border-radius: 100px;
+
         &:hover {
             background-color: #282E3E;
         }   

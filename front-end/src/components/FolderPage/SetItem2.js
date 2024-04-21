@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const SetItem2 = (item) => {
-  console.log(item);
-  const navigate = useNavigate();
 
+  const folder_id = localStorage.getItem("folder_id");
+  
+  const navigate = useNavigate();
   const handleNavigate = () => {
     localStorage.setItem("set_id", item.setId);
     navigate("/flashcard");
@@ -16,6 +17,7 @@ const SetItem2 = (item) => {
 
   const handleDelete = () => {
     alert("delete" + item.setId);
+
   };
 
   return (
@@ -36,7 +38,7 @@ const SetItem2 = (item) => {
               e.stopPropagation();
               handleDelete();
             }}
-            className="delete-button"
+            className="delete-set-button"
           />
         </div>
       </div>
