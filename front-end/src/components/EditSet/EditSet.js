@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './EditSet.scss';
 import Header from '../Header/Header';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, TextField, IconButton, Button } from '@mui/material';
-import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
-import axios from 'axios';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
 import { ArrowBack } from '@mui/icons-material';
+import axios from 'axios';
 
 const EditSet = () => {
     const [isPrivateSelected, setIsPrivateSelected] = useState(false); // State cho nút private
     const [isPublicSelected, setIsPublicSelected] = useState(false); // State cho nút public
     const [sttCount, setSttCount] = useState('1'); // Biến đếm số thứ tự
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [flashcardDescription, setFlashcardDescription] = useState('');
     const [flashcardsArray, setFlashcardsArray] = useState([]);
-    const location = useLocation();
+    const [is_public, setPublic] = useState([]);
     const navigate = useNavigate()
     const [numberOfOldCard, serNumberOfOldCard] = useState(0)
     const [set_id, setSetId] = useState('');
@@ -38,14 +36,18 @@ const EditSet = () => {
                     setSetId(set_id);
                 }
 
-                const flashcardsData = await getCardsDataFromSet(set_id);
+                const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcardsArray(flashcardsArray);
+                console.log(flashcardsArray);
                 const title = localStorage.getItem('flashcardTitle');
                 const description = localStorage.getItem('description');
+                const is_public = localStorage.getItem('is_public')
                 setFlashcardDescription(description);
                 setFlashcardTitle(title);
-                serNumberOfOldCard(flashcardsArray.length)
+                setPublic = localStorage.getItem(is_public);
+                console.log("public",is_public);
+                serNumberOfOldCard(flashcardsArray.length);
                 const token = localStorage.getItem('token'); // Lấy token từ local storage
                 if (!token) {
                     window.location.href = "/login"
@@ -60,7 +62,7 @@ const EditSet = () => {
         };
 
         fetchData();
-    }, [location.search]);
+    }, [set_id]);
 
     useEffect(() => {
         setSttCount(flashcardsArray.length + 1);
@@ -71,7 +73,8 @@ const EditSet = () => {
             front_text: "",
             back_text: "",
             card_id: Date.now(),
-            is_known: 'false'
+            is_known: 'false',
+            updated_at: Date.now()
         }
         setFlashcardsArray(prevInputs => [...prevInputs, newCard]);
 
@@ -108,12 +111,14 @@ const EditSet = () => {
     const handlePrivateClick = () => {
         setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
         setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
+        setPublic(false)
     };
 
     // Hàm xử lý khi click vào nút public
     const handlePublicClick = () => {
         setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
         setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
+        setPublic(true)
     };
 
     //post dữ liệu về BE
@@ -142,6 +147,25 @@ const EditSet = () => {
                 console.log({ responseCard })
             })
             navigate(`/flashcard`)
+        }
+
+        // update cập nhập thông tin, mô tả, quyền truy cập
+        const updateDataEditSet = {
+            title: flashcardTitle,
+            description: flashcardDescription,
+            is_public: is_public // Sử dụng giá trị is_public được lưu trong state
+        }
+        const updateData = Request.Server.put(endPoint.editSetBySetId(set_id))
+        try {
+            const responseSet = await axios.put(updateData, updateDataEditSet, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            console.log('Update set thành công:', responseSet.data);
+        } catch (error) {
+            console.error('Lỗi khi cập nhật set:', error.message);
+            throw error;
         }
     }
 
@@ -184,14 +208,14 @@ const EditSet = () => {
                         label="Nhập tiêu đề"
                         variant="outlined"
                         value={flashcardTitle}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={(e) => setFlashcardTitle(e.target.value)}
                     />
                     <TextField
                         className='add-description'
                         label="Thêm mô tả"
                         variant="outlined"
                         value={flashcardDescription}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => setFlashcardDescription(e.target.value)}
                     />
                 </Box>
                 <div className='private-public'>

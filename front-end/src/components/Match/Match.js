@@ -2,22 +2,21 @@ import React, { useState, useEffect } from 'react';
 import './Match.scss';
 import { Close } from '@mui/icons-material';
 import DropDownMenu from './DropDownMenu';
-import getCardsDataFromSet from '../../utils/getCardsDataFromSet';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { endPoint } from '../../utils/api/endPoint';
+import { Request } from '../../utils/axios';
 
 const MatchPage = () => {
   const [matchedIds, setMatchedIds] = useState([]);
   const [unmatchedPairs, setUnmatchedPairs] = useState([]);
   const [flashcards, setFlashcards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(Array(6).fill(null));
-  const location = useLocation();
   const navigate = useNavigate();
-
+  const set_id = localStorage.getItem('set_id');
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const set_id = localStorage.getItem('set_id');
-        const flashcardsData = await getCardsDataFromSet(set_id);
+        const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
 
         // Tạo một mảng để chứa tất cả các object chứa front_text và back_text
         const cards = [];
@@ -73,8 +72,10 @@ const MatchPage = () => {
         console.error('Lỗi lấy cards:', error);
       }
     };
-    fetchData();
-  }, [location.search]);
+    if (set_id) {
+      fetchData(set_id);
+    }
+  }, [set_id])
 
   // const shuffleArray = (array) => {
   //   const newArray = [...array];
