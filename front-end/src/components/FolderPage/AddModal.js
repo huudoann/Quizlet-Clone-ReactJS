@@ -84,8 +84,9 @@ export default function AddModal() {
             },
           }
         );
+        alert("Thêm set thành công!");
       } catch (error) {
-        alert("Lỗi khi thêm set");
+        alert("Set đã tồn tại trong folder này!");
       }
     }
   };
@@ -160,7 +161,6 @@ export default function AddModal() {
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "10px",
-                  border: "1px solid #586380",
                   borderRadius: "10px",
                   marginBottom: "10px",
                 }}
