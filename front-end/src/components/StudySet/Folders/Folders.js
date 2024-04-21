@@ -69,8 +69,9 @@ const Folders = () => {
                         folders.map(folder => (
                             <Button key={folder.setId} className="folder-item">
 
-                                <Link to={`/flashcard?set_id=${folder.setId}`} style={{ textDecoration: 'none', color: 'inherit' }}
-                                    onClick={() => localStorage.setItem('flashcardTitle', folder.title)}>
+                                <Link to={`/folder-page`} style={{ textDecoration: 'none', color: 'inherit' }}
+                                    onClick={() =>
+                                        localStorage.setItem('flashcardTitle', folder.title)}>
                                     <h3>{folder.title}</h3>
                                 </Link>
                             </Button>

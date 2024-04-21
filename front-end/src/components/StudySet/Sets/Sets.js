@@ -6,13 +6,12 @@ import axios from 'axios';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Input } from '@mui/material';
+import { endPoint } from '../../../utils/api/endPoint';
+import { Request } from '../../../utils/axios';
 
 const Sets = () => {
-    // sửa UI
-    // code dựa trên data fake
-
-
     const [sets, setSets] = useState([]);
+    const [filteredSets, setFilteredSets] = useState([]);
     const [username, setUserName] = useState();
     const location = useLocation();
     const navigate = useNavigate();
@@ -23,31 +22,44 @@ const Sets = () => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
 
-    useEffect(() => {
-        setActiveLink(location.pathname);
-    }, [location.pathname]);
-
-    //gọi API lấy tất cả các set
+    // Fetch sets data from API
     useEffect(() => {
         const fetchData = async () => {
             let token = localStorage.getItem('token');
             const userId = localStorage.getItem('user_id');
             const userName = localStorage.getItem('user_name');
 
-            // Kiểm tra xem token có tồn tại không
             if (!token) {
                 throw new Error('Token không tồn tại trong localStorage');
             } else {
                 try {
-                    // Thực hiện gọi API ở đây
-                    const response = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
+                    const allSets = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
                     });
-                    setSets(response.data);
-                    console.log(response);
+                    setSets(allSets.data);
                     setUserName(userName);
+                    // console.log(allSets);
+
+                    const setsWithTerms = await Promise.all(allSets.data.map(async (set) => {
+                        // console.log(set);
+                        try {
+                            const response = await Request.Server.get(endPoint.getAllCardsInSet(set.setId), {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`
+                                }
+
+                            });
+                            console.log("set_id", set.setId, response.totalElements);
+                            return { ...set, termCount: response.totalElements };
+                        } catch (error) {
+                            console.error('Lỗi khi lấy số terms cho set', set.setId, error.message, endPoint.getAllCardsInSet(set.setId));
+                            return { ...set, termCount: 0 }; // Trả về 0 nếu có lỗi
+                        }
+                    }));
+
+                    setSets(setsWithTerms);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
                 }
@@ -56,6 +68,14 @@ const Sets = () => {
 
         fetchData();
     }, []);
+
+    const handleSearch = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        const filtered = sets.filter(set => set.title.toLowerCase().includes(searchTerm));
+        setFilteredSets(filtered);
+    };
+
+    const setsToDisplay = filteredSets.length > 0 ? filteredSets : sets;
 
     return (
         <div className="sets">
@@ -70,15 +90,15 @@ const Sets = () => {
                     <NavLink to={`/folders`} className="folder" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><Button style={{ color: 'white' }}>Thư mục</Button></NavLink>
                 </div>
                 <div className='search-term'>
-                    <Input type="text" placeholder="Tìm kiếm học phần" style={{ width: '100%' }} />
+                    <Input type="text" placeholder="Tìm kiếm học phần" style={{ width: '100%' }} onChange={handleSearch} />
                     <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
                     </div>
                 </div>
 
                 <div className="sets-list">
-                    {sets.length > 0 ? (
-                        sets.map(set => (
+                    {setsToDisplay.length > 0 ? (
+                        setsToDisplay.map(set => (
                             <Button
                                 key={set.setId}
                                 className="set-item-button"
@@ -89,12 +109,15 @@ const Sets = () => {
                                     localStorage.setItem('public', set.public);
                                     navigate('/flashcard');
                                 }}
+                                style={{ textTransform: 'none' }}
                             >
+                                <span>{set.termCount} {set.termCount > 1 ? 'Terms' : 'Term'}</span>
+                                <br></br>
                                 <h3>{set.title}</h3>
                             </Button>
                         ))
                     ) : (
-                        <p style={{ color: '#fff', fontSize: '2rem' }}>Bạn chưa tạo học phần nào.</p>
+                        <p style={{ color: '#fff', fontSize: '2rem' }}>Không tìm thấy kết quả phù hợp.</p>
                     )}
                 </div>
             </div>

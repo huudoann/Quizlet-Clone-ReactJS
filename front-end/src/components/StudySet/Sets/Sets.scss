@@ -124,7 +124,7 @@
         display: flex;
         flex-direction: column;
         height: max-content;
-        margin-top: 1rem;
+        margin-top: .5rem;
 
         .set-item-button {
             display: flex;
@@ -136,9 +136,24 @@
             border: none;
             border-radius: 5px;
             background-color: #2e3856;
+            position: relative;
+            flex-direction: column;
+            align-items: flex-start;
+
+            span {
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                font-size: 14px;
+                color: #eee !important;
+                font-weight: 900;
+            }
 
             h3 {
                 color: #eee !important;
+                font-size: 20px;
+                font-weight: 900;
+                margin-bottom: 0;
             }
         }
 

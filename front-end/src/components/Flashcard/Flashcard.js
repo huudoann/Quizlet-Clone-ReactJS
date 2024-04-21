@@ -5,7 +5,6 @@ import { MoreHoriz, AddCircleOutline, Delete, Edit, Cancel, Done } from '@mui/ic
 import Header from '../Header/Header';
 import { endPoint } from '../../utils/api/endPoint';
 import { Request } from '../../utils/axios';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
 import IconSprite from '../Icon/IconSprite';
@@ -103,8 +102,6 @@ const Flashcard = () => {
             // Gửi yêu cầu PUT với dữ liệu chỉnh sửa
             const response = await Request.Server.put(endPoint.editCardById(cardId), editedCardData);
 
-            // const response = await axios.put(`http://localhost:8080/api/card/edit/${cardId}`, editedCardData);
-            // Nếu gửi thành công, cập nhật lại flashcards và ẩn form chỉnh sửa
             const updatedFlashcards = flashcards.map(card => {
                 if (card.card_id === cardId) {
                     return {
@@ -117,7 +114,7 @@ const Flashcard = () => {
             });
             setFlashcards(updatedFlashcards);
             setEditedCardIndex(null);
-            console.log("Sửa thành công");
+            console.log("Sửa thành công", response);
         } catch (error) {
             console.error('Lỗi khi gửi yêu cầu lưu chỉnh sửa:', error.message);
         }
@@ -138,14 +135,9 @@ const Flashcard = () => {
                 return null
             }
             const response = await Request.Server.delete(endPoint.deleteCardById(cardIdToDelete));
-            // const response = await axios.delete(`http://localhost:8080/api/card/${cardIdToDelete}`, {
-            //     headers: {
-            //         'Authorization': `Bearer ${token}`,
-            //     },
-            // });
 
             // Thực hiện các thao tác cập nhật giao diện sau khi xóa thẻ thành công
-            console.log('Thẻ đã được xóa thành công');
+            console.log('Thẻ đã được xóa thành công', response);
             // Cập nhật danh sách thẻ sau khi xóa
             const updatedFlashcards = flashcards.filter(card => card.card_id !== cardIdToDelete);
             setFlashcards(updatedFlashcards);
@@ -225,7 +217,7 @@ const Flashcard = () => {
 
             const response = await Request.Server.delete(endPoint.deleteSetBySetId(setIdToDelete));
 
-            console.log('Set đã được xóa thành công');
+            console.log('Set đã được xóa thành công', response);
             navigate('/sets');
         } catch (error) {
             console.error('Lỗi khi gửi request xóa set:', error.message);
