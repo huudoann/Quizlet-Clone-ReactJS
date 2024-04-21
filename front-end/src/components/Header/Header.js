@@ -98,6 +98,7 @@ const Header = () => {
             title,
             description,
             is_public: is_public,
+            user_id: localStorage.getItem("user_id"),
         };
 
         const token = localStorage.getItem('token');

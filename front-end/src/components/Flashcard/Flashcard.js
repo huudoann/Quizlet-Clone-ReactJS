@@ -61,39 +61,42 @@ const Flashcard = () => {
     };
 
     //gọi API lấy tất cả thẻ theo set_id
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (!set_id) {
-                    console.error('Không tìm thấy set_id trong local');
-                    return;
-                }
-                const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
-                setTotalPages(flashcardsData.totalPages);
-                const flashcardsArray = Object.values(flashcardsData.content);
-                setFlashcards(flashcardsArray);
-
-                const flashcardsDataFull = await Request.Server.get(endPoint.getAllCardsInSet(set_id), { params: { size: 300 } });
-                const flashcardsArrayFull = Object.values(flashcardsDataFull.content);
-                setFlashcardsFull(flashcardsArrayFull);
-                // console.log(flashcardsData);
-                // console.log(flashcardsDataFull);
-                const title = localStorage.getItem('flashcardTitle');
-                setFlashcardTitle(title);
-            } catch (error) {
-                console.error('Error fetching flashcards:', error);
+    const fetchData = async () => {
+        try {
+            if (!set_id) {
+                console.error('Không tìm thấy set_id trong local');
+                return;
             }
-        };
+            const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
+            setTotalPages(flashcardsData.totalPages);
+            const flashcardsArray = Object.values(flashcardsData.content);
+            setFlashcards(flashcardsArray);
 
-        fetchData();
-    }, [set_id]);
+            const flashcardsDataFull = await Request.Server.get(endPoint.getAllCardsInSet(set_id), { params: { size: 300 } });
+            const flashcardsArrayFull = Object.values(flashcardsDataFull.content);
+            setFlashcardsFull(flashcardsArrayFull);
+            // console.log(flashcardsData);
+            // console.log(flashcardsDataFull);
+            const title = localStorage.getItem('flashcardTitle');
+            setFlashcardTitle(title);
+        } catch (error) {
+            console.error('Error fetching flashcards:', error);
+        }
+    };
+
 
     useEffect(() => {
-        setShuffledFlashcards(shuffleArray(flashcards));
-    }, [flashcards]);
+        fetchData();
+        setShuffledFlashcards(shuffleArray(flashcardsFull));
+    }, []);
 
     //Gọi API sửa thẻ
     const handleEditCard = (index) => {
+        const selectedCard = flashcards[index];
+        setEditedCardData({
+            front_text: selectedCard.front_text,
+            back_text: selectedCard.back_text
+        });
         setEditedCardIndex(index);
     };
 
@@ -112,7 +115,20 @@ const Flashcard = () => {
                 }
                 return card;
             });
+
+            const updatedFlashcardsFull = flashcardsFull.map(card => {
+                if (card.card_id === cardId) {
+                    return {
+                        ...card,
+                        front_text: editedCardData.front_text,
+                        back_text: editedCardData.back_text,
+                    };
+                }
+                return card;
+            });
+
             setFlashcards(updatedFlashcards);
+            setFlashcardsFull(updatedFlashcardsFull);
             setEditedCardIndex(null);
             console.log("Sửa thành công", response);
         } catch (error) {
@@ -171,11 +187,24 @@ const Flashcard = () => {
                 totalStars: selectedStars, // Thay rating thành selectedStars
             }
 
-            const response = await Request.Server.post(endPoint.createNewReview(set_id), userRating);
+            // Kiểm tra xem người dùng đã đánh giá trước đó chưa
+            if (userReviewed > 0) {
+                // Nếu đã đánh giá, thực hiện yêu cầu sửa đổi đánh giá
+                let review_id = localStorage.getItem('review_id')
+                console.log(userReviewed, review_id);
+                let rating = { totalStars: selectedStars }
+                let response = await Request.Server.put(endPoint.editReviewById(review_id), rating);
+                console.log('Đã sửa đánh giá thành công', response);
+            } else {
+                // Nếu chưa đánh giá, thực hiện yêu cầu tạo mới đánh giá
+                let response = await Request.Server.post(endPoint.createNewReview(set_id), userRating);
+                console.log('Đã gửi đánh giá thành công', response);
+            }
 
-            console.log('Đã gửi đánh giá thành công', response);
             // Cập nhật số điểm đánh giá sau khi gửi thành công
+            setUserReviewed(selectedStars);
             fetchReviewing();
+            setOpenDialog(false);
         } catch (error) {
             console.error('Lỗi khi gửi request đánh giá:', error.message);
         }
@@ -199,6 +228,76 @@ const Flashcard = () => {
             console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
         }
     };
+
+    //xử lý phần đánh giá
+    const handleOpenDialog = () => {
+        // Kiểm tra nếu người dùng đã đánh giá, đặt giá trị selectedStars tương ứng
+        if (userReviewed > 0) {
+            setSelectedStars(userReviewed);
+        } else {
+            // Nếu chưa đánh giá, đặt giá trị selectedStars là 0
+            setSelectedStars(0);
+        }
+
+        setOpenDialog(true); // Mở dialog
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const handleStarClick = (value) => {
+        setSelectedStars(value);
+    };
+
+    const handleMouseOver = (value) => {
+        for (let i = value; i >= 1; i--) {
+            const star = document.querySelector(`.star-rating .fa-star:nth-child(${i})`);
+            if (star) {
+                star.style.color = 'yellow';
+            }
+        }
+    }
+
+    const handleMouseOut = (value) => {
+        const stars = document.querySelectorAll('.star-rating .fa-star');
+        stars.forEach((star) => {
+            star.style.color = star.classList.contains('filled') ? 'yellow' : '#ccc';
+        });
+    }
+
+    const user_id = localStorage.getItem('user_id');
+
+    useEffect(() => {
+        handleGetUserReview()
+    }, [user_id])
+
+    //gọi API lấy đánh giá của người dùng đó
+    const handleGetUserReview = async () => {
+        try {
+            let token = localStorage.getItem('token');
+
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                window.location.href("/login");
+                return null;
+            }
+
+            const response = await Request.Server.get(endPoint.getReviewByUserIdAndSetId(set_id, user_id));
+            console.log("lay userrv tc", response, "end userrv");
+            localStorage.setItem('review_id', response.review_id);
+            // Kiểm tra nếu có dữ liệu đánh giá từ người dùng
+            if (response && response.totalStars !== undefined) {
+                setUserReviewed(response.totalStars);
+                // console.log('.', userReviewed);
+            } else {
+                setUserReviewed(0); // Nếu không có dữ liệu, đặt điểm đánh giá hiện tại là 0
+                // console.log('x', userReviewed);
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
+        }
+    }
 
     //gọi API xóa set
     const handleDeleteSet = async () => {
@@ -310,75 +409,6 @@ const Flashcard = () => {
     const handleZoom = () => {
         setIsZoomed(!isZoomed);
     };
-
-    //xử lý phần đánh giá
-    const handleOpenDialog = () => {
-        // Kiểm tra nếu người dùng đã đánh giá, đặt giá trị selectedStars tương ứng
-        if (userReviewed > 0) {
-            setSelectedStars(userReviewed);
-        } else {
-            // Nếu chưa đánh giá, đặt giá trị selectedStars là 0
-            setSelectedStars(0);
-        }
-
-        setOpenDialog(true); // Mở dialog
-    }
-
-    const handleCloseDialog = () => {
-        setOpenDialog(false);
-    };
-
-    const handleStarClick = (value) => {
-        setSelectedStars(value);
-    };
-
-    const handleMouseOver = (value) => {
-        for (let i = value; i >= 1; i--) {
-            const star = document.querySelector(`.star-rating .fa-star:nth-child(${i})`);
-            if (star) {
-                star.style.color = 'yellow';
-            }
-        }
-    }
-
-    const handleMouseOut = (value) => {
-        const stars = document.querySelectorAll('.star-rating .fa-star');
-        stars.forEach((star) => {
-            star.style.color = star.classList.contains('filled') ? 'yellow' : '#ccc';
-        });
-    }
-
-    const user_id = localStorage.getItem('user_id');
-
-    useEffect(() => {
-        handleGetUserReview()
-    }, [user_id])
-
-    const handleGetUserReview = async () => {
-        try {
-            let token = localStorage.getItem('token');
-
-            // Kiểm tra xem token có tồn tại không
-            if (!token) {
-                window.location.href("/login");
-                return null;
-            }
-
-            const response = await Request.Server.get(endPoint.getReviewByUserIdAndSetId(set_id, user_id));
-            console.log("lay userrv tc", response.totalStars, "end userrv");
-
-            // Kiểm tra nếu có dữ liệu đánh giá từ người dùng
-            if (response && response.totalStars !== undefined) {
-                setUserReviewed(response.totalStars);
-                // console.log('.', userReviewed);
-            } else {
-                setUserReviewed(0); // Nếu không có dữ liệu, đặt điểm đánh giá hiện tại là 0
-                // console.log('x', userReviewed);
-            }
-        } catch (error) {
-            console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
-        }
-    }
 
     //Ẩn/hiện dialog
     const toggleMenu = () => {
@@ -537,7 +567,7 @@ const Flashcard = () => {
 
                                 <span>{`${currentCardIndex + 1}/${flashcardsFull.length}`}</span>
 
-                                <Button className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>
+                                <Button className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcardsFull.length - 1}>
                                     <IconSprite >
                                         <symbol id="arrow-right" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M4.00098 12.9963H17.001L11.4344 18.894C10.9333 19.5095 10.8502 20.1887 11.318 20.6665C11.7703 21.1285 12.5009 21.106 12.9531 20.644L20.6572 12.8237C21.1095 12.3618 21.1095 11.6155 20.6572 11.1536L12.9647 3.34999C12.5125 2.88802 11.7894 2.89278 11.3071 3.32361C10.8091 3.76851 10.9923 4.56372 11.4305 5.06982L17.001 10.9955L4.00098 10.9955C3.36316 10.9955 3.00098 11.3519 3.00098 12.0034C3.00098 12.6549 3.36316 12.9963 4.00098 12.9963Z"></path>

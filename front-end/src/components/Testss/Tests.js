@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Tests.scss';
-import { Close } from '@mui/icons-material';
+import { Check, Close } from '@mui/icons-material';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop } from '@mui/material';
 import DropDownMenu from './DropDownMenu';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,6 @@ const Tests = () => {
     const [flashcards, setFlashcards] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState([]);
     const [answers, setAnswers] = useState([]);
-    const [mounted, setMounted] = useState(false);
     const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // Biến đếm số lượng câu trả lời đúng
     const [submitted, setSubmitted] = useState(false); // Kiểm tra xem người dùng đã nộp bài thi chưa
     const [totalQuestions, setTotalQuestions] = useState(0); // Lưu tổng số câu hỏi
@@ -129,6 +128,7 @@ const Tests = () => {
     const handleSubmitButtonClick = () => {
         setConfirmDialogOpen(true);
         setTimerRunning(false); // Dừng thời gian đếm ngược
+        setSubmitted(true);
     };
 
     const handleDialogClose = () => {
@@ -177,7 +177,17 @@ const Tests = () => {
             {flashcards.map((flashcard, index) => (
                 <div className="tests-form" key={index}>
                     <div className='defi-box'>
-                        <p>Câu {index + 1}:</p>
+                        {showResults ? (
+                            <div className="answer-icon">
+                                {selectedAnswers[index] ? (
+                                    <p style={{ color: 'green' }}>Câu {index + 1}: <Check style={{ color: 'green', position: 'absolute', top: '1.65rem', left: '5rem' }} /></p>
+                                ) : (
+                                    <p style={{ color: 'red' }}>Câu {index + 1}:<Close style={{ color: 'red', position: 'absolute', top: '1.65rem', left: '5rem' }} /></p>
+                                )}
+                            </div>
+                        ) : (
+                            <p>Câu {index + 1}:</p>
+                        )}
                         <p>Definition</p>
                         <p className="back-text">{flashcard.back_text}</p>
                     </div>
@@ -188,17 +198,12 @@ const Tests = () => {
                                 {answers.slice(index * 4, index * 4 + 4).map((answer, answerIndex) => (
                                     <button
                                         key={answerIndex}
-                                        className={
-                                            showResults
-                                                ? selectedAnswers[index] === index * 4 + answerIndex
-                                                    ? answer === flashcard.front_text
-                                                        ? 'correct'
-                                                        : 'incorrect'
-                                                    : ''
-                                                : selectedAnswers[index] === index * 4 + answerIndex
-                                                    ? 'clicked'
-                                                    : ''
-                                        }
+                                        className={`${showResults && answer === flashcard.front_text ? 'correct' : ''
+                                            } ${showResults && selectedAnswers[index] === index * 4 + answerIndex && answer !== flashcard.front_text
+                                                ? 'incorrect'
+                                                : ''
+                                            } ${selectedAnswers[index] === index * 4 + answerIndex && !showResults ? 'clicked' : ''
+                                            }`}
                                         onClick={() => handleAnswerSelection(index, answerIndex)}
                                     >
                                         {answer}

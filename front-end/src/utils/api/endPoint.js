@@ -35,7 +35,7 @@ export const endPoint = {
     //review
     createNewReview: (set_id) => `${baseUrl}/review/sets/${set_id}/review`,
     deleteReviewById: (review_id) => `${baseUrl}/review/delete/${review_id}`,
-    editReviewById: (review_id) => `${baseUrl}/review/${review_id}`,
+    editReviewById: (review_id) => `${baseUrl}/review/edit/${review_id}`,
     getAllReviewBySetId: (set_id) => `${baseUrl}/review/sets/${set_id}/reviews`,
     getAllReview: () => `${baseUrl}/review/get-all-reviews`,
     getAllReviewByUserId: (user_id) => `${baseUrl}/review/user/${user_id}`,

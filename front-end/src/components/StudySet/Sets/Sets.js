@@ -51,7 +51,7 @@ const Sets = () => {
                                 }
 
                             });
-                            console.log("set_id", set.setId, response.totalElements);
+                            // console.log("set_id", set.setId, response.totalElements);
                             return { ...set, termCount: response.totalElements };
                         } catch (error) {
                             console.error('Lỗi khi lấy số terms cho set', set.setId, error.message, endPoint.getAllCardsInSet(set.setId));
