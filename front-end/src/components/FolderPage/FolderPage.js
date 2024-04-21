@@ -8,11 +8,12 @@ import AddIcon from '@mui/icons-material/Add';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import AddModal from "./AddModal";
 
 const FolderPage = () => {
-  const [sets, setSets] = useState();
+  const [setsInFolder, setSetsInFolder] = useState();
 
-  const folder_id = localStorage.getItem("folder_id");  
+  const folder_id = 1;  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,14 +25,14 @@ const FolderPage = () => {
         try {
           // Thực hiện gọi API ở đây
           const response = await axios.get(
-            `http://localhost:8080/api/folder/${folder_id}/sets`,
+            `http://localhost:8080/api/set/${folder_id}/sets`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-          setSets(response.data);
+          setSetsInFolder(response.data);
         } catch (error) {
           console.error("Lỗi khi lấy danh sách các set:", error.message);
         }
@@ -39,7 +40,7 @@ const FolderPage = () => {
     };
 
     fetchData();
-    console.log(sets);
+    console.log(setsInFolder);
   }, []);
 
   return (
@@ -58,7 +59,7 @@ const FolderPage = () => {
             </div>
           </div>
           <div className="folder-page-header-actions">
-            <AddIcon className="add-button"/>
+            <AddModal className="add-button"/>
             <LocalLibraryIcon className="learn-button"/>
             <IosShareIcon className="share-button"/>
             <MoreHorizIcon className="more-options-button"/>
@@ -66,10 +67,9 @@ const FolderPage = () => {
         </div>
         <div className="main">
           <div className="content">
-            <SetItem2/>
-            <SetItem2/>
-            <SetItem2/>
-            <SetItem2/>
+            {setsInFolder && setsInFolder.map((item) => (
+              <SetItem2 key={item.set_id} {...item} />
+            ))}
           </div>
         </div>
       </div>
