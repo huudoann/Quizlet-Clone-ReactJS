@@ -8,7 +8,7 @@ export const endPoint = {
     //card
     createNewCard: (set_id) => `${baseUrl}/card/${set_id}/create-card`,
     deleteCardById: (id) => `${baseUrl}/card/${id}`,
-    editCardById: (id) => `${baseUrl}/card/${id}`,
+    editCardById: (id) => `${baseUrl}/card/edit/${id}`,
     getCardById: (id) => `${baseUrl}/card/${id}`,
     getAllCardsInSet: (set_id) => `${baseUrl}/card/${set_id}/cards`,
     getAllCards: () => `${baseUrl}/card/cards`,
@@ -39,7 +39,7 @@ export const endPoint = {
     getAllReviewBySetId: (set_id) => `${baseUrl}/review/sets/${set_id}/reviews`,
     getAllReview: () => `${baseUrl}/review/get-all-reviews`,
     getAllReviewByUserId: (user_id) => `${baseUrl}/review/user/${user_id}`,
-    getAllReviewByUserIdAndSetId: (set_id, user_id) => `${baseUrl}/review/set/${set_id}/user/${user_id}`,
+    getReviewByUserIdAndSetId: (set_id, user_id) => `${baseUrl}/review/set/${set_id}/user/${user_id}`,
 
     //set
     createNewSet: () => `${baseUrl}/set/create-set`,

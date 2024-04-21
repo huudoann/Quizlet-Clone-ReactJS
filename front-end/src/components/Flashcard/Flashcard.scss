@@ -50,7 +50,6 @@
 
       .rating .fa-star {
         cursor: pointer;
-        font-size: 1rem;
         transition: color 0.3s ease;
       }
 
@@ -82,20 +81,13 @@
         outline: none;
       }
 
-      .star-rating {
-        display: flex;
-        justify-content: center;
-      }
-
-      .star-rating svg {
+      .star-rating .fa-star {
         font-size: 2rem;
-        cursor: pointer;
-        transition: color 0.3s ease;
       }
 
-      .star-rating svg:hover,
-      .star-rating svg.filled {
-        color: gold;
+      .star-rating .fa-star:hover,
+      .star-rating .fa-star:hover~.fa-star {
+        color: yellow;
       }
 
       .flashcard-navigation {

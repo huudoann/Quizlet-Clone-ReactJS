@@ -25,6 +25,7 @@ const Flashcard = () => {
     const [slideDirection, setSlideDirection] = useState('left');
     const [selectedStars, setSelectedStars] = useState(0);
     const [averageRating, setAverageRating] = useState(0);
+    const [flashcardsFull, setFlashcardsFull] = useState([]);
     const [flashcards, setFlashcards] = useState([]);
     const [flashcardTitle, setFlashcardTitle] = useState('');
     const [showMenu, setShowMenu] = useState(false);
@@ -43,6 +44,7 @@ const Flashcard = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
+    const [userReviewed, setUserReviewed] = useState(0);
 
     const flashcardContainerRef = useRef(null);
 
@@ -68,14 +70,17 @@ const Flashcard = () => {
                     return;
                 }
                 const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
+                setTotalPages(flashcardsData.totalPages);
                 const flashcardsArray = Object.values(flashcardsData.content);
                 setFlashcards(flashcardsArray);
-                console.log(flashcardsData);
-                setTotalPages(flashcardsData.totalPages);
-                // localStorage.setItem("flashcardDescription", flashcardsData.desc);
+
+                const flashcardsDataFull = await Request.Server.get(endPoint.getAllCardsInSet(set_id), { params: { size: 300 } });
+                const flashcardsArrayFull = Object.values(flashcardsDataFull.content);
+                setFlashcardsFull(flashcardsArrayFull);
+                // console.log(flashcardsData);
+                // console.log(flashcardsDataFull);
                 const title = localStorage.getItem('flashcardTitle');
                 setFlashcardTitle(title);
-                // console.log(localStorage);
             } catch (error) {
                 console.error('Error fetching flashcards:', error);
             }
@@ -88,11 +93,6 @@ const Flashcard = () => {
         setShuffledFlashcards(shuffleArray(flashcards));
     }, [flashcards]);
 
-    //Gọi API thêm thẻ
-    const handleChangeCard = async () => {
-        navigate('/edit-set')
-    };
-
     //Gọi API sửa thẻ
     const handleEditCard = (index) => {
         setEditedCardIndex(index);
@@ -101,25 +101,23 @@ const Flashcard = () => {
     const handleSaveEdit = async (cardId) => {
         try {
             // Gửi yêu cầu PUT với dữ liệu chỉnh sửa
-            const response = await axios.put(`http://localhost:8080/api/card/edit/${cardId}`, editedCardData);
-            if (response.status === 200) {
-                // Nếu gửi thành công, cập nhật lại flashcards và ẩn form chỉnh sửa
-                const updatedFlashcards = flashcards.map(card => {
-                    if (card.card_id === cardId) {
-                        return {
-                            ...card,
-                            front_text: editedCardData.front_text,
-                            back_text: editedCardData.back_text,
-                        };
-                    }
-                    return card;
-                });
-                setFlashcards(updatedFlashcards);
-                setEditedCardIndex(null);
-                console.log("Sửa thành công");
-            } else {
-                console.error('Lỗi khi lưu chỉnh sửa:', response.statusText);
-            }
+            const response = await Request.Server.put(endPoint.editCardById(cardId), editedCardData);
+
+            // const response = await axios.put(`http://localhost:8080/api/card/edit/${cardId}`, editedCardData);
+            // Nếu gửi thành công, cập nhật lại flashcards và ẩn form chỉnh sửa
+            const updatedFlashcards = flashcards.map(card => {
+                if (card.card_id === cardId) {
+                    return {
+                        ...card,
+                        front_text: editedCardData.front_text,
+                        back_text: editedCardData.back_text,
+                    };
+                }
+                return card;
+            });
+            setFlashcards(updatedFlashcards);
+            setEditedCardIndex(null);
+            console.log("Sửa thành công");
         } catch (error) {
             console.error('Lỗi khi gửi yêu cầu lưu chỉnh sửa:', error.message);
         }
@@ -139,21 +137,18 @@ const Flashcard = () => {
                 window.location.href("/login")
                 return null
             }
-            const response = await axios.delete(`http://localhost:8080/api/card/${cardIdToDelete}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+            const response = await Request.Server.delete(endPoint.deleteCardById(cardIdToDelete));
+            // const response = await axios.delete(`http://localhost:8080/api/card/${cardIdToDelete}`, {
+            //     headers: {
+            //         'Authorization': `Bearer ${token}`,
+            //     },
+            // });
 
-            if (response.status === 200) {
-                // Thực hiện các thao tác cập nhật giao diện sau khi xóa thẻ thành công
-                // console.log('Thẻ đã được xóa thành công');
-                // Cập nhật danh sách thẻ sau khi xóa
-                const updatedFlashcards = flashcards.filter(card => card.card_id !== cardIdToDelete);
-                setFlashcards(updatedFlashcards);
-            } else {
-                console.error('Lỗi khi xóa thẻ:', response.statusText);
-            }
+            // Thực hiện các thao tác cập nhật giao diện sau khi xóa thẻ thành công
+            console.log('Thẻ đã được xóa thành công');
+            // Cập nhật danh sách thẻ sau khi xóa
+            const updatedFlashcards = flashcards.filter(card => card.card_id !== cardIdToDelete);
+            setFlashcards(updatedFlashcards);
         } catch (error) {
             console.error('Lỗi khi gửi request xóa thẻ:', error.message);
         }
@@ -184,19 +179,11 @@ const Flashcard = () => {
                 totalStars: selectedStars, // Thay rating thành selectedStars
             }
 
-            const response = await axios.post(`http://localhost:8080/api/review/sets/${set_id}/review`, userRating, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+            const response = await Request.Server.post(endPoint.createNewReview(set_id), userRating);
 
-            if (response.status === 200) {
-                console.log('Đã gửi đánh giá thành công');
-                // Cập nhật số điểm đánh giá sau khi gửi thành công
-                fetchReviewing();
-            } else {
-                console.error('Lỗi khi gửi đánh giá:', response.statusText);
-            }
+            console.log('Đã gửi đánh giá thành công', response);
+            // Cập nhật số điểm đánh giá sau khi gửi thành công
+            fetchReviewing();
         } catch (error) {
             console.error('Lỗi khi gửi request đánh giá:', error.message);
         }
@@ -212,23 +199,10 @@ const Flashcard = () => {
                 window.location.href("/login");
                 return null;
             }
+            const response = await Request.Server.get(endPoint.getAllReviewBySetId(set_id))
 
-            const set_id = localStorage.getItem('set_id');
-            const response = await axios.get(`http://localhost:8080/api/review/sets/${set_id}/reviews`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            // console.log("lay rv tc");
-            if (response.status === 200) {
-                const reviewingData = response.data;
-                setAverageRating(reviewingData);
-                // console.log(response);
-            } else {
-                console.error('Lỗi khi lay du lieu đánh giá:', response.statusText);
-            }
+            setAverageRating(response);
+            // console.log(response);
         } catch (error) {
             console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
         }
@@ -248,18 +222,11 @@ const Flashcard = () => {
                 window.location.href("/login")
                 return null
             }
-            const response = await axios.delete(`http://localhost:8080/api/set/${setIdToDelete}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
 
-            if (response.status === 200) {
-                console.log('Set đã được xóa thành công');
-                navigate('/sets');
-            } else {
-                console.error('Lỗi khi xóa set:', response.statusText);
-            }
+            const response = await Request.Server.delete(endPoint.deleteSetBySetId(setIdToDelete));
+
+            console.log('Set đã được xóa thành công');
+            navigate('/sets');
         } catch (error) {
             console.error('Lỗi khi gửi request xóa set:', error.message);
         }
@@ -354,8 +321,16 @@ const Flashcard = () => {
 
     //xử lý phần đánh giá
     const handleOpenDialog = () => {
-        setOpenDialog(true);
-    };
+        // Kiểm tra nếu người dùng đã đánh giá, đặt giá trị selectedStars tương ứng
+        if (userReviewed > 0) {
+            setSelectedStars(userReviewed);
+        } else {
+            // Nếu chưa đánh giá, đặt giá trị selectedStars là 0
+            setSelectedStars(0);
+        }
+
+        setOpenDialog(true); // Mở dialog
+    }
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
@@ -364,6 +339,54 @@ const Flashcard = () => {
     const handleStarClick = (value) => {
         setSelectedStars(value);
     };
+
+    const handleMouseOver = (value) => {
+        for (let i = value; i >= 1; i--) {
+            const star = document.querySelector(`.star-rating .fa-star:nth-child(${i})`);
+            if (star) {
+                star.style.color = 'yellow';
+            }
+        }
+    }
+
+    const handleMouseOut = (value) => {
+        const stars = document.querySelectorAll('.star-rating .fa-star');
+        stars.forEach((star) => {
+            star.style.color = star.classList.contains('filled') ? 'yellow' : '#ccc';
+        });
+    }
+
+    const user_id = localStorage.getItem('user_id');
+
+    useEffect(() => {
+        handleGetUserReview()
+    }, [user_id])
+
+    const handleGetUserReview = async () => {
+        try {
+            let token = localStorage.getItem('token');
+
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                window.location.href("/login");
+                return null;
+            }
+
+            const response = await Request.Server.get(endPoint.getReviewByUserIdAndSetId(set_id, user_id));
+            console.log("lay userrv tc", response.totalStars, "end userrv");
+
+            // Kiểm tra nếu có dữ liệu đánh giá từ người dùng
+            if (response && response.totalStars !== undefined) {
+                setUserReviewed(response.totalStars);
+                // console.log('.', userReviewed);
+            } else {
+                setUserReviewed(0); // Nếu không có dữ liệu, đặt điểm đánh giá hiện tại là 0
+                // console.log('x', userReviewed);
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi request lay du lieu đánh giá:', error.message);
+        }
+    }
 
     //Ẩn/hiện dialog
     const toggleMenu = () => {
@@ -398,6 +421,7 @@ const Flashcard = () => {
     }
 
 
+
     return (
         <div>
             <Header />
@@ -409,7 +433,7 @@ const Flashcard = () => {
                             <h4>Đánh giá học phần này: </h4>
                             {/* <p>({averageRating})</p> */}
                             <Button className="rating-button" onClick={handleOpenDialog}>
-                                <FontAwesomeIcon icon={faStar} /> {averageRating || 'Đánh giá'}
+                                <FontAwesomeIcon icon={faStar} style={{ marginRight: '0.5rem' }} /> {averageRating || 'Đánh giá'}
                             </Button>
 
                             {/* Dialog để người dùng đánh giá */}
@@ -423,6 +447,14 @@ const Flashcard = () => {
                                                 icon={faStar}
                                                 className={value <= selectedStars ? 'filled' : ''}
                                                 onClick={() => handleStarClick(value)}
+                                                style={{
+                                                    height: '2rem',
+                                                    color: value <= selectedStars ? 'yellow' : '#ccc',
+                                                    transition: 'color 0.3s',
+                                                    cursor: 'pointer',
+                                                }}
+                                                onMouseOver={() => handleMouseOver(value)}
+                                                onMouseOut={() => handleMouseOut(value)}
                                             />
                                         ))}
                                     </div>
@@ -478,13 +510,13 @@ const Flashcard = () => {
                         </div>
                         <div className={`flashcard-form`}>
                             <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
-                                {flashcards.length > 0 ? (
+                                {flashcardsFull.length > 0 ? (
                                     <React.Fragment>
                                         <div className={isFront ? "front" : "back"}>
-                                            {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][isFront ? "front_text" : "back_text"]}
+                                            {isShuffled ? shuffledFlashcards[currentCardIndex][isFront ? "front_text" : "back_text"] : flashcardsFull[currentCardIndex][isFront ? "front_text" : "back_text"]}
                                         </div>
                                         <div className={!isFront ? "front" : "back"}>
-                                            {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcards[currentCardIndex][!isFront ? "front_text" : "back_text"]}
+                                            {isShuffled ? shuffledFlashcards[currentCardIndex][!isFront ? "front_text" : "back_text"] : flashcardsFull[currentCardIndex][!isFront ? "front_text" : "back_text"]}
                                         </div>
                                     </React.Fragment>
                                 ) : (
@@ -511,7 +543,7 @@ const Flashcard = () => {
                                     <Icon name="arrow-left" className="AssemblyIcon AssemblyIcon--larger" />
                                 </Button>
 
-                                <span>{`${currentCardIndex + 1}/${flashcards.length}`}</span>
+                                <span>{`${currentCardIndex + 1}/${flashcardsFull.length}`}</span>
 
                                 <Button className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcards.length - 1}>
                                     <IconSprite >
