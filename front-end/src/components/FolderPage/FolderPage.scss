@@ -1,0 +1,92 @@
+.folder-page {
+    color: white;
+
+    .container {
+        margin-left: 10%;
+    }
+
+    .folder-page-header {
+        font-size: 15px;
+        margin-top: 40px;
+        display: flex;
+        gap: 800px;
+    }
+
+    .folder-details {
+        display: flex;
+        gap: 20px;
+        font-weight: bold;
+    }
+
+    .folder-title {
+        margin-top: 10px;
+        font-size: 40px;
+        display: flex;
+        gap: 20px;
+        font-weight: bold;
+    }
+
+    .folder-page-header-actions {
+        display: flex;
+        gap: 20px;
+    }
+
+    .add-button {
+        padding: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        border: 2px solid #586380;
+        border-radius: 100px;
+
+        &:hover {
+            background-color: #282E3E;
+        }
+    }
+
+    .learn-button {
+        padding: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        border: 2px solid #586380;
+        border-radius: 100px;
+
+        &:hover {
+            background-color: #282E3E;
+        }
+    }
+
+    .share-button {
+        padding: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        border: 2px solid #586380;
+        border-radius: 100px;
+
+        &:hover {
+            background-color: #282E3E;
+        }   
+    }
+
+    .more-options-button {
+        padding: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        border: 2px solid #586380;
+        border-radius: 100px;
+        
+        &:hover {
+            background-color: #282E3E;
+        }   
+    }
+
+    .main {
+        margin-top: 80px;
+    }
+
+    .content {
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+}
