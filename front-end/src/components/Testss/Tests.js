@@ -178,11 +178,18 @@ const Tests = () => {
                 <div className="tests-form" key={index}>
                     <div className='defi-box'>
                         {showResults ? (
-                            <div className="answer-icon">
+                            <div className="answer-icon"
+                                style={{
+                                    border: '1px solid #ccc',
+                                    alignItems: 'center',
+                                    borderTopLeftRadius: '10px',
+                                    borderTopRightRadius: '10px',
+                                    backgroundColor: selectedAnswers[index] ? 'lightgreen' : 'lightcoral'
+                                }}>
                                 {selectedAnswers[index] ? (
-                                    <p style={{ color: 'green' }}>Câu {index + 1}: <Check style={{ color: 'green', position: 'absolute', top: '1.65rem', left: '5rem' }} /></p>
+                                    <p>Câu {index + 1}:</p>
                                 ) : (
-                                    <p style={{ color: 'red' }}>Câu {index + 1}:<Close style={{ color: 'red', position: 'absolute', top: '1.65rem', left: '5rem' }} /></p>
+                                    <p>Câu {index + 1}:</p>
                                 )}
                             </div>
                         ) : (

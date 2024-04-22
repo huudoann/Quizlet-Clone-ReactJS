@@ -11,27 +11,25 @@ const MatchPage = () => {
   const [unmatchedPairs, setUnmatchedPairs] = useState([]);
   const [flashcards, setFlashcards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(Array(6).fill(null));
+  const [unmatchedIndices, setUnmatchedIndices] = useState([]);
   const navigate = useNavigate();
   const set_id = localStorage.getItem('set_id');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
 
-        // Tạo một mảng để chứa tất cả các object chứa front_text và back_text
         const cards = [];
 
-        // Lặp qua mảng content và tạo các object chứa front_text và back_text tương ứng
         flashcardsData.content.forEach(card => {
           cards.push({ card_id: card.card_id, text: card.front_text, type: 'front_text' });
           cards.push({ card_id: card.card_id, text: card.back_text, type: 'back_text' });
         });
 
-        // Tạo mảng rỗng để chứa 6 thẻ đầu tiên
         const initialCards = [];
         const usedCardIds = new Set();
 
-        // Lặp qua các thẻ ngẫu nhiên từ cards cho đến khi đủ 6 thẻ không trùng card_id
         while (initialCards.length < 6 && cards.length > 0) {
           const randomIndex = Math.floor(Math.random() * cards.length);
           const randomCard = cards[randomIndex];
@@ -41,17 +39,15 @@ const MatchPage = () => {
             usedCardIds.add(randomCard.card_id);
           }
 
-          cards.splice(randomIndex, 1); // Xóa thẻ đã được chọn khỏi mảng cards
+          cards.splice(randomIndex, 1);
         }
 
-        // Biến đếm số lần lặp
         let loopCount = 0;
         let processedCards = [];
-        // Lặp lại cho đến khi có đủ 6 cặp thẻ hoặc không còn thẻ nào trong cards
+
         while (processedCards.length < 12 && loopCount < 100) {
           loopCount++;
 
-          // Kiểm tra và thêm thẻ front_text hoặc back_text còn thiếu cho mỗi thẻ
           initialCards.forEach(card => {
             const correspondingCardType = card.type === 'front_text' ? 'back_text' : 'front_text';
             const correspondingCardExists = initialCards.some(c => c.card_id === card.card_id && c.type === correspondingCardType);
@@ -61,7 +57,6 @@ const MatchPage = () => {
             }
           });
 
-          // Lấy 12 thẻ từ initialCards nếu có đủ
           processedCards = initialCards.slice(0, 12);
         }
 
@@ -72,6 +67,7 @@ const MatchPage = () => {
         console.error('Lỗi lấy cards:', error);
       }
     };
+
     if (set_id) {
       fetchData(set_id);
     }
@@ -84,7 +80,6 @@ const MatchPage = () => {
   const handleCardClick = (index, type, card) => {
     const selectedFirstIndex = selectedCards.findIndex(card => card === 'front_text' || card === 'back_text');
 
-    // Nếu chưa có card nào thì thêm thẻ đang được chọn
     if (selectedFirstIndex === -1) {
       setSelectedCards(prevSelectedCards => {
         const updatedSelectedCards = [...prevSelectedCards];
@@ -97,14 +92,12 @@ const MatchPage = () => {
       const firstCardType = selectedCards[selectedFirstIndex];
       const secondCardType = type;
 
-      // Kiểm tra điều kiện hợp lệ khi chọn 2 thẻ
       if (
-        firstCard.card_id === secondCard.card_id && // card_id giống nhau
-        firstCardType !== secondCardType // type khác nhau
+        firstCard.card_id === secondCard.card_id &&
+        firstCardType !== secondCardType
       ) {
         setMatchedIds(prevMatchedIds => [...prevMatchedIds, selectedFirstIndex, index]);
 
-        // Loại bỏ các thẻ đã được kết hợp thành công khỏi danh sách thẻ được chọn
         setTimeout(() => {
           setSelectedCards(prevSelectedCards => {
             const updatedSelectedCards = [...prevSelectedCards];
@@ -112,10 +105,9 @@ const MatchPage = () => {
             updatedSelectedCards[index] = null;
             return updatedSelectedCards;
           });
-        }, 200);
+        }, 500);
       } else {
         if (unmatchedPairs.length === 0) {
-          // Thêm cặp card_id và text của các thẻ không khớp vào mảng unmatchedPairs
           setUnmatchedPairs(prevUnmatchedPairs => [...prevUnmatchedPairs, [firstCard.card_id, firstCard.text]]);
           setUnmatchedPairs(prevUnmatchedPairs => [...prevUnmatchedPairs, [secondCard.card_id, secondCard.text]]);
           setTimeout(() => {
@@ -135,7 +127,8 @@ const MatchPage = () => {
           }, 500);
         }
 
-        // Reset trạng thái cho các thẻ sau khi chọn sai
+        setUnmatchedIndices([selectedFirstIndex, index]);
+
         setTimeout(() => {
           setSelectedCards(prevSelectedCards => {
             const updatedSelectedCards = [...prevSelectedCards];
@@ -143,24 +136,15 @@ const MatchPage = () => {
             updatedSelectedCards[index] = null;
             return updatedSelectedCards;
           });
-          resetCardStatus();
-          resetUnmatchedPairs();
+
+          setTimeout(() => {
+            setUnmatchedIndices([]);
+          }, 500);
+
+          setUnmatchedPairs([]);
         }, 500);
       }
     }
-  };
-
-
-  const resetCardStatus = () => {
-    const cards = document.querySelectorAll('.card-front_text, .card-back_text');
-    cards.forEach(card => {
-      card.classList.remove('no-match'); // Xóa class 'no-match'
-    });
-  };
-
-  const resetUnmatchedPairs = () => {
-    setUnmatchedPairs([]); // Đặt lại mảng unmatchedPairs về rỗng
-
   };
 
   return (
@@ -178,9 +162,9 @@ const MatchPage = () => {
             <React.Fragment key={index}>
               <div
                 className={`card-${cardType}
-        ${selectedCards[index] === 'front_text' ? 'selected' : ''}
-        ${matchedIds.includes(index) ? 'match' : ''}
-        ${unmatchedPairs.some(pair => pair[0] === card.card_id && pair[1] === card[cardType]) ? 'no-match' : ''}`}
+                  ${selectedCards[index] === 'front_text' || selectedCards[index] === 'back_text' ? 'selected' : ''}
+                  ${matchedIds.includes(index) ? 'match' : ''}
+                  ${unmatchedIndices.includes(index) ? 'no-match' : ''}`}
                 onClick={() => handleCardClick(index, cardType, card)}
                 style={unmatchedPairs.some(pair => pair[0] === card.card_id && pair[1] === card[cardType]) ? { animation: 'shake 0.2s ease-in-out' } : matchedIds.includes(index) ? { backgroundColor: 'green', transition: 'background-color 0.2s ease-in-out' } : {}}
               >
@@ -192,8 +176,7 @@ const MatchPage = () => {
           );
         })}
       </div>
-    </div >
-
+    </div>
   );
 };
 

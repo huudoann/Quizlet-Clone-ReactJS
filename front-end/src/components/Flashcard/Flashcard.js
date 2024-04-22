@@ -284,7 +284,7 @@ const Flashcard = () => {
             }
 
             const response = await Request.Server.get(endPoint.getReviewByUserIdAndSetId(set_id, user_id));
-            console.log("lay userrv tc", response, "end userrv");
+            // console.log("lay userrv tc", response, "end userrv");
             localStorage.setItem('review_id', response.review_id);
             // Kiểm tra nếu có dữ liệu đánh giá từ người dùng
             if (response && response.totalStars !== undefined) {

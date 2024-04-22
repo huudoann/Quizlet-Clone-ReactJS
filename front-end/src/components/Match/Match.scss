@@ -54,7 +54,6 @@
     cursor: pointer;
     background-color: #262645;
     transition: background-color 0.3s ease;
-    animation: disappear;
     visibility: visible;
   }
 
@@ -79,7 +78,8 @@
 
   .card-front_text.no-match,
   .card-back_text.no-match {
-    background-color: red;
+    background-color: red !important;
+    animation: shake 0.5s ease forwards;
     color: white;
   }
 
