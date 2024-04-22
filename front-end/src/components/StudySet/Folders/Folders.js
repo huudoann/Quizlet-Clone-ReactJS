@@ -50,7 +50,7 @@ const Folders = () => {
 
             <div className='body-folders'>
                 <div className='user-profile'>
-                    <img src='https://e7.pngegg.com/pngimages/7/618/png-clipart-man-illustration-avatar-icon-fashion-men-avatar-face-fashion-girl-thumbnail.png' alt='Avatar' className='avatar' />
+                    <img src='https://assets.quizlet.com/a/j/dist/app/i/animals/111.f9dd73353feb908.jpg' alt='Avatar' className='avatar' />
                     <span className='username'>{username}</span>
                 </div>
                 <div className='select-card'>
