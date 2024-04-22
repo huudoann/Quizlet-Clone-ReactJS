@@ -117,7 +117,6 @@ const SignUpForm = ({ switchForm }) => {
                     required
                     id="outlined-password-input"
                     label="Xác nhận mật khẩu"
-                    value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     onKeyDown={handleEnterPress}
                     placeholder='Xác thực mật khẩu của bạn'
