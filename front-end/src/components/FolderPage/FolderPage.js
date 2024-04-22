@@ -13,7 +13,8 @@ import AddModal from "./AddModal";
 const FolderPage = () => {
   const [setsInFolder, setSetsInFolder] = useState();
   const navigate = useNavigate();
-  const folder_id = 9;  
+  const folder_id = localStorage.getItem("folder_id");  
+  const folder_title = localStorage.getItem("folderTitle");
 
   const handleDeleteFolder = async () => {
     let token = localStorage.getItem("token");
@@ -63,7 +64,7 @@ const FolderPage = () => {
 
     fetchData();
     console.log("data:" + setsInFolder);
-  }, [setsInFolder]);
+  }, []);
 
   return (
     <div className="folder-page">
@@ -72,12 +73,12 @@ const FolderPage = () => {
         <div className="folder-page-header">
           <div className="folder-page-header-info">
             <div className="folder-details">
-              <span> 6 học phần</span>
+              <span> {} học phần</span>
               <span>tạo bởi  </span>
             </div>
             <div className="folder-title">
               <FolderOpenIcon style={{ fontSize: "52px" }}/> 
-              <span>Folder 1</span>
+              <span>{folder_title}</span>
             </div>
           </div>
           <div className="folder-page-header-actions">

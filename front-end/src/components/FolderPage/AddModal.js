@@ -16,7 +16,7 @@ export default function AddModal() {
   const [set_id, setSet_id] = React.useState(0);
 
   const user_id = localStorage.getItem("user_id");
-  const folder_id = 9;
+  const folder_id = localStorage.getItem("folder_id");
 
   React.useEffect(() => {
     const fetchData = async () => {
