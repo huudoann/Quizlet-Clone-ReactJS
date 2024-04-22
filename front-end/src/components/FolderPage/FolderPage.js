@@ -73,7 +73,7 @@ const FolderPage = () => {
         <div className="folder-page-header">
           <div className="folder-page-header-info">
             <div className="folder-details">
-              <span> {setsInFolder.length} học phần</span>
+              <span> {} học phần</span>
               <span>tạo bởi  </span>
             </div>
             <div className="folder-title">
