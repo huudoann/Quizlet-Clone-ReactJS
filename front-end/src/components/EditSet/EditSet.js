@@ -23,7 +23,9 @@ const EditSet = () => {
     const [token, setToken] = useState('');
     const [isClickAddCard, setIsClickAddCard] = useState(false);
     const [editCards, setEditCards] = useState([])
+    const [isPublic, setIsPublic] = useState('false');
 
+    console.log({isPublic});
     // console.log({ flashcardsArray });
     // console.log({ flashcardsArray });
     //gọi API lấy tất cả thẻ theo set_id
@@ -43,6 +45,8 @@ const EditSet = () => {
                 setFlashcardsArray(flashcardsArray);
                 const title = localStorage.getItem('flashcardTitle');
                 const description = localStorage.getItem('description');
+                console.log(localStorage);
+                setIsPublic(localStorage.public)
                 setFlashcardDescription(description);
                 setFlashcardTitle(title);
                 serNumberOfOldCard(flashcardsArray.length)
@@ -125,14 +129,16 @@ const EditSet = () => {
 
     // Hàm xử lý khi click vào nút private
     const handlePrivateClick = () => {
-        setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
-        setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
+        // setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
+        // setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
+        setIsPublic('false')
     };
 
     // Hàm xử lý khi click vào nút public
     const handlePublicClick = () => {
-        setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
-        setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
+        // setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
+        // setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
+        setIsPublic('true')
     };
 
     //post dữ liệu về BE
@@ -161,6 +167,21 @@ const EditSet = () => {
                 console.log({ responseCard })
             })
             navigate(`/flashcard`)
+        }
+
+        // update cập nhập thông tin, mô tả, quyền truy cập
+        const updateDataEditSet = {
+            title: flashcardTitle,
+            description: flashcardDescription,
+            public: isPublic // Sử dụng giá trị is_public được lưu trong state
+        }
+        console.log(updateDataEditSet);
+        try {
+            const updateData = Request.Server.put(endPoint.editSetBySetId(set_id), updateDataEditSet)
+            
+        } catch (error) {
+            console.error('Lỗi khi cập nhật set:', error.message);
+            throw error;
         }
     }
 
@@ -200,33 +221,31 @@ const EditSet = () => {
                         label="Nhập tiêu đề"
                         variant="outlined"
                         value={flashcardTitle}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={(e) => setFlashcardTitle(e.target.value)}
                     />
                     <TextField
                         className='add-description'
                         label="Thêm mô tả"
                         variant="outlined"
                         value={flashcardDescription}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => setFlashcardDescription(e.target.value)}
                     />
                 </Box>
                 <div className='private-public'>
                     <span className='selecte-private-public'>Chọn quyền truy cập: </span>
                     <Button
-                        className={`private ${isPrivateSelected ? 'selected' : ''}`}
+                        className={`private ${isPublic === "false" ? 'selected' : ''}`}
                         onClick={handlePrivateClick}
                         variant="contained">
                         Riêng tư
                     </Button>
                     <Button
-                        className={`public ${isPublicSelected ? 'selected' : ''}`}
+                        className={`public ${isPublic === "true" ? 'selected' : ''}`}
                         onClick={handlePublicClick}
                         variant="contained">
                         Công khai
                     </Button>
                 </div>
-
-
 
                 <div className='card'>
                     {
