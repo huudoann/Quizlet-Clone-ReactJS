@@ -451,6 +451,8 @@ const Flashcard = () => {
                 <div className="flashcard-container" ref={flashcardContainerRef}>
                     <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>
                         <h1>{flashcardTitle}</h1>
+
+                        {/* danh gia hoc phan */}
                         <div className="rating">
                             <h4>Đánh giá học phần này: </h4>
                             {/* <p>({averageRating})</p> */}
@@ -487,6 +489,8 @@ const Flashcard = () => {
                                 </DialogActions>
                             </Dialog>
                         </div>
+
+                        {/* navbar tro choi */}
                         <div className="flashcard-navigation">
                             <NavLink to={`/flashcard`} activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem', boxShadow: 'inset 0 -2px 0 0 #ccc' }}>
                                 <IconSprite>
@@ -530,6 +534,8 @@ const Flashcard = () => {
                                 <Icon name="study-match-twilight" className="AssemblyIcon AssemblyIcon--larger" />
                                 <span>Match</span></NavLink>
                         </div>
+
+                        {/* flashcard */}
                         <div className={`flashcard-form`}>
                             <div className={`flashcard  ${isFlipped ? 'flipped' : ''}`} style={{ animation: shouldAnimate ? `${slideDirection === 'left' ? 'slideLeft' : 'slideRight'} 0.3s ease` : 'none' }} onClick={handleFlipCard}>
                                 {flashcardsFull.length > 0 ? (
