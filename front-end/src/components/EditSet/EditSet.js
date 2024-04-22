@@ -22,6 +22,7 @@ const EditSet = () => {
     const [set_id, setSetId] = useState('');
     const [token, setToken] = useState('');
     const [isClickAddCard, setIsClickAddCard] = useState(false);
+    const [editCards, setEditCards] = useState([])
 
     // console.log({ flashcardsArray });
     // console.log({ flashcardsArray });
@@ -59,7 +60,7 @@ const EditSet = () => {
         };
 
         fetchData();
-    }, [set_id]);
+    }, []);
 
     useEffect(() => {
         setSttCount(flashcardsArray.length + 1);
@@ -95,6 +96,24 @@ const EditSet = () => {
 
 
     const handleInputChange = (index, part, event) => {
+        const card = flashcardsArray[index];
+
+        const updatedCard = {
+            ...card,
+            [part]: event.target.value
+        };
+
+        // Check if card with the same card_id already exists in editCards array
+        if (!editCards.some(existingCard => existingCard.card_id === card.card_id)) {
+            // If not present, update the editCards array with the updated card object
+            setEditCards(prevEditCards => [...prevEditCards, updatedCard]);
+        } else {
+            // If already present, find and update the card in the editCards array
+            setEditCards(prevEditCards => prevEditCards.map(prevCard => {
+                return prevCard.card_id === updatedCard.card_id ? updatedCard : prevCard;
+            }));
+        }
+
         const newInputs = flashcardsArray.map((flashcard, i) => {
             if (i === index) {
                 return { ...flashcard, [part]: event.target.value };
@@ -132,7 +151,7 @@ const EditSet = () => {
             })
             navigate(`/flashcard`)
         } else {
-            flashcardsArray.forEach(async (card, index) => {
+            editCards.forEach(async (card, index) => {
                 const updateCardApiUrl = `http://localhost:8080/api/card/edit/${card.card_id}`;
                 const responseCard = await axios.put(updateCardApiUrl, { front_text: card.front_text, back_text: card.back_text }, {
                     headers: {
@@ -144,9 +163,6 @@ const EditSet = () => {
             navigate(`/flashcard`)
         }
     }
-
-
-
 
     return (
         <div className='edit-set'>
@@ -209,6 +225,9 @@ const EditSet = () => {
                         Công khai
                     </Button>
                 </div>
+
+
+
                 <div className='card'>
                     {
                         flashcardsArray.map((flashcard, index) => (
@@ -233,16 +252,9 @@ const EditSet = () => {
                                     onChange={(e) => handleInputChange(index, 'back_text', e)}
                                     value={flashcard.back_text}
                                 />
-                                {/* <IconButton
-                                    ariaLabel="delete" size="large"
-                                    className="delete-icon"
-                                    onClick={() => handleDeleteConfirmation(flashcard.card_id)}>
-                                    <DeleteIcon fontSize="inherit" />
-                                </IconButton> */}
                             </div>
                         ))
                     }
-
                 </div>
                 <Button variant="contained"
                     onClick={() => {
