@@ -141,19 +141,43 @@ const Header = () => {
         }
     };
 
+    const handleNavigate = () => {
+        localStorage.removeItem('folder_id');
+        localStorage.removeItem('folderTitle');
+        localStorage.removeItem('flashcardTitle');
+        localStorage.removeItem('set_id');
+        localStorage.removeItem('description');
+        localStorage.removeItem('public');
+        localStorage.removeItem('review_id');
+        localStorage.removeItem('filterTitle');
+    }
+
+
     return (
         <div className='nav-header'>
             <header>
                 <div className='home-library-container'>
-                    <Link to="/lastest" style={{ color: 'inherit', textDecoration: 'inherit', border: 'none' }}>
+                    <Link to="/lastest"
+                        style={{ color: 'inherit', textDecoration: 'inherit', border: 'none' }}
+                        onClick={handleNavigate}
+                    >
                         <Button className="name-app" sx={{ textTransform: 'none' }}>Quizlet</Button>
                     </Link>
 
-                    <NavLink to={"/lastest"} className="homepage-btn" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}>
+                    <NavLink to={"/lastest"}
+                        className="homepage-btn"
+                        activeclassname="active"
+                        style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem' }}
+                        onClick={handleNavigate}
+                    >
                         <Button style={{ color: 'white' }}>Trang chủ</Button>
                     </NavLink>
 
-                    <NavLink to={"/sets"} className={isActive ? "library-btn active" : "library-btn"} style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}>
+                    <NavLink to={"/sets"}
+                        className={isActive ? "library-btn active" : "library-btn"}
+                        style={{ textDecoration: 'none', color: 'inherit', marginLeft: '0.5rem', marginRight: '1rem' }}
+                        onClick={handleNavigate}
+                    >
                         <Button style={{ color: 'white' }}>Thư viện</Button>
                     </NavLink>
                 </div>
@@ -166,6 +190,7 @@ const Header = () => {
                         value={searchKeyword}
                         onChange={handleSearchInputChange}
                         onKeyDown={handleSearchKeyDown}
+                        onClick={handleNavigate}
                     />
                     <div className="button-right">
                         <div className="icon-container icon-container-plus" onClick={toggleMenu}>
@@ -173,7 +198,7 @@ const Header = () => {
                             {isMenuOpen && (
                                 <div ref={menuRef} className="menu" onClick={(e) => e.stopPropagation()}>
                                     <Link to="/create-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                                        <Button className="menu-item" sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faStickyNote} /> Học phần </Button>
+                                        <Button className="menu-item" sx={{ textTransform: 'none' }} onClick={handleNavigate}><FontAwesomeIcon icon={faStickyNote} /> Học phần </Button>
                                     </Link>
                                     <Button className="menu-item" onClick={toggleFolderDialog} sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faFolder} /> Thư mục </Button>
                                 </div>

@@ -52,7 +52,7 @@ const CreateSet = () => {
             const set_id = response.data.set_id; // Lưu set_id từ phản hồi
             console.log(set_id)
             localStorage.setItem("set_id", set_id);
-            localStorage.setItem("title", title);
+            localStorage.setItem("flashcardTitle", title);
             localStorage.setItem("description", description);
             localStorage.setItem("is_public", is_public)
             // Gửi dữ liệu các cards
@@ -92,18 +92,18 @@ const CreateSet = () => {
     };
 
     // Hàm xử lý khi click vào nút private
-const handlePrivateClick = () => {
-    setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
-    setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
-    setPublic(false); // Cập nhật giá trị is_public thành false khi chọn riêng tư
-};
+    const handlePrivateClick = () => {
+        setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
+        setIsPublicSelected(false); // Đặt trạng thái của nút public thành false
+        setPublic(false); // Cập nhật giá trị is_public thành false khi chọn riêng tư
+    };
 
-// Hàm xử lý khi click vào nút public
-const handlePublicClick = () => {
-    setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
-    setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
-    setPublic(true); // Cập nhật giá trị is_public thành true khi chọn công khai
-};
+    // Hàm xử lý khi click vào nút public
+    const handlePublicClick = () => {
+        setIsPublicSelected(true); // Đặt trạng thái của nút public thành true
+        setIsPrivateSelected(false); // Đặt trạng thái của nút private thành false
+        setPublic(true); // Cập nhật giá trị is_public thành true khi chọn công khai
+    };
 
     useEffect(() => {
         setSttCount(inputElements.length + 1);

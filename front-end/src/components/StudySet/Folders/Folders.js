@@ -16,6 +16,17 @@ const Folders = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
+        setActiveLink(location.pathname);
+        localStorage.removeItem('folder_id');
+        localStorage.removeItem('folderTitle');
+        localStorage.removeItem('flashcardTitle');
+        localStorage.removeItem('set_id');
+        localStorage.removeItem('description');
+        localStorage.removeItem('public');
+        localStorage.removeItem('review_id');
+    }, []);
+
+    useEffect(() => {
         const fetchFolderData = async () => {
             let token = localStorage.getItem('token');
             const user_id = localStorage.getItem('user_id');
@@ -47,6 +58,7 @@ const Folders = () => {
     }, [location.pathname]);
 
     const handleFolderClick = (folder) => {
+        localStorage.setItem('folder_id', folder.folderId);
         localStorage.setItem('folderTitle', folder.title);
         navigate(`/folder-page`);
     }
