@@ -136,6 +136,7 @@ export default function AddModal() {
           dividers={scroll === "paper"}
           style={{
             backgroundColor: "#2E3856",
+            scrollbarColor: "#586380 #2E3856",
           }}
         >
           <DialogContentText
