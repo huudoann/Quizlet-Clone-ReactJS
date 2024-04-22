@@ -108,22 +108,33 @@ const FolderPage = () => {
           <div className="overlay"></div>
           <div className="confirmation-box">
             <div className="message">
-            Xóa thư mục là thao tác VĨNH VIỄN. Bạn không thể hoàn tác.
-Bạn chắc chắn muốn xóa thư mục này? Học phần trong thư mục này sẽ không bị xoá.
+              Xóa thư mục là thao tác VĨNH VIỄN. Bạn không thể hoàn tác. Bạn
+              chắc chắn muốn xóa thư mục này? Học phần trong thư mục này sẽ
+              không bị xoá.
             </div>
             <div className="button-container">
-              <Button onClick={handleCancelDeleteFolder} style={{
-                backgroundColor: "#303545",
-                color: "#fff",
-                fontSize: "16px",
-                fontWeight: "bold",
-              }}>Hủy bỏ</Button>
-              <Button onClick={handleDeleteFolder} style={{
-                backgroundColor: "#FF2A38",
-                color: "#fff",
-                fontSize: "16px",
-                fontWeight: "bold",
-              }}>Xác nhận</Button>
+              <Button
+                onClick={handleCancelDeleteFolder}
+                style={{
+                  backgroundColor: "#303545",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                }}
+              >
+                Hủy bỏ
+              </Button>
+              <Button
+                onClick={handleDeleteFolder}
+                style={{
+                  backgroundColor: "#FF2A38",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                }}
+              >
+                Xác nhận
+              </Button>
             </div>
           </div>
         </div>
