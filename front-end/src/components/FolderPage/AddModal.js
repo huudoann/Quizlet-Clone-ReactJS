@@ -1,7 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -13,7 +12,6 @@ export default function AddModal() {
   const [scroll, setScroll] = React.useState("paper");
   const [isHovered, setIsHovered] = React.useState(false);
   const [sets, setSets] = React.useState([{}]);
-  const [set_id, setSet_id] = React.useState(0);
 
   const user_id = localStorage.getItem("user_id");
   const folder_id = localStorage.getItem("folder_id");
@@ -66,8 +64,6 @@ export default function AddModal() {
 
   const handleAddSet = async (set_id) => {
     let token = localStorage.getItem("token");
-    setSet_id(localStorage.getItem("set_id"));
-    console.log("set_id: " + set_id);
     if (!token) {
       throw new Error("Token không tồn tại trong localStorage");
     } else {

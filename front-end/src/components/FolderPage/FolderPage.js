@@ -4,16 +4,19 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SetItem2 from "./SetItem2";
 import "./FolderPage.scss";
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import IosShareIcon from '@mui/icons-material/IosShare';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import AddModal from "./AddModal";
+import { Button } from "@mui/material";
 
 const FolderPage = () => {
   const [setsInFolder, setSetsInFolder] = useState();
+  const [showDelFolderConfirmation, setShowDelFolderConfirmation] =
+    useState(false);
   const navigate = useNavigate();
-  const folder_id = localStorage.getItem("folder_id");  
+  const folder_id = localStorage.getItem("folder_id");
   const folder_title = localStorage.getItem("folderTitle");
 
   const handleDeleteFolder = async () => {
@@ -22,21 +25,21 @@ const FolderPage = () => {
       throw new Error("Token không tồn tại trong localStorage");
     } else {
       try {
-        await axios.delete(
-          `http://localhost:8080/api/folder/${folder_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        alert("xoa thanh cong");
+        await axios.delete(`http://localhost:8080/api/folder/${folder_id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         navigate("/folders");
       } catch (error) {
         alert("Lỗi khi xóa folder:", error.message);
       }
     }
-  }
+  };
+
+  const handleCancelDeleteFolder = () => {
+    setShowDelFolderConfirmation(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,30 +77,58 @@ const FolderPage = () => {
           <div className="folder-page-header-info">
             <div className="folder-details">
               <span> {} học phần</span>
-              <span>tạo bởi  </span>
+              <span>tạo bởi </span>
             </div>
             <div className="folder-title">
-              <FolderOpenIcon style={{ fontSize: "52px" }}/> 
+              <FolderOpenIcon style={{ fontSize: "52px" }} />
               <span>{folder_title}</span>
             </div>
           </div>
           <div className="folder-page-header-actions">
-            <AddModal className="add-button"/>
-            <IosShareIcon className="share-button"/>
-            <ModeEditOutlineIcon className="edit-button"/>
-            <DeleteOutlineIcon className="delete-folder-button" onClick={handleDeleteFolder}/>
+            <AddModal className="add-button" />
+            <IosShareIcon className="share-button" />
+            <ModeEditOutlineIcon className="edit-button" />
+            <DeleteOutlineIcon
+              className="delete-folder-button"
+              onClick={() => setShowDelFolderConfirmation(true)}
+            />
           </div>
         </div>
         <div className="main">
           <div className="content">
-            {setsInFolder && setsInFolder.map((item) => (
-              <SetItem2 key={item.set_id} {...item} />
-            ))}
+            {setsInFolder &&
+              setsInFolder.map((item) => (
+                <SetItem2 key={item.set_id} {...item} />
+              ))}
           </div>
         </div>
       </div>
+      {showDelFolderConfirmation && (
+        <div className="delete-confirm">
+          <div className="overlay"></div>
+          <div className="confirmation-box">
+            <div className="message">
+            Xóa thư mục là thao tác VĨNH VIỄN. Bạn không thể hoàn tác.
+Bạn chắc chắn muốn xóa thư mục này? Học phần trong thư mục này sẽ không bị xoá.
+            </div>
+            <div className="button-container">
+              <Button onClick={handleCancelDeleteFolder} style={{
+                backgroundColor: "#303545",
+                color: "#fff",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}>Hủy bỏ</Button>
+              <Button onClick={handleDeleteFolder} style={{
+                backgroundColor: "#FF2A38",
+                color: "#fff",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}>Xác nhận</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-
   );
 };
 
