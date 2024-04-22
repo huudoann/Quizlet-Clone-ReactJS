@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Folders.scss';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import Header from "../../Header/Header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,8 @@ const Folders = () => {
     const [folders, setFolders] = useState([]);
     const [activeLink, setActiveLink] = useState('');
     const [username, setUserName] = useState();
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchFolderData = async () => {
@@ -44,6 +46,11 @@ const Folders = () => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
 
+    const handleFolderClick = (folder) => {
+        localStorage.setItem('folderTitle', folder.title);
+        navigate(`/folder-page`);
+    }
+
     return (
         <div className="folders">
             {<Header />}
@@ -67,13 +74,8 @@ const Folders = () => {
                 <div className="folders-list">
                     {folders.length > 0 ? (
                         folders.map(folder => (
-                            <Button key={folder.setId} className="folder-item">
-
-                                <Link to={`/folder-page`} style={{ textDecoration: 'none', color: 'inherit' }}
-                                    onClick={() =>
-                                        localStorage.setItem('flashcardTitle', folder.title)}>
-                                    <h3>{folder.title}</h3>
-                                </Link>
+                            <Button key={folder.setId} className="folder-item" onClick={() => handleFolderClick(folder)}>
+                                <h3>{folder.title}</h3>
                             </Button>
                         ))
                     ) : (
