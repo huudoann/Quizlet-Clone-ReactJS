@@ -23,14 +23,14 @@ const CreateSet = () => {
 
     //post dữ liệu về BE
     const handleCreateButtonClick = async () => {
-        const isPublic = isPublicSelected;
+        const isPublic = is_public;
         const user_id = localStorage.getItem("user_id");
 
         const setData = {
             user_id,
             title,
             description,
-            is_public: isPublic
+            public: isPublic
         };
 
         //gọi API tạo set
