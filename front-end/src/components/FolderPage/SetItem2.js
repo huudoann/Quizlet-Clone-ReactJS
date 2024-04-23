@@ -11,6 +11,7 @@ const SetItem2 = (item) => {
   const navigate = useNavigate();
   const handleNavigate = () => {
     localStorage.setItem("set_id", item.setId);
+    localStorage.setItem('flashcardTitle', item.title);  
     navigate("/flashcard");
   };
   
