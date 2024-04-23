@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, TextField, IconButton, Button } from '@mui/material';
+import { Box, TextField, IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import './CreateSet.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import các icon từ thư viện Font Awesome
@@ -19,12 +19,19 @@ const CreateSet = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [is_public, setPublic] = useState('');
+    const [errorDialogOpen, setErrorDialogOpen] = useState(false);
     const navigate = useNavigate()
 
     //post dữ liệu về BE
     const handleCreateButtonClick = async () => {
         const isPublic = is_public;
         const user_id = localStorage.getItem("user_id");
+        const isValid = validateFields(); // Kiểm tra xem các trường có hợp lệ không
+
+        if (!isValid) {
+            setErrorDialogOpen(true); // Mở dialog thông báo lỗi nếu các trường không hợp lệ
+            return; // Dừng việc tiếp tục xử lý
+        }
 
         const setData = {
             user_id,
@@ -91,6 +98,15 @@ const CreateSet = () => {
 
     };
 
+    // Hàm kiểm tra xem các trường đã được điền đầy đủ chưa
+    const validateFields = () => {
+        // Kiểm tra xem title, description và ít nhất một trong các thuật ngữ và định nghĩa có giá trị không
+        if (!title || !description || inputElements.some(input => !input.content1 || !input.content2)) {
+            return false; // Trả về false nếu có ít nhất một trường không được điền đầy đủ
+        }
+        return true; // Trả về true nếu tất cả các trường đều được điền đầy đủ
+    };
+
     // Hàm xử lý khi click vào nút private
     const handlePrivateClick = () => {
         setIsPrivateSelected(true); // Đặt trạng thái của nút private thành true
@@ -131,6 +147,25 @@ const CreateSet = () => {
             return updatedInputs.map((input, index) => ({ ...input, stt: index + 1 }));
         });
     };
+
+    // Xử lý khi đóng dialog thông báo lỗi
+    const handleDialogClose = () => {
+        setErrorDialogOpen(false); // Đóng dialog
+    };
+
+    const ErrorDialog = ({ open, onClose }) => (
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>Thông báo lỗi</DialogTitle>
+            <DialogContent>
+                <div>Vui lòng điền đầy đủ thông tin</div>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose} color="primary">
+                    Đóng
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
 
     return (
         <div className='create-set'>
@@ -236,6 +271,7 @@ const CreateSet = () => {
                 >
                     + Thêm thẻ
                 </Button>
+                <ErrorDialog open={errorDialogOpen} onClose={handleDialogClose} />
             </div>
         </div>
     );
