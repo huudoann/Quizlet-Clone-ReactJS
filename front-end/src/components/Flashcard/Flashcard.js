@@ -594,7 +594,7 @@ const Flashcard = () => {
                         </div>
                     </div>
                     <div className="creator">
-                        <img src={creator.avatar} alt="Creator Avatar" />
+                        <img src="https://assets.quizlet.com/a/j/dist/app/i/animals/111.f9dd73353feb908.jpg" alt="Creator Avatar" />
                         <p>{creator.name}</p>
 
                         <div className="menu-container">
