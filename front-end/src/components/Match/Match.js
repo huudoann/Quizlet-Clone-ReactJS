@@ -20,48 +20,52 @@ const MatchPage = () => {
       try {
         const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
 
-        const cards = [];
-
-        flashcardsData.content.forEach(card => {
-          cards.push({ card_id: card.card_id, text: card.front_text, type: 'front_text' });
-          cards.push({ card_id: card.card_id, text: card.back_text, type: 'back_text' });
+        let cards = [];
+        let flashcardsContent = flashcardsData.content;
+        flashcardsContent.forEach(card => {
+          const cardFront = { card_id: card.card_id, text: card.front_text, type: 'front_text' };
+          const cardBack = { card_id: card.card_id, text: card.back_text, type: cardFront.type === 'front_text' ? 'back_text' : 'front_text' };
+          cards = [...cards, cardFront, cardBack];
         });
-
         const initialCards = [];
         const usedCardIds = new Set();
+        let loopCnt = 0;
 
-        while (initialCards.length < 6 && cards.length > 0) {
+        while (initialCards.length < 6 && cards.length > 0 && loopCnt < 100) {
+          loopCnt++;
           const randomIndex = Math.floor(Math.random() * cards.length);
           const randomCard = cards[randomIndex];
 
+          // Kiểm tra xem id của randomCard đã được sử dụng chưa
           if (!usedCardIds.has(randomCard.card_id)) {
             initialCards.push(randomCard);
             usedCardIds.add(randomCard.card_id);
           }
-
-          cards.splice(randomIndex, 1);
         }
-
         let loopCount = 0;
-        let processedCards = [];
-
-        while (processedCards.length < 12 && loopCount < 100) {
+        let processedCards = [...initialCards];
+        const addedCardIds = [];
+        while (processedCards.length < 12 && loopCount < 2) {
           loopCount++;
 
-          initialCards.forEach(card => {
-            const correspondingCardType = card.type === 'front_text' ? 'back_text' : 'front_text';
-            const correspondingCardExists = initialCards.some(c => c.card_id === card.card_id && c.type === correspondingCardType);
-            if (!correspondingCardExists && cards.length >= 1) {
-              const correspondingCard = cards.find(c => c.card_id === card.card_id && c.type === correspondingCardType);
-              initialCards.push(correspondingCard);
-            }
+          initialCards.forEach(initialCard => {
+            const correspondingCardType = initialCard.type;
+            cards.forEach(card => {
+              if (card.card_id === initialCard.card_id && card.type !== correspondingCardType) {
+                // Kiểm tra xem card_id đã được thêm vào processedCards chưa
+                if (!addedCardIds.includes(card.card_id)) {
+                  processedCards.push(card);
+                  addedCardIds.push(card.card_id);
+                }
+              }
+            });
           });
-
-          processedCards = initialCards.slice(0, 12);
         }
 
+        processedCards = processedCards.slice(0, 12);
+
+        // console.log("processed", processedCards);
         setFlashcards(processedCards);
-        console.log(processedCards);
         console.log("Lấy dữ liệu thành công");
       } catch (error) {
         console.error('Lỗi lấy cards:', error);
@@ -71,7 +75,7 @@ const MatchPage = () => {
     if (set_id) {
       fetchData(set_id);
     }
-  }, [set_id])
+  }, [])
 
   const handleCloseButtonClick = () => {
     navigate(`/flashcard`);
