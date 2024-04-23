@@ -37,8 +37,11 @@ const SettingPage = () => {
           </div>
           <div className="delete-account-container">
             <div className="delete-message">
-                <div>Xóa tài khoản</div>
-                <span style={{fontWeight: "normal"}}>Thao tác này sẽ xóa tất cả dữ liệu của bạn và không thể hoàn tác.</span>
+              <div>Xóa tài khoản</div>
+              <span style={{ fontWeight: "normal" }}>
+                Thao tác này sẽ xóa tất cả dữ liệu của bạn và không thể hoàn
+                tác.
+              </span>
             </div>
             <Button className="delete-account-button">Xóa tài khoản</Button>
           </div>

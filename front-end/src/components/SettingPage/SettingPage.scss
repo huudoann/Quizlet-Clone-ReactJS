@@ -49,6 +49,7 @@
         border-bottom: 1px #2E3856 solid;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .change-password-button {
@@ -72,5 +73,8 @@
         border-radius: 10px;
         color: white;
         background-color: rgb(184, 3, 3);
+        :hover {
+            background-color: rgb(184, 3, 3);
+        }
     }
 }
