@@ -15,6 +15,7 @@ import Tests from '../components/Testss/Tests';
 import SearchResultsPage from '../components/SearchResultsPage/SearchResultsPage';
 import EditSet from '../components/EditSet/EditSet';
 import FolderPage from '../components/FolderPage/FolderPage';
+import SettingPage from '../components/SettingPage/SettingPage';
 import '../styles/global.scss';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                     <Route exact path='/search-results-page' element={<SearchResultsPage />} />
                     <Route exact path='/folder-page' element={<FolderPage />} />
                     <Route exact path='/edit-set' element={<EditSet />} />
+                    <Route exact path='/setting' element={<SettingPage />} />
                 </Routes>
             </div>
         </Router>

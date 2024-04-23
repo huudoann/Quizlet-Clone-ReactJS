@@ -1,0 +1,76 @@
+.setting-page {
+    color: white;
+
+    .setting-page-container {
+        width: 55vw;
+        margin-top: 5%;
+        margin-left: 20%;
+        padding: 24px;
+    }
+
+    .user-infor-container {
+        margin-top: 20px;
+        border: 1px #2E3856 solid;
+        border-radius: 10px;
+    }
+
+    .username-container {
+        border-bottom: 1px #2E3856 solid;
+        padding: 24px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .edit-username-button {
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 10px;
+        color: #A8B1FF;
+    }
+
+    .email-container {
+        border-bottom: 1px #2E3856 solid;
+        padding: 24px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .edit-email-button {
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 10px;
+        color: #A8B1FF;
+    }
+
+    .change-password-container {
+        padding: 24px;
+        font-size: 20px;
+        font-weight: bold;
+        border-bottom: 1px #2E3856 solid;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .change-password-button {
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 10px;
+        color: #A8B1FF;
+    }
+
+    .delete-account-container {
+        padding: 24px;
+        font-size: 20px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .delete-account-button {
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 10px;
+        color: white;
+        background-color: rgb(184, 3, 3);
+    }
+}
