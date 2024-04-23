@@ -11,6 +11,8 @@ import IconSprite from '../Icon/IconSprite';
 import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@mui/material';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Toast, { toast, Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -75,8 +77,8 @@ const Flashcard = () => {
             const flashcardsDataFull = await Request.Server.get(endPoint.getAllCardsInSet(set_id), { params: { size: 300 } });
             const flashcardsArrayFull = Object.values(flashcardsDataFull.content);
             setFlashcardsFull(flashcardsArrayFull);
-            // console.log(flashcardsData);
-            // console.log(flashcardsDataFull);
+            console.log(flashcardsData);
+            console.log(flashcardsDataFull);
             const title = localStorage.getItem('flashcardTitle');
             setFlashcardTitle(title);
         } catch (error) {
@@ -164,6 +166,7 @@ const Flashcard = () => {
 
     //gọi API gửi đánh giá
     const handleSubmitRating = async () => {
+
         try {
             let token = localStorage.getItem('token');
 
@@ -187,24 +190,52 @@ const Flashcard = () => {
                 totalStars: selectedStars, // Thay rating thành selectedStars
             }
 
+            let responseUser = await axios.get(`http://localhost:8080/api/set/get-all-sets`);
+            let responseUserId = 0;
+
+            responseUser.data.forEach(item => {
+                if (item.set_id == set_id) {
+                    responseUserId = item.user_id;
+                }
+                // console.log("item.user_id", set_id, item.set_id, item.user_id, responseUserId);
+
+            });
+
+            console.log("user_id", responseUserId, userId);
+
+
             // Kiểm tra xem người dùng đã đánh giá trước đó chưa
-            if (userReviewed > 0) {
+            if (userId == responseUserId) {
+                console.log("K dgia dc");
+                return toast.error('Không thể tự đánh giá học phần!', {
+                    position: "bottom-center"
+                })
+            }
+            else if (userReviewed > 0) {
                 // Nếu đã đánh giá, thực hiện yêu cầu sửa đổi đánh giá
                 let review_id = localStorage.getItem('review_id')
-                console.log(userReviewed, review_id);
+                // console.log(userReviewed, review_id);
                 let rating = { totalStars: selectedStars }
                 let response = await Request.Server.put(endPoint.editReviewById(review_id), rating);
                 console.log('Đã sửa đánh giá thành công', response);
+                setUserReviewed(selectedStars);
+                fetchReviewing();
+                setOpenDialog(false);
+                return toast.success('Sửa đánh giá thành công!', {
+                    position: "bottom-center"
+                })
             } else {
                 // Nếu chưa đánh giá, thực hiện yêu cầu tạo mới đánh giá
                 let response = await Request.Server.post(endPoint.createNewReview(set_id), userRating);
                 console.log('Đã gửi đánh giá thành công', response);
+                setUserReviewed(selectedStars);
+                fetchReviewing();
+                setOpenDialog(false);
+                toast.success('Gửi đánh giá thành công!', {
+                    position: "bottom-center"
+                })
             }
 
-            // Cập nhật số điểm đánh giá sau khi gửi thành công
-            setUserReviewed(selectedStars);
-            fetchReviewing();
-            setOpenDialog(false);
         } catch (error) {
             console.error('Lỗi khi gửi request đánh giá:', error.message);
         }
@@ -447,6 +478,8 @@ const Flashcard = () => {
     return (
         <div>
             <Header />
+            <div><Toaster /></div>
+
             <div className='flashcard-mainContainer'>
                 <div className="flashcard-container" ref={flashcardContainerRef}>
                     <div className={`flashcard-page-content ${isZoomed ? 'zoomed' : ''}`}>

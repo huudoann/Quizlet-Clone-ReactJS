@@ -96,6 +96,7 @@ const HomePage = () => {
                         <p>{overlayTexts[0]}</p>
                         <p>{overlayTexts[1]}</p>
                     </div>
+
                 </div>
 
                 <div className='date-calendar-container'>
@@ -104,25 +105,27 @@ const HomePage = () => {
                     </LocalizationProvider>
                 </div>
 
-                <div className="search-results-container">
-                    <div className="search-results-page-container">
-                        <div className="search-results-page-content">
-                            <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách học phần:</span>
-                            <div className="set-items">
-                                {sets && sets.map((set, index) => (
-                                    <SetItem
-                                        key={index}
-                                        set_id={set.set_id}
-                                        title={set.title}
-                                        user_id={set.user_id}
-                                    />
-                                ))}
-                            </div>
+            </div>
+
+            <div className="search-results-container">
+                <div className="search-results-page-container">
+                    <div className="search-results-page-content">
+                        <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách học phần:</span>
+                        <div className="set-items">
+                            {sets && sets.map((set, index) => (
+                                <SetItem
+                                    key={index}
+                                    set_id={set.set_id}
+                                    title={set.title}
+                                    user_id={set.user_id}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {/* <div className="search-results-container">
+            {/* <div className="search-results-container">
                     <div className="search-results-page-container">
                         <div className="search-results-page-content">
                             <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách thư mục:</span>
@@ -139,7 +142,6 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div> */}
-            </div>
 
             {<Footer />}
         </div >

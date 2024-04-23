@@ -7,6 +7,7 @@ export const endPoint = {
 
     //card
     createNewCard: (set_id) => `${baseUrl}/card/${set_id}/create-card`,
+    createNewListCards: (set_id) => `${baseUrl}/card/${set_id}/create-cards`,
     deleteCardById: (id) => `${baseUrl}/card/${id}`,
     editCardById: (id) => `${baseUrl}/card/edit/${id}`,
     getCardById: (id) => `${baseUrl}/card/${id}`,
