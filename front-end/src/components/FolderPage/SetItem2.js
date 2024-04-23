@@ -11,6 +11,7 @@ const SetItem2 = (item) => {
   const navigate = useNavigate();
   const handleNavigate = () => {
     localStorage.setItem("set_id", item.setId);
+    localStorage.setItem('flashcardTitle', item.title);  
     navigate("/flashcard");
   };
   
@@ -45,7 +46,7 @@ const SetItem2 = (item) => {
 
       <div className="set-item-footer">
         <div className="user">
-          <span className="user-name">{item.user}Khánh</span>
+          <span className="user-name"></span>
         </div>
 
         <div className="delete-icon-container">

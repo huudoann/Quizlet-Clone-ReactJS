@@ -12,12 +12,17 @@ import AddModal from "./AddModal";
 import { Button } from "@mui/material";
 
 const FolderPage = () => {
-  const [setsInFolder, setSetsInFolder] = useState();
+  const [setsInFolder, setSetsInFolder] = useState([]);
   const [showDelFolderConfirmation, setShowDelFolderConfirmation] =
     useState(false);
+  const [showEditFolder, setShowEditFolder] = useState(false);
   const navigate = useNavigate();
   const folder_id = localStorage.getItem("folder_id");
   const folder_title = localStorage.getItem("folderTitle");
+
+  const handleEditFolder = async () => {
+    setShowEditFolder(false);
+  };
 
   const handleDeleteFolder = async () => {
     let token = localStorage.getItem("token");
@@ -76,8 +81,7 @@ const FolderPage = () => {
         <div className="folder-page-header">
           <div className="folder-page-header-info">
             <div className="folder-details">
-              <span> {} học phần</span>
-              <span>tạo bởi </span>
+              <span> {setsInFolder.length} học phần</span>
             </div>
             <div className="folder-title">
               <FolderOpenIcon style={{ fontSize: "52px" }} />
@@ -87,7 +91,7 @@ const FolderPage = () => {
           <div className="folder-page-header-actions">
             <AddModal className="add-button" />
             <IosShareIcon className="share-button" />
-            <ModeEditOutlineIcon className="edit-button" />
+            <ModeEditOutlineIcon className="edit-button" onClick={() => setShowEditFolder(true)}/>
             <DeleteOutlineIcon
               className="delete-folder-button"
               onClick={() => setShowDelFolderConfirmation(true)}
