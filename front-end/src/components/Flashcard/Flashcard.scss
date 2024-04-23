@@ -91,9 +91,12 @@
       }
 
       .flashcard-navigation {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        justify-content: space-between;
+        // display: grid;
+        // grid-template-columns: repeat(4, 1fr);
+        // justify-content: space-between;
+        // align-items: center;
+        display: flex;
+        justify-content: center;
         align-items: center;
         margin-bottom: 25px;
         border: 1px;
@@ -106,10 +109,13 @@
 
       .flashcard-navigation a {
         display: flex;
+        justify-content: center;
+        align-items: center;
         padding: .5rem;
         background-color: #2e3856;
         border-radius: 5px;
         font-weight: 500;
+        width: 25%;
       }
 
       .flashcard-navigation a:hover {
