@@ -17,7 +17,7 @@ const SetItem = (item) => {
       <div className="set-item-content">
         <span className="set-item-title">{item.title}</span>
         <div className="set-item-descriptions">
-          <div id="rating">5⭐ {item.rating}</div>
+          <div id="rating">5⭐ {item.review}</div>
         </div>
       </div>
 

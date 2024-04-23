@@ -40,13 +40,13 @@ const SetItem2 = (item) => {
   return (
     <div className="set-item" onClick={() => handleNavigate()}>
       <div className="set-item-content">
-        <span className="set-item-title">{item.title} toeic</span>
+        <span className="set-item-title">{item.title}</span>
         <div className="set-item-descriptions"></div>
       </div>
 
       <div className="set-item-footer">
         <div className="user">
-          <span className="user-name"></span>
+          <span className="user-name">{item.ownername}</span>
         </div>
 
         <div className="delete-icon-container">

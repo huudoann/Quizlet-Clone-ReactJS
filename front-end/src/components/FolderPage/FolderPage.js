@@ -8,6 +8,7 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import { Input } from '@mui/base';
 import AddModal from "./AddModal";
 import { Button } from "@mui/material";
 
@@ -16,12 +17,37 @@ const FolderPage = () => {
   const [showDelFolderConfirmation, setShowDelFolderConfirmation] =
     useState(false);
   const [showEditFolder, setShowEditFolder] = useState(false);
+  const [newFolderTitle, setNewFolderTitle] = useState("");
+  const [newFolderDescription, setNewFolderDescription] = useState("");
   const navigate = useNavigate();
   const folder_id = localStorage.getItem("folder_id");
   const folder_title = localStorage.getItem("folderTitle");
 
   const handleEditFolder = async () => {
     setShowEditFolder(false);
+    let token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Token không tồn tại trong localStorage");
+    } else {
+      try {
+        await axios.put(
+          `http://localhost:8080/api/folder/edit/${folder_id}`,
+          {
+            title: newFolderTitle,
+            description: newFolderDescription,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        localStorage.setItem("folderTitle", newFolderTitle);
+        window.location.reload();
+      } catch (error) {
+        alert("Lỗi khi chỉnh sửa folder:", error.message);
+      }
+    }
   };
 
   const handleDeleteFolder = async () => {
@@ -91,7 +117,10 @@ const FolderPage = () => {
           <div className="folder-page-header-actions">
             <AddModal className="add-button" />
             <IosShareIcon className="share-button" />
-            <ModeEditOutlineIcon className="edit-button" onClick={() => setShowEditFolder(true)}/>
+            <ModeEditOutlineIcon
+              className="edit-button"
+              onClick={() => setShowEditFolder(true)}
+            />
             <DeleteOutlineIcon
               className="delete-folder-button"
               onClick={() => setShowDelFolderConfirmation(true)}
@@ -138,6 +167,64 @@ const FolderPage = () => {
                 }}
               >
                 Xác nhận
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showEditFolder && (
+        <div className="edit-folder">
+        <div className="overlay"></div>
+          <div className="edit-folder-box">
+            <div className="edit-folder-title" style={{fontSize: "30px", fontWeight: "bold"}}>Chỉnh sửa thư mục</div>
+            <div className="edit-folder-input">
+              <input
+                type="text"
+                placeholder="Tên thư mục"
+                style={{ 
+                  fontSize: "20px",
+                  marginTop: "50px",
+                  width: "100%",
+                  height: "50px", 
+                  borderRadius: "10px",
+                }}
+                onChange={(e) => setNewFolderTitle(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Mô tả"
+                style={{ 
+                  fontSize: "20px",
+                  marginTop: "20px",
+                  width: "100%",
+                  height: "50px",
+                  borderRadius: "10px", 
+                }}
+                onChange={(e) => setNewFolderDescription(e.target.value)}
+              />
+            </div>
+            <div className="edit-folder-button-container">
+              <Button
+                onClick={() => setShowEditFolder(false)}
+                style={{
+                  backgroundColor: "#303545",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                }}
+              >
+                Hủy bỏ
+              </Button>
+              <Button
+                onClick={handleEditFolder}
+                style={{
+                  backgroundColor: "#303545",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                }}
+              >
+                Lưu
               </Button>
             </div>
           </div>
