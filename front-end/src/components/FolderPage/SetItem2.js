@@ -45,7 +45,7 @@ const SetItem2 = (item) => {
 
       <div className="set-item-footer">
         <div className="user">
-          <span className="user-name">{item.user}Khánh</span>
+          <span className="user-name"></span>
         </div>
 
         <div className="delete-icon-container">

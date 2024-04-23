@@ -81,6 +81,7 @@ export default function AddModal() {
           }
         );
         alert("Thêm set thành công!");
+        window.location.reload();
       } catch (error) {
         alert("Set đã tồn tại trong folder này!");
       }
