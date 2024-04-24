@@ -216,7 +216,7 @@ const Header = () => {
 
                                     </Button>
 
-                                    <Button className="menu-item" sx={{ textTransform: 'none' }}><FontAwesomeIcon icon={faCog} />Cài đặt</Button>
+                                    <Button className="menu-item" sx={{ textTransform: 'none' }} onClick={() => navigate('/setting')}><FontAwesomeIcon icon={faCog} />Cài đặt</Button>
 
                                     <Button className="menu-item" sx={{ textTransform: 'none' }}><Link to="/tos" style={{ color: 'inherit', textDecoration: 'inherit' }}>Quyền riêng tư</Link>
                                     </Button>

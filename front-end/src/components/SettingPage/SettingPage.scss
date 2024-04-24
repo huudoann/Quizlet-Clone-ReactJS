@@ -10,12 +10,12 @@
 
     .user-infor-container {
         margin-top: 20px;
-        border: 1px #2E3856 solid;
+        border: 2px #2E3856 solid;
         border-radius: 10px;
     }
 
     .username-container {
-        border-bottom: 1px #2E3856 solid;
+        border-bottom: 2px #2E3856 solid;
         padding: 24px;
         display: flex;
         justify-content: space-between;
@@ -29,7 +29,7 @@
     }
 
     .email-container {
-        border-bottom: 1px #2E3856 solid;
+        border-bottom: 2px #2E3856 solid;
         padding: 24px;
         display: flex;
         justify-content: space-between;
@@ -46,7 +46,7 @@
         padding: 24px;
         font-size: 20px;
         font-weight: bold;
-        border-bottom: 1px #2E3856 solid;
+        border-bottom: 2px #2E3856 solid;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -74,7 +74,133 @@
         color: white;
         background-color: rgb(184, 3, 3);
         :hover {
-            background-color: rgb(184, 3, 3);
+            background-color: rgb(255, 0, 0);
         }
     }
+
+    .change-username-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: 9998;
+    }
+
+    .edit-username {
+        position: relative;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: fit-content;
+    }
+
+    .edit-username-box {
+        font-size: 20px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 40%;
+        height: 200px;
+        transform: translate(-50%, -50%);
+        background-color: #1A1D28;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+
+    .edit-username-button-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .edit-email {
+        position: relative;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: fit-content;
+    }
+
+    .edit-email-box {
+        font-size: 20px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 40%;
+        height: 200px;
+        transform: translate(-50%, -50%);
+        background-color: #1A1D28;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+
+    .edit-email-button-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .edit-password {
+        position: relative;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: fit-content;
+    }
+
+    .edit-password-box {
+        font-size: 20px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 40%;
+        height: 250px;
+        transform: translate(-50%, -50%);
+        background-color: #1A1D28;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+
+    .edit-password-button-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .delete-account-box {
+        font-size: 20px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 40%;
+        height: 200px;
+        transform: translate(-50%, -50%);
+        background-color: #1A1D28;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+    
 }

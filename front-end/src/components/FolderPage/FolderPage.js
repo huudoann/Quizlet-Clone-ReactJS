@@ -8,7 +8,7 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import { Input } from '@mui/base';
+import { Input } from "@mui/base";
 import AddModal from "./AddModal";
 import { Button } from "@mui/material";
 
@@ -174,18 +174,23 @@ const FolderPage = () => {
       )}
       {showEditFolder && (
         <div className="edit-folder">
-        <div className="overlay"></div>
+          <div className="overlay"></div>
           <div className="edit-folder-box">
-            <div className="edit-folder-title" style={{fontSize: "30px", fontWeight: "bold"}}>Chỉnh sửa thư mục</div>
+            <div
+              className="edit-folder-title"
+              style={{ fontSize: "30px", fontWeight: "bold" }}
+            >
+              Chỉnh sửa thư mục
+            </div>
             <div className="edit-folder-input">
               <input
                 type="text"
                 placeholder="Tên thư mục"
-                style={{ 
+                style={{
                   fontSize: "20px",
                   marginTop: "50px",
                   width: "100%",
-                  height: "50px", 
+                  height: "50px",
                   borderRadius: "10px",
                 }}
                 onChange={(e) => setNewFolderTitle(e.target.value)}
@@ -193,12 +198,12 @@ const FolderPage = () => {
               <input
                 type="text"
                 placeholder="Mô tả"
-                style={{ 
+                style={{
                   fontSize: "20px",
                   marginTop: "20px",
                   width: "100%",
                   height: "50px",
-                  borderRadius: "10px", 
+                  borderRadius: "10px",
                 }}
                 onChange={(e) => setNewFolderDescription(e.target.value)}
               />
