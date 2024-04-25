@@ -6,9 +6,7 @@ import axios from 'axios';
 const SetItem = (item) => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(null);
-  const [username, setUserName] = useState(null);
   const set_id = item.set_id
-  const user_id = item.user_id
   useEffect(() => {
     const fetchData = async () => {
       let token = localStorage.getItem('token');
@@ -23,16 +21,8 @@ const SetItem = (item) => {
             }
           });
 
-          const responseUser = await axios.get(`http://localhost:8080/api/user/${user_id}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          // Tính toán rating từ dữ liệu đánh giá và cập nhật state
           // console.log("rv la", responseReview.data);
-          // console.log("name la", responseUser.data.username);
           setRating(responseReview.data);
-          setUserName(responseUser.data.username);
         } catch (error) {
           console.error('Lỗi khi lấy danh sách các rv:', error.message);
         }
@@ -40,11 +30,12 @@ const SetItem = (item) => {
     };
 
     fetchData();
-  }, [item.set_id]);
+  }, []);
 
 
   const handleNavigate = () => {
     localStorage.setItem('set_id', item.set_id);
+    localStorage.setItem('flashcardTitle', item.title);
     navigate('/flashcard');
   }
 
@@ -53,13 +44,13 @@ const SetItem = (item) => {
       <div className="set-item-content">
         <span className="set-item-title">{item.title}</span>
         <div className="set-item-descriptions">
-          {rating !== null && rating !== 0 && <div id="rating">{rating} ⭐</div>}
+          {rating !== null && rating !== 0 && <div id="rating">{Math.round(rating * 100) / 100} ⭐</div>}
         </div>
       </div>
 
       <div className="set-item-footer">
         <div className="user">
-          <span className="user-name">{username}</span>
+          <span className="user-name">{item.username}</span>
         </div>
         <button className="preview-button" onClick={() => console.log("clicked")}>Xem trước</button>
       </div>

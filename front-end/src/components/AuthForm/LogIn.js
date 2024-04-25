@@ -3,8 +3,6 @@ import './LogIn.scss';
 import { Box, TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { endPoint } from '../../utils/api/endPoint';
-import { Request } from '../../utils/axios';
 import axios from 'axios';
 
 const LoginForm = ({ switchForm }) => {
@@ -60,9 +58,9 @@ const LoginForm = ({ switchForm }) => {
     setEmail(e.target.value);
   };
 
-  const handleForgotPassword = () => {
-    console.log('Forgot Password:', email);
-  };
+  // const handleForgotPassword = () => {
+  //   console.log('Forgot Password:', email);
+  // };
 
   return (
     <div className='auth-form'>

@@ -11,7 +11,7 @@ import IconSprite from '../Icon/IconSprite';
 import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@mui/material';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Toast, { toast, Toaster } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
 const Flashcard = () => {
@@ -46,8 +46,47 @@ const Flashcard = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
     const [userReviewed, setUserReviewed] = useState(0);
-
+    const [ownerSetId, setOwnerSetId] = useState(false);
     const flashcardContainerRef = useRef(null);
+
+    //lấy userId
+    const getOwnerSetIdInCurrentSet = async () => {
+
+        try {
+            let token = localStorage.getItem('token');
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                window.location.href = "/login";
+                return null;
+            }
+            const set_id = localStorage.getItem('set_id');
+            if (!set_id) {
+                console.error('Không tìm thấy set_id');
+                return;
+            }
+
+            const userId = localStorage.getItem('user_id');
+
+            let responseUser = await axios.get(`http://localhost:8080/api/set/get-all-sets`);
+            let responseUserId = 0;
+
+            responseUser.data.forEach(item => {
+                if (item.set_id === set_id) {
+                    responseUserId = item.user_id;
+                }
+            });
+
+            // console.log("user_id", responseUserId, userId);
+
+            // Kiểm tra xem người dùng đã đánh giá trước đó chưa
+            if (userId === responseUserId) {
+                setOwnerSetId(true)
+            }
+            console.log(ownerSetId);
+        } catch (error) {
+            console.error('Lỗi khi lấy ownerId:', error.message);
+        }
+    }
 
     const shuffleArray = (array) => {
         if (!Array.isArray(array)) {
@@ -86,8 +125,8 @@ const Flashcard = () => {
         }
     };
 
-
     useEffect(() => {
+        getOwnerSetIdInCurrentSet();
         fetchData();
         setShuffledFlashcards(shuffleArray(flashcardsFull));
     }, []);
@@ -219,6 +258,7 @@ const Flashcard = () => {
                 let response = await Request.Server.put(endPoint.editReviewById(review_id), rating);
                 console.log('Đã sửa đánh giá thành công', response);
                 setUserReviewed(selectedStars);
+                handleGetUserReview();
                 fetchReviewing();
                 setOpenDialog(false);
                 return toast.success('Sửa đánh giá thành công!', {
@@ -230,6 +270,7 @@ const Flashcard = () => {
                 console.log('Đã gửi đánh giá thành công', response);
                 setUserReviewed(selectedStars);
                 fetchReviewing();
+                handleGetUserReview();
                 setOpenDialog(false);
                 toast.success('Gửi đánh giá thành công!', {
                     position: "bottom-center"
@@ -490,7 +531,7 @@ const Flashcard = () => {
                             <h4>Đánh giá học phần này: </h4>
                             {/* <p>({averageRating})</p> */}
                             <Button className="rating-button" onClick={handleOpenDialog}>
-                                <FontAwesomeIcon icon={faStar} style={{ marginRight: '0.5rem' }} /> {averageRating || 'Đánh giá'}
+                                <FontAwesomeIcon icon={faStar} style={{ marginRight: '0.5rem' }} /> {Math.round(averageRating * 100) / 100 || 'Đánh giá'}
                             </Button>
 
                             {/* Dialog để người dùng đánh giá */}
@@ -631,20 +672,24 @@ const Flashcard = () => {
                         <p>{creator.name}</p>
 
                         <div className="menu-container">
-                            <Link to="/edit-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                                <IconSprite>
-                                    <symbol id="edit" viewBox="0 0 24 24" >
-                                        <path d="M3.43865 17.9013C3.47528 17.7269 3.56185 17.567 3.68781 17.4411L15.5903 5.53862L18.4614 8.40973L6.55892 20.3122C6.43296 20.4381 6.27307 20.5247 6.09874 20.5613L4.10683 20.9798C3.45856 21.116 2.88398 20.5414 3.02017 19.8932L3.43865 17.9013Z"></path>
-                                        <path d="M17.5914 3.53752L16.6899 4.43901L19.561 7.31013L20.4625 6.40863C21.1792 5.69194 21.1792 4.52995 20.4625 3.81326L20.1867 3.53752C19.4701 2.82083 18.3081 2.82083 17.5914 3.53752Z"></path>
-                                    </symbol>
-                                </IconSprite>
-                                <Icon name="edit" className="AssemblyIcon AssemblyIcon--medium" />
-                            </Link>
+                            {ownerSetId && (
+                                <Link to="/edit-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                                    <IconSprite>
+                                        <symbol id="edit" viewBox="0 0 24 24" >
+                                            <path d="M3.43865 17.9013C3.47528 17.7269 3.56185 17.567 3.68781 17.4411L15.5903 5.53862L18.4614 8.40973L6.55892 20.3122C6.43296 20.4381 6.27307 20.5247 6.09874 20.5613L4.10683 20.9798C3.45856 21.116 2.88398 20.5414 3.02017 19.8932L3.43865 17.9013Z"></path>
+                                            <path d="M17.5914 3.53752L16.6899 4.43901L19.561 7.31013L20.4625 6.40863C21.1792 5.69194 21.1792 4.52995 20.4625 3.81326L20.1867 3.53752C19.4701 2.82083 18.3081 2.82083 17.5914 3.53752Z"></path>
+                                        </symbol>
+                                    </IconSprite>
+                                    <Icon name="edit" className="AssemblyIcon AssemblyIcon--medium" />
+                                </Link>
+                            )}
                             <button onClick={toggleMenu}><MoreHoriz /></button>
                             {showMenu && (
                                 <div className="menu">
                                     <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Thêm vào thư mục</button>
-                                    <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
+                                    {ownerSetId && (
+                                        <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -672,7 +717,6 @@ const Flashcard = () => {
                                                         onChange={(e) => setEditedCardData({ ...editedCardData, back_text: e.target.value })}
                                                     />
                                                 </span>
-
                                                 <button onClick={() => handleSaveEdit(card.card_id)}><Done /></button>
                                                 <button onClick={() => setEditedCardIndex(null)}><Cancel /></button>
                                             </div>
@@ -680,8 +724,12 @@ const Flashcard = () => {
                                             // Hiển thị nội dung thông thường của thẻ
                                             <>
                                                 <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
-                                                <button onClick={() => handleEditCard(index)}><Edit /></button>
-                                                <button onClick={() => handleDeleteConfirmation(card.card_id)}><Delete /></button>
+                                                {ownerSetId && ( // Thêm điều kiện ownerSetId vào đây
+                                                    <>
+                                                        <button onClick={() => handleEditCard(index)}><Edit /></button>
+                                                        <button onClick={() => handleDeleteConfirmation(card.card_id)}><Delete /></button>
+                                                    </>
+                                                )}
                                             </>
                                         )}
                                     </li>
@@ -690,46 +738,52 @@ const Flashcard = () => {
                                 <p>Loading...</p>
                             )}
                             <div className="change-card-btn">
-                                {showLoadMoreButton ? (
-                                    <button onClick={handleLoadMore}>Xem thêm</button>
-                                ) : (
-                                    <button onClick={handleEditSet}>Chỉnh sửa</button>
-                                )}
+                                {ownerSetId && (
+                                    showLoadMoreButton ? (
+                                        <button onClick={handleLoadMore} > Xem thêm</button>
+                                    ) : (
+                                        <button onClick={handleEditSet}>Chỉnh sửa</button>
+                                    ))}
+
                             </div>
                         </ul>
                     </div>
                 </div>
 
                 {/* xóa set */}
-                {showDelSetComfirmation && (
-                    <div>
-                        <div className="overlay"></div>
-                        <div className="confirmation-box">
-                            <div className="message">Bạn có chắc chắn muốn xóa học phần này không?</div>
-                            <div className="button-container">
-                                <button onClick={handleConfirmDeleteSet}>Xác nhận</button>
-                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                {
+                    showDelSetComfirmation && (
+                        <div>
+                            <div className="overlay"></div>
+                            <div className="confirmation-box">
+                                <div className="message">Bạn có chắc chắn muốn xóa học phần này không?</div>
+                                <div className="button-container">
+                                    <button onClick={handleConfirmDeleteSet}>Xác nhận</button>
+                                    <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
                 {/* xóa thẻ */}
-                {showDelCardConfirmation && (
-                    <div>
-                        <div className="overlay"></div>
-                        <div className="confirmation-box">
-                            <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
-                            <div className="button-container">
-                                <button onClick={handleConfirmDelete}>Xác nhận</button>
-                                <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                {
+                    showDelCardConfirmation && (
+                        <div>
+                            <div className="overlay"></div>
+                            <div className="confirmation-box">
+                                <div className="message">Bạn có chắc chắn muốn xóa thẻ này không?</div>
+                                <div className="button-container">
+                                    <button onClick={handleConfirmDelete}>Xác nhận</button>
+                                    <button onClick={handleCancelDelete}>Hủy bỏ</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 
