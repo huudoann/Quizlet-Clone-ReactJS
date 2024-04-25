@@ -17,6 +17,7 @@ const SettingPage = () => {
   const [showChangePasswordSuccess, setShowChangePasswordSuccess] = useState(false);
   const username = localStorage.getItem("user_name");
   const user_id = localStorage.getItem("user_id");
+  const email = localStorage.getItem("email");
   const navigate = useNavigate();
 
   const handleDeleteAccount = async () => {
@@ -128,7 +129,7 @@ const SettingPage = () => {
               <span style={{ fontSize: "20px", fontWeight: "bold" }}>
                 Email
               </span>
-              <div>meoto142@gmail.com</div>
+              <div>{email}</div>
             </div>
             {/* <Button
               className="edit-email-button"

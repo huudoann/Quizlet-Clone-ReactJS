@@ -40,6 +40,7 @@ const LoginForm = ({ switchForm }) => {
       localStorage.setItem('token', token);
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('user_name', username);
+      localStorage.setItem('email', email);
       navigate('/lastest');
 
       return response.data;
