@@ -51,7 +51,6 @@ const Tests = () => {
     };
 
     useEffect(() => {
-
         const fetchData = async () => {
             try {
                 const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
@@ -178,14 +177,7 @@ const Tests = () => {
                 <div className="tests-form" key={index}>
                     <div className='defi-box'>
                         {showResults ? (
-                            <div className="answer-icon"
-                                style={{
-                                    border: '1px solid #ccc',
-                                    alignItems: 'center',
-                                    borderTopLeftRadius: '10px',
-                                    borderTopRightRadius: '10px',
-                                    backgroundColor: selectedAnswers[index] ? 'lightgreen' : 'lightcoral'
-                                }}>
+                            <div className="answer-icon">
                                 {selectedAnswers[index] ? (
                                     <p>Câu {index + 1}:</p>
                                 ) : (
