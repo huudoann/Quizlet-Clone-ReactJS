@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import "./SettingPage.scss";
+import toast, { Toaster } from "react-hot-toast";
 import { Button } from "@mui/material";
 
 const SettingPage = () => {
@@ -14,7 +15,8 @@ const SettingPage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
   const [showChangePasswordFail, setShowChangePasswordFail] = useState(false);
-  const [showChangePasswordSuccess, setShowChangePasswordSuccess] = useState(false);
+  const [showChangePasswordSuccess, setShowChangePasswordSuccess] =
+    useState(false);
   const username = localStorage.getItem("user_name");
   const user_id = localStorage.getItem("user_id");
   const email = localStorage.getItem("email");
@@ -26,11 +28,14 @@ const SettingPage = () => {
       throw new Error("Token không tồn tại trong localStorage");
     } else {
       try {
-        await axios.delete(`http://localhost:8080/api/user/delete-user/${user_id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.delete(
+          `http://localhost:8080/api/user/delete-user/${user_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         localStorage.clear();
         navigate("/");
         setShowDeleteAccount(false);
@@ -59,9 +64,12 @@ const SettingPage = () => {
           }
         );
         localStorage.setItem("user_name", newUsername);
-        window.location.reload();
+        toast.success("Đổi tên người dùng thành công");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } catch (error) {
-        alert("Lỗi khi đổi tên:", error.message);
+        toast.error("Lỗi khi đổi tên người dùng");
       }
       console.log(newUsername);
     }
@@ -73,7 +81,7 @@ const SettingPage = () => {
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmedPassword) {
-      alert("khong doi dc");
+      toast.error("Mật khẩu không khớp");
       return;
     }
     setShowChangePassword(false);
@@ -94,8 +102,9 @@ const SettingPage = () => {
           }
         );
         window.location.reload();
+        toast.success("Đổi mật khẩu thành công");
       } catch (error) {
-        alert("Lỗi khi đổi tên:", error.message);
+        toast.error("Lỗi khi đổi mật khẩu");
       }
       console.log(newUsername);
     }
@@ -103,6 +112,7 @@ const SettingPage = () => {
 
   return (
     <div className="setting-page">
+      <Toaster />
       <Header />
       <div className="setting-page-container">
         <span style={{ fontSize: "50px", fontWeight: "bold" }}>Cài đặt</span>
@@ -302,9 +312,7 @@ const SettingPage = () => {
                 onChange={(e) => setConfirmedPassword(e.target.value)}
               />
             </div>
-            {showChangePasswordFail && (
-              <span>Mật khẩu không khớp</span>
-            )}
+            {showChangePasswordFail}
             <div className="edit-password-button-container">
               <Button
                 onClick={() => setShowChangePassword(false)}
@@ -342,11 +350,13 @@ const SettingPage = () => {
             >
               Xóa tài khoản?
             </div>
-            <div style={{
-              marginTop: "40px",
-              paddingBottom: "20px",
-              borderBottom: "1px solid #303545",
-            }}>
+            <div
+              style={{
+                marginTop: "40px",
+                paddingBottom: "20px",
+                borderBottom: "1px solid #303545",
+              }}
+            >
               Hành động này sẽ xóa vĩnh viễn tài khoản của bạn và tất cả dữ liệu
               liên quan đến tài khoản Quizlet của bạn. Bạn không thể hoàn tác.
             </div>

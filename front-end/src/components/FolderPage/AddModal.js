@@ -6,6 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AddModal() {
   const [open, setOpen] = React.useState(false);
@@ -80,10 +81,12 @@ export default function AddModal() {
             },
           }
         );
-        alert("Thêm set thành công!");
-        window.location.reload();
+        toast.success("Thêm set thành công!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } catch (error) {
-        alert("Set đã tồn tại trong folder này!");
+        toast.error("Set đã tồn tại trong folder này!");
       }
     }
   };
@@ -101,6 +104,7 @@ export default function AddModal() {
 
   return (
     <React.Fragment>
+      <Toaster />
       <AddIcon
         style={{
           padding: "10px !important",
