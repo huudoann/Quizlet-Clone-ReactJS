@@ -301,7 +301,7 @@ const SettingPage = () => {
               />
               <input
                 type="password"
-                placeholder="Xác nhậm mật khẩu mới"
+                placeholder="Xác nhận mật khẩu mới"
                 style={{
                   fontSize: "20px",
                   marginTop: "20px",
