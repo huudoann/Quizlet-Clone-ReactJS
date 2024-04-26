@@ -11,6 +11,7 @@ import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { Input } from "@mui/base";
 import AddModal from "./AddModal";
 import { Button } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 const FolderPage = () => {
   const [setsInFolder, setSetsInFolder] = useState([]);
@@ -43,9 +44,12 @@ const FolderPage = () => {
           }
         );
         localStorage.setItem("folderTitle", newFolderTitle);
-        window.location.reload();
+        toast.success("Chỉnh sửa folder thành công");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } catch (error) {
-        alert("Lỗi khi chỉnh sửa folder:", error.message);
+        toast.error("Lỗi khi chỉnh sửa folder:", error.message);
       }
     }
   };
@@ -63,7 +67,7 @@ const FolderPage = () => {
         });
         navigate("/folders");
       } catch (error) {
-        alert("Lỗi khi xóa folder:", error.message);
+        toast.error("Lỗi khi xóa folder:", error.message);
       }
     }
   };
@@ -102,6 +106,7 @@ const FolderPage = () => {
 
   return (
     <div className="folder-page">
+      <Toaster />
       <Header />
       <div className="container">
         <div className="folder-page-header">

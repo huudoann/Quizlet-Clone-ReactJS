@@ -5,10 +5,10 @@ import Footer from '../Footer/Footer';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { endPoint } from '../../utils/api/endPoint';
-import { Request } from '../../utils/axios';
 import axios from 'axios';
 import SetItem from './SetItem';
+import FolderItem from './FolderItem';
+
 
 const HomePage = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -115,8 +115,9 @@ const HomePage = () => {
                             {sets && sets.map((set, index) => (
                                 <SetItem
                                     key={index}
-                                    set_id={set.set_id}
+                                    set_id={set.setId}
                                     title={set.title}
+                                    username={set.ownerName}
                                     user_id={set.user_id}
                                 />
                             ))}
@@ -125,23 +126,23 @@ const HomePage = () => {
                 </div>
             </div>
 
-            {/* <div className="search-results-container">
-                    <div className="search-results-page-container">
-                        <div className="search-results-page-content">
-                            <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách thư mục:</span>
-                            <div className="set-items">
-                                {folders && folders.map((folder, index) => (
-                                    <SetItem
-                                        key={index}
-                                        set_id={folder.set_id}
-                                        title={folder.title}
-                                        username={folder.user}
-                                    />
-                                ))}
-                            </div>
+            <div className="search-results-container">
+                <div className="search-results-page-container">
+                    <div className="search-results-page-content">
+                        <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách thư mục:</span>
+                        <div className="set-items">
+                            {folders && folders.map((folder, index) => (
+                                <FolderItem
+                                    key={index}
+                                    set_id={folder.folder_id}
+                                    title={folder.title}
+                                // username={folder.ownerName}
+                                />
+                            ))}
                         </div>
                     </div>
-                </div> */}
+                </div>
+            </div>
 
             {<Footer />}
         </div >

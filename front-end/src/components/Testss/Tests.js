@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Tests.scss';
-import { Check, Close } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Backdrop } from '@mui/material';
 import DropDownMenu from './DropDownMenu';
 import { useNavigate } from 'react-router-dom';

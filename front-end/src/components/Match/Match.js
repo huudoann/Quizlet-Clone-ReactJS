@@ -29,10 +29,8 @@ const MatchPage = () => {
         });
         const initialCards = [];
         const usedCardIds = new Set();
-        let loopCnt = 0;
 
-        while (initialCards.length < 6 && cards.length > 0 && loopCnt < 100) {
-          loopCnt++;
+        while (initialCards.length < 6 && cards.length > 0) {
           const randomIndex = Math.floor(Math.random() * cards.length);
           const randomCard = cards[randomIndex];
 
@@ -110,7 +108,7 @@ const MatchPage = () => {
             updatedSelectedCards[index] = null;
             return updatedSelectedCards;
           });
-        }, 500);
+        }, 100);
       } else {
         if (unmatchedPairs.length === 0) {
           setUnmatchedPairs(prevUnmatchedPairs => [...prevUnmatchedPairs, [firstCard.card_id, firstCard.text]]);
@@ -129,7 +127,7 @@ const MatchPage = () => {
               }
               return updatedUnmatchedIds;
             });
-          }, 500);
+          }, 100);
         }
 
         setUnmatchedIndices([selectedFirstIndex, index]);
@@ -144,10 +142,10 @@ const MatchPage = () => {
 
           setTimeout(() => {
             setUnmatchedIndices([]);
-          }, 500);
+          }, 100);
 
           setUnmatchedPairs([]);
-        }, 500);
+        }, 100);
       }
     }
   };
