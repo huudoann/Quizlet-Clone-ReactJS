@@ -40,26 +40,6 @@ const Sets = () => {
                     });
                     setSets(allSets.data);
                     setUserName(userName);
-                    // console.log(allSets);
-
-                    const setsWithTerms = await Promise.all(allSets.data.map(async (set) => {
-                        // console.log(set);
-                        try {
-                            const response = await Request.Server.get(endPoint.getAllCardsInSet(set.setId), {
-                                headers: {
-                                    'Authorization': `Bearer ${token}`
-                                }
-
-                            });
-                            // console.log("set_id", set.setId, response.totalElements);
-                            return { ...set, termCount: response.totalElements };
-                        } catch (error) {
-                            console.error('Lỗi khi lấy số terms cho set', set.setId, error.message, endPoint.getAllCardsInSet(set.setId));
-                            return { ...set, termCount: 0 }; // Trả về 0 nếu có lỗi
-                        }
-                    }));
-
-                    setSets(setsWithTerms);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
                 }

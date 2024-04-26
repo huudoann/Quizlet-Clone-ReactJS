@@ -82,6 +82,7 @@ const MatchPage = () => {
   };
 
   const handleCardClick = (index, type, card) => {
+    console.log(selectedCards)
     const selectedFirstIndex = selectedCards.findIndex(card => card === 'front_text' || card === 'back_text');
 
     if (selectedFirstIndex === -1) {
