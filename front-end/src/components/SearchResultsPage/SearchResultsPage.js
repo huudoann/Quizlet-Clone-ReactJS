@@ -6,8 +6,7 @@ import axios from "axios";
 
 const SearchResultsPage = () => {
   const [sets, setSets] = useState();
-
-  let filterTitle = localStorage.getItem('filterTitle');
+  const filterTitle = localStorage.getItem('filterTitle');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +23,7 @@ const SearchResultsPage = () => {
             }
           });
           setSets(response.data);
+          console.log(response.data);
         } catch (error) {
           console.error('Lỗi khi lấy danh sách các set:', error.message);
         }
@@ -44,7 +44,7 @@ const SearchResultsPage = () => {
           <div className="set-items">
             {sets && sets.map((set) => (
               <SetItem
-                set_id={set.set_id}
+                set_id={set.setId}
                 title={set.title}
                 rating={set.rating}
                 username={set.user}

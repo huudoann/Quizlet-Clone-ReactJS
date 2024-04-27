@@ -36,7 +36,7 @@ const SetItem = (item) => {
 
   const handleNavigate = () => {
     localStorage.setItem('set_id', item.set_id);
-    localStorage.setItem('flashcardTitle', item.title);  
+    localStorage.setItem('flashcardTitle', item.title);
     navigate('/flashcard');
   }
 
@@ -45,7 +45,7 @@ const SetItem = (item) => {
       <div className="set-item-content">
         <span className="set-item-title">{item.title}</span>
         <div className="set-item-descriptions">
-          <div id="rating">{rating} ⭐</div>
+          <div id="rating">{rating.toFixed(1)} ⭐</div>
         </div>
       </div>
 
