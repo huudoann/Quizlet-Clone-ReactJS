@@ -45,7 +45,7 @@ const SetItem = (item) => {
       <div className="set-item-content">
         <span className="set-item-title">{item.title}</span>
         <div className="set-item-descriptions">
-          <div id="rating">{rating.toFixed(1)} ⭐</div>
+          <div id="rating">{Math.round(rating * 100) / 100} ⭐</div>
         </div>
       </div>
 
