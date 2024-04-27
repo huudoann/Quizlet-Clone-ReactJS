@@ -14,9 +14,6 @@ const SettingPage = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
-  const [showChangePasswordFail, setShowChangePasswordFail] = useState(false);
-  const [showChangePasswordSuccess, setShowChangePasswordSuccess] =
-    useState(false);
   const username = localStorage.getItem("user_name");
   const user_id = localStorage.getItem("user_id");
   const email = localStorage.getItem("email");
@@ -40,7 +37,7 @@ const SettingPage = () => {
         navigate("/");
         setShowDeleteAccount(false);
       } catch (error) {
-        alert("Lỗi khi xóa tài khoản:", error.message);
+        toast.error("Lỗi khi xóa tài khoản:", error.message);
       }
     }
   };
@@ -312,7 +309,6 @@ const SettingPage = () => {
                 onChange={(e) => setConfirmedPassword(e.target.value)}
               />
             </div>
-            {showChangePasswordFail}
             <div className="edit-password-button-container">
               <Button
                 onClick={() => setShowChangePassword(false)}
