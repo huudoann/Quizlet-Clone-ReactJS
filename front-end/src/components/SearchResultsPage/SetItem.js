@@ -1,10 +1,38 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./SetItem.scss";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 const SetItem = (item) => {
   console.log(item)
+  const [rating, setRating] = useState(null);
   const navigate = useNavigate();
+  const set_id = item.set_id;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token không tồn tại trong localStorage');
+      } else {
+        try {
+
+          const responseReview = await axios.get(`http://localhost:8080/api/review/sets/${set_id}/reviews`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          // console.log("rv la", responseReview.data);
+          setRating(responseReview.data);
+        } catch (error) {
+          console.error('Lỗi khi lấy danh sách các rv:', error.message);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleNavigate = () => {
     localStorage.setItem('set_id', item.set_id);
@@ -17,7 +45,7 @@ const SetItem = (item) => {
       <div className="set-item-content">
         <span className="set-item-title">{item.title}</span>
         <div className="set-item-descriptions">
-          <div id="rating">5⭐ {item.review}</div>
+          <div id="rating">{rating} ⭐</div>
         </div>
       </div>
 
@@ -25,7 +53,7 @@ const SetItem = (item) => {
         <div className="user">
           <span className="user-name">{item.user}</span>
         </div>
-        <button className="preview-button" onClick={() => console.log("clicked")}>Xem trước</button>
+        <button className="preview-button" onClick={() => console.log("clicked")}>Xem</button>
       </div>
     </div>
   );
