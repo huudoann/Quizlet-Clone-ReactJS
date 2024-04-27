@@ -9,29 +9,21 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CreateSet = () => {
-    // thay navbar
-    // sửi lại UI (navbar, nút tạo, thêm private public, các thuật ngữ cách nhau ra)
-    // logic tạo
-    const [isPrivateSelected, setIsPrivateSelected] = useState(false); // State cho nút private
+    
+    const [isPrivateSelected, setIsPrivateSelected] = useState(true); // State cho nút private
     const [isPublicSelected, setIsPublicSelected] = useState(false); // State cho nút public
     const [inputElements, setInputElements] = useState([]);
     const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [is_public, setPublic] = useState('');
-    const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+    const [isCreateButtonVisible, setIsCreateButtonVisible] = useState(false);
     const navigate = useNavigate()
 
     //post dữ liệu về BE
     const handleCreateButtonClick = async () => {
         const isPublic = is_public;
         const user_id = localStorage.getItem("user_id");
-        const isValid = validateFields(); // Kiểm tra xem các trường có hợp lệ không
-
-        if (!isValid) {
-            setErrorDialogOpen(true); // Mở dialog thông báo lỗi nếu các trường không hợp lệ
-            return; // Dừng việc tiếp tục xử lý
-        }
 
         const setData = {
             user_id,
@@ -123,7 +115,9 @@ const CreateSet = () => {
 
     useEffect(() => {
         setSttCount(inputElements.length + 1);
-    }, [inputElements]);
+        const isValid = validateFields(); // Kiểm tra xem các trường có hợp lệ không
+        setIsCreateButtonVisible(isValid); // Cập nhật trạng thái hiển thị nút tạo
+    }, [inputElements, title, description]);
 
     const addInputElement = () => {
         setInputElements(prevInputs => [...prevInputs, { id: Date.now(), content1: '', content2: '', stt: sttCount }]);
@@ -148,25 +142,6 @@ const CreateSet = () => {
         });
     };
 
-    // Xử lý khi đóng dialog thông báo lỗi
-    const handleDialogClose = () => {
-        setErrorDialogOpen(false); // Đóng dialog
-    };
-
-    const ErrorDialog = ({ open, onClose }) => (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Thông báo lỗi</DialogTitle>
-            <DialogContent>
-                <div>Vui lòng điền đầy đủ thông tin</div>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={onClose} color="primary">
-                    Đóng
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
-
     return (
         <div className='create-set'>
             {<Header />}
@@ -175,9 +150,11 @@ const CreateSet = () => {
 
                     <span className='create-a-new-course'>Tạo học phần mới</span>
                     <div>
-                        <Button variant="contained" className='bt-create' onClick={handleCreateButtonClick}>
-                            Tạo
-                        </Button>
+                    {isCreateButtonVisible && (
+                            <Button variant="contained" className='bt-create' onClick={handleCreateButtonClick}>
+                                Tạo
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <Box
@@ -271,7 +248,6 @@ const CreateSet = () => {
                 >
                     + Thêm thẻ
                 </Button>
-                <ErrorDialog open={errorDialogOpen} onClose={handleDialogClose} />
             </div>
         </div>
     );
