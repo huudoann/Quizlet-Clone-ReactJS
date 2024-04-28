@@ -208,6 +208,7 @@ const SettingPage = () => {
                 Hủy bỏ
               </Button>
               <Button
+                disabled={newUsername === ""}
                 onClick={handleChangeUsername}
                 style={{
                   backgroundColor: "#303545",
@@ -322,6 +323,7 @@ const SettingPage = () => {
                 Hủy bỏ
               </Button>
               <Button
+                disabled={newPassword === "" || confirmedPassword === ""}
                 onClick={handleChangePassword}
                 style={{
                   backgroundColor: "#303545",
