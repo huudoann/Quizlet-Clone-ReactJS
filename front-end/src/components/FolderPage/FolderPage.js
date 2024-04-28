@@ -226,6 +226,7 @@ const FolderPage = () => {
                 Hủy bỏ
               </Button>
               <Button
+                disabled={!newFolderTitle}
                 onClick={handleEditFolder}
                 style={{
                   backgroundColor: "#303545",
