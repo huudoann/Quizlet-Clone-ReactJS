@@ -5,6 +5,7 @@ import DropDownMenu from './DropDownMenu';
 import { useNavigate } from 'react-router-dom';
 import { endPoint } from '../../utils/api/endPoint';
 import { Request } from '../../utils/axios';
+import { Button } from '@mui/material';
 
 const MatchPage = () => {
   const [matchedIds, setMatchedIds] = useState([]);
@@ -12,6 +13,8 @@ const MatchPage = () => {
   const [flashcards, setFlashcards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(Array(6).fill(null));
   const [unmatchedIndices, setUnmatchedIndices] = useState([]);
+  const [elapsedTime, setElapsedTime] = useState(0); // Thời gian đã trôi qua
+  const [timerRunning, setTimerRunning] = useState(true); // Trạng thái của đồng hồ
   const navigate = useNavigate();
   const set_id = localStorage.getItem('set_id');
 
@@ -30,7 +33,9 @@ const MatchPage = () => {
         const initialCards = [];
         const usedCardIds = new Set();
 
-        while (initialCards.length < 6 && cards.length > 0) {
+        let loopCount1 = 0;
+        while (initialCards.length < 6 && cards.length > 0 && loopCount1 < 100) {
+          loopCount1++;
           const randomIndex = Math.floor(Math.random() * cards.length);
           const randomCard = cards[randomIndex];
 
@@ -62,9 +67,9 @@ const MatchPage = () => {
 
         processedCards = processedCards.slice(0, 12);
 
-        // console.log("processed", processedCards);
         setFlashcards(processedCards);
         console.log("Lấy dữ liệu thành công");
+        setTimerRunning(true)
       } catch (error) {
         console.error('Lỗi lấy cards:', error);
       }
@@ -75,12 +80,35 @@ const MatchPage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    let check = matchedIds.length === flashcards.length;
+    console.log(timerRunning, check);
+    let intervalId;
+    if (check === true && timerRunning) {
+      setTimerRunning(false);
+      return
+    }
+    if (timerRunning) {
+      intervalId = setInterval(() => {
+        setElapsedTime(prevElapsedTime => prevElapsedTime + 1);
+      }, 1000);
+    }
+
+
+    return () => clearInterval(intervalId);
+  }, [matchedIds, flashcards, timerRunning]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
   const handleCloseButtonClick = () => {
     navigate(`/flashcard`);
   };
 
   const handleCardClick = (index, type, card) => {
-    console.log(selectedCards)
     const selectedFirstIndex = selectedCards.findIndex(card => card === 'front_text' || card === 'back_text');
 
     if (selectedFirstIndex === -1) {
@@ -154,6 +182,7 @@ const MatchPage = () => {
     <div className="match-page">
       <div className="navigation">
         <DropDownMenu />
+        {timerRunning && <div className="timer">{formatTime(elapsedTime)}</div>}
         <button className="close-button" onClick={handleCloseButtonClick}><Close /></button>
       </div>
 
@@ -179,6 +208,13 @@ const MatchPage = () => {
           );
         })}
       </div>
+
+      {matchedIds.length === flashcards.length && !timerRunning && (
+        <div className="summary">
+          <p>Thời gian hoàn thành: {formatTime(elapsedTime)}</p>
+          <Button onClick={() => window.location.reload()} style={{ backgroundColor: 'blue', color: '#fff', padding: '1rem', margin: 'auto', display: 'block' }}>Chơi lại</Button>
+        </div>
+      )}
     </div>
   );
 };

@@ -10,18 +10,19 @@ const Learn = () => {
   const [flashcards, setFlashcards] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isCorrect, setIsCorrect] = useState(null);
-  const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [formHeight, setFormHeight] = useState('70vh');
   const [showNextMessage, setShowNextMessage] = useState(false);
   const [hintShown, setHintShown] = useState(false);
+  const [disableKeyPress, setDisableKeyPress] = useState(false);
+  const [donKnowPressed, setDonKnowPressed] = useState(false);
+  const [numCorrect, setNumCorrect] = useState(0);
   const navigate = useNavigate();
   const refInput = useRef(null);
   const set_id = localStorage.getItem('set_id');
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const flashcardsData = await Request.Server.get(endPoint.getAllCardsInSet(set_id));
@@ -29,7 +30,6 @@ const Learn = () => {
         if (data && data.length > 0) {
           const shuffledFlashcards = shuffleArray(data).slice(0, 7);
           setFlashcards(shuffledFlashcards);
-          console.log("Lấy dữ liệu thành công", data)
         }
       } catch (error) {
         console.error('Lỗi lấy cards:', error);
@@ -37,7 +37,6 @@ const Learn = () => {
     };
 
     fetchData();
-
   }, [set_id]);
 
   useEffect(() => {
@@ -50,13 +49,16 @@ const Learn = () => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (showNextMessage) {
+      if (event.key === 'Enter' && !disableKeyPress && isCorrect !== null && document.activeElement.tagName !== 'INPUT') {
         setCurrentIndex(prevIndex => prevIndex + 1);
         setUserInput('');
         setIsCorrect(null);
         setInputDisabled(false);
         setFormHeight('70vh');
         setShowNextMessage(false);
+        setDisableKeyPress(true);
+        setDonKnowPressed(false);
+        event.preventDefault();
       }
     };
 
@@ -65,7 +67,14 @@ const Learn = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [showNextMessage]);
+  }, [disableKeyPress, isCorrect]);
+
+  const handleSkip = () => {
+    setUserInput(' ');
+    setDisableKeyPress(false);
+    handleSubmit();
+    setDonKnowPressed(true);
+  };
 
   const shuffleArray = (array) => {
     const newArray = [...array];
@@ -84,16 +93,14 @@ const Learn = () => {
     const newValue = e.target.value;
     setUserInput(newValue);
     setIsCorrect(null);
-  };
-  const handleSkip = () => {
-    handleSubmit();
+    setDisableKeyPress(false);
   };
 
   const handleSubmit = () => {
     if (userInput.trim().toLowerCase() === flashcards[currentIndex].front_text.trim().toLowerCase()) {
       setIsCorrect(true);
+      setNumCorrect(prevNumCorrect => prevNumCorrect + 1);
       setTimeout(() => {
-        // Chuyển sang thẻ kế tiếp sau 2 giây
         setCurrentIndex(prevIndex => prevIndex + 1);
         setUserInput('');
         setIsCorrect(null);
@@ -113,6 +120,7 @@ const Learn = () => {
   const handleShowHint = () => {
     setHintShown(true);
   };
+
 
   return (
     <div className="learn-page">
@@ -159,7 +167,7 @@ const Learn = () => {
               )}
               {isCorrect === false && (
                 <div className="answer-box">
-                  <p>Correct Answer:</p>
+                  <p>Câu trả lời đúng:</p>
                   <input
                     type="text"
                     value={flashcards[currentIndex].front_text}
@@ -170,27 +178,32 @@ const Learn = () => {
               )}
               <div className='control-button'>
                 <button className='btn1' onClick={handleSkip}>Don't know?</button>
-                <button onClick={handleSubmit}>Answer</button>
+                <button
+                  className={!userInput.trim() ? 'answer-button disabled' : 'answer-button'}
+                  disabled={!userInput.trim()}
+                  onClick={handleSubmit}
+                >
+                  Answer
+                </button>
               </div>
             </div>
           </>
         )}
         {showNextMessage && (
           <div className="next-message">
-            <p>Press any key to move to the next question</p>
+            <p>Nhấn Enter để chuyển sang câu kế tiếp!</p>
           </div>
         )}
         {!flashcards[currentIndex] && (
           <div className="summary">
-            <p>You've completed all cards!</p>
-            <p>Number of correct cards: {flashcards.filter(card => card.isCorrect).length}</p>
-            <button onClick={() => window.location.reload()}>Try Again</button>
+            <p>Bạn đã hoàn thành lần học này!</p>
+            <p>Số câu trả lời đúng: {numCorrect} / {flashcards.length}</p>
+            <button onClick={() => window.location.reload()}>Thử lại</button>
           </div>
         )}
       </div>
     </div>
   );
 }
-
 
 export default Learn;

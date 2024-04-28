@@ -24,6 +24,18 @@ const SignUpForm = ({ switchForm }) => {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{6,}$/;
+
+        if (!emailRegex.test(email.trim())) {
+            setError("Email không hợp lệ! Vui lòng nhập đúng định dạng email.");
+            return;
+        }
+        else if (!passwordRegex.test(password.trim())) {
+            setError("Mật khẩu cần phải có ít nhất 6 ký tự, trong đó có ít nhất 1 chữ hoa, 1 chữ thường và 1 số!");
+            return;
+        }
+
         const userData = {
             username: username,
             email: email,

@@ -33,9 +33,12 @@ const SetItem = (item) => {
   }, []);
 
 
-  const handleNavigate = () => {
+  const handleNavigate = async () => {
+    const userInfo = await axios.get(`http://localhost:8080/api/user/username/${item.username}`);
+    localStorage.setItem('ownerId', userInfo.data.user_id)
     localStorage.setItem('set_id', item.set_id);
     localStorage.setItem('flashcardTitle', item.title);
+    // localStorage.setItem('ownerId', item.userId);
     navigate('/flashcard');
   }
 

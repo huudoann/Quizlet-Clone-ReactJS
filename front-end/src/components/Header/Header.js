@@ -150,6 +150,7 @@ const Header = () => {
         localStorage.removeItem('public');
         localStorage.removeItem('review_id');
         localStorage.removeItem('filterTitle');
+        localStorage.removeItem('ownerId')
     }
 
 

@@ -6,8 +6,6 @@ import axios from 'axios';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Input } from '@mui/material';
-import { endPoint } from '../../../utils/api/endPoint';
-import { Request } from '../../../utils/axios';
 
 const Sets = () => {
     const [sets, setSets] = useState([]);
@@ -15,7 +13,6 @@ const Sets = () => {
     const [username, setUserName] = useState();
     const location = useLocation();
     const navigate = useNavigate();
-
     const [activeLink, setActiveLink] = useState('');
 
     useEffect(() => {
@@ -39,6 +36,7 @@ const Sets = () => {
                         }
                     });
                     setSets(allSets.data);
+                    console.log(allSets);
                     setUserName(userName);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
@@ -56,6 +54,18 @@ const Sets = () => {
     };
 
     const setsToDisplay = filteredSets.length > 0 ? filteredSets : sets;
+
+    const handleClickSetItem = async (set) => {
+
+        const userInfo = await axios.get(`http://localhost:8080/api/user/username/${set.ownerName}`);
+        localStorage.setItem('ownerId', userInfo.data.user_id)
+        localStorage.setItem('flashcardTitle', set.title);
+        localStorage.setItem('set_id', set.setId);
+        localStorage.setItem('description', set.description)
+        localStorage.setItem('public', set.public);
+        navigate('/flashcard');
+
+    }
 
     return (
         <div className="sets">
@@ -83,11 +93,7 @@ const Sets = () => {
                                 key={set.setId}
                                 className="set-item-button"
                                 onClick={() => {
-                                    localStorage.setItem('flashcardTitle', set.title);
-                                    localStorage.setItem('set_id', set.setId);
-                                    localStorage.setItem('description', set.description)
-                                    localStorage.setItem('public', set.public);
-                                    navigate('/flashcard');
+                                    handleClickSetItem(set);
                                 }}
                                 style={{ textTransform: 'none' }}
                             >

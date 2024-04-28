@@ -81,6 +81,13 @@ const SettingPage = () => {
       toast.error("Mật khẩu không khớp");
       return;
     }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(newPassword.trim())) {
+      toast.error("Mật khẩu cần phải có ít nhất 6 ký tự, trong đó có ít nhất 1 chữ hoa, 1 chữ thường và 1 số!");
+      return;
+    }
+
     setShowChangePassword(false);
     let token = localStorage.getItem("token");
     if (!token) {

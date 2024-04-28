@@ -19,7 +19,7 @@ const HomePage = () => {
         "https://assets.quizlet.com/_next/static/media/test.a8904e86.svg"
     ];
     const [sets, setSets] = useState([]);
-    const [folders, setFolders] = useState([]);
+    // const [folders, setFolders] = useState([]);
 
     const texts = [
         ["Tìm kiếm mạnh mẽ hơn", "Tìm thẻ ghi nhớ bạn cần để học về bất kì chủ đề nào"],
@@ -40,19 +40,19 @@ const HomePage = () => {
                         }
                     });
 
-                    const responseFolder = await axios.get(`http://localhost:8080/api/folder/get-public-folders`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
+                    // const responseFolder = await axios.get(`http://localhost:8080/api/folder/get-public-folders`, {
+                    //     headers: {
+                    //         'Authorization': `Bearer ${token}`
+                    //     }
+                    // });
 
                     // Lấy 10 phần tử ngẫu nhiên từ mảng sets
                     const shuffledSets = responseSet.data.sort(() => Math.random() - 0.5).slice(0, 9);
-                    const shuffledFolders = responseFolder.data.sort(() => Math.random() - 0.5).slice(0, 9);
+                    // const shuffledFolders = responseFolder.data.sort(() => Math.random() - 0.5).slice(0, 9);
 
                     setSets(shuffledSets);
-                    setFolders(shuffledFolders)
-                    console.log(responseSet, responseFolder);
+                    // setFolders(shuffledFolders)
+                    // console.log(responseSet, responseFolder);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
                 }
@@ -126,7 +126,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <div className="search-results-container">
+            {/* <div className="search-results-container">
                 <div className="search-results-page-container">
                     <div className="search-results-page-content">
                         <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách thư mục:</span>
@@ -142,7 +142,7 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {<Footer />}
         </div >

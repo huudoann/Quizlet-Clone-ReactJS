@@ -36,7 +36,6 @@ const Flashcard = () => {
     const [showDelSetComfirmation, setShowDelSetConfirmation] = useState(false);
     const [cardIdToDelete, setCardIdToDelete] = useState(null);
     const [setIdToDelete, setSetIdToDelete] = useState(null);
-    const set_id = localStorage.getItem('set_id');
     const [editedCardIndex, setEditedCardIndex] = useState(null);
     const [editedCardData, setEditedCardData] = useState({
         front_text: '',
@@ -46,47 +45,11 @@ const Flashcard = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
     const [userReviewed, setUserReviewed] = useState(0);
-    const [ownerSetId, setOwnerSetId] = useState(false);
     const flashcardContainerRef = useRef(null);
-
-    //lấy userId
-    const getOwnerSetIdInCurrentSet = async () => {
-
-        try {
-            let token = localStorage.getItem('token');
-            // Kiểm tra xem token có tồn tại không
-            if (!token) {
-                window.location.href = "/login";
-                return null;
-            }
-            const set_id = localStorage.getItem('set_id');
-            if (!set_id) {
-                console.error('Không tìm thấy set_id');
-                return;
-            }
-
-            const userId = localStorage.getItem('user_id');
-
-            let responseUser = await axios.get(`http://localhost:8080/api/set/get-all-sets`);
-            let responseUserId = 0;
-
-            responseUser.data.forEach(item => {
-                if (item.set_id === set_id) {
-                    responseUserId = item.user_id;
-                }
-            });
-
-            // console.log("user_id", responseUserId, userId);
-
-            // Kiểm tra xem người dùng đã đánh giá trước đó chưa
-            if (userId === responseUserId) {
-                setOwnerSetId(true)
-            }
-            console.log(ownerSetId);
-        } catch (error) {
-            console.error('Lỗi khi lấy ownerId:', error.message);
-        }
-    }
+    const set_id = localStorage.getItem('set_id');
+    const ownerId = localStorage.getItem('ownerId');
+    const user_id = localStorage.getItem('user_id');
+    const isOwner = ownerId === user_id;
 
     const shuffleArray = (array) => {
         if (!Array.isArray(array)) {
@@ -117,7 +80,7 @@ const Flashcard = () => {
             const flashcardsArrayFull = Object.values(flashcardsDataFull.content);
             setFlashcardsFull(flashcardsArrayFull);
             console.log(flashcardsData);
-            console.log(flashcardsDataFull);
+            // console.log(flashcardsDataFull);
             const title = localStorage.getItem('flashcardTitle');
             setFlashcardTitle(title);
         } catch (error) {
@@ -126,7 +89,6 @@ const Flashcard = () => {
     };
 
     useEffect(() => {
-        getOwnerSetIdInCurrentSet();
         fetchData();
         setShuffledFlashcards(shuffleArray(flashcardsFull));
     }, []);
@@ -337,8 +299,6 @@ const Flashcard = () => {
             star.style.color = star.classList.contains('filled') ? 'yellow' : '#ccc';
         });
     }
-
-    const user_id = localStorage.getItem('user_id');
 
     useEffect(() => {
         handleGetUserReview()
@@ -672,7 +632,7 @@ const Flashcard = () => {
                         <p>{creator.name}</p>
 
                         <div className="menu-container">
-                            {ownerSetId && (
+                            {isOwner && (
                                 <Link to="/edit-set" style={{ color: 'inherit', textDecoration: 'inherit' }}>
                                     <IconSprite>
                                         <symbol id="edit" viewBox="0 0 24 24" >
@@ -687,7 +647,7 @@ const Flashcard = () => {
                             {showMenu && (
                                 <div className="menu">
                                     <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Thêm vào thư mục</button>
-                                    {ownerSetId && (
+                                    {isOwner && (
                                         <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
                                     )}
                                 </div>
@@ -724,7 +684,7 @@ const Flashcard = () => {
                                             // Hiển thị nội dung thông thường của thẻ
                                             <>
                                                 <strong>{card.front_text}</strong>   <span>{card.back_text}</span>
-                                                {ownerSetId && ( // Thêm điều kiện ownerSetId vào đây
+                                                {isOwner && ( // Thêm điều kiện isOwner vào đây
                                                     <>
                                                         <button onClick={() => handleEditCard(index)}><Edit /></button>
                                                         <button onClick={() => handleDeleteConfirmation(card.card_id)}><Delete /></button>
@@ -738,12 +698,12 @@ const Flashcard = () => {
                                 <p>Loading...</p>
                             )}
                             <div className="change-card-btn">
-                                {ownerSetId && (
-                                    showLoadMoreButton ? (
-                                        <button onClick={handleLoadMore} > Xem thêm</button>
-                                    ) : (
-                                        <button onClick={handleEditSet}>Chỉnh sửa</button>
-                                    ))}
+
+                                {showLoadMoreButton ? (
+                                    <button onClick={handleLoadMore}>Xem thêm</button>
+                                ) : (
+                                    isOwner && <button onClick={handleEditSet}>Chỉnh sửa</button>
+                                )}
 
                             </div>
                         </ul>

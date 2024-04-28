@@ -164,6 +164,15 @@
     }
   }
 
+  .answer-button.disabled {
+    background-color: #cccccc;
+    cursor: auto;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+
   .summary button {
     margin: 0rem 1rem 0 0;
     padding: .5rem 1rem;
