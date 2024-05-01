@@ -470,11 +470,14 @@ const Flashcard = () => {
         }
     };
 
+    const handleLoadMoreAndNextCard = () => {
+        handleLoadMore();
+        handleNextCard();
+    };
+
     const handleEditSet = () => {
         navigate('/edit-set');
     }
-
-
 
     return (
         <div>
@@ -607,7 +610,10 @@ const Flashcard = () => {
 
                                 <span>{`${currentCardIndex + 1}/${flashcardsFull.length}`}</span>
 
-                                <Button className='slider-button' onClick={handleNextCard} disabled={currentCardIndex === flashcardsFull.length - 1}>
+                                <Button className='slider-button'
+                                    onClick={currentCardIndex % 30 === 27 ? handleLoadMoreAndNextCard : handleNextCard}
+                                    disabled={currentCardIndex === flashcardsFull.length - 1}
+                                >
                                     <IconSprite >
                                         <symbol id="arrow-right" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M4.00098 12.9963H17.001L11.4344 18.894C10.9333 19.5095 10.8502 20.1887 11.318 20.6665C11.7703 21.1285 12.5009 21.106 12.9531 20.644L20.6572 12.8237C21.1095 12.3618 21.1095 11.6155 20.6572 11.1536L12.9647 3.34999C12.5125 2.88802 11.7894 2.89278 11.3071 3.32361C10.8091 3.76851 10.9923 4.56372 11.4305 5.06982L17.001 10.9955L4.00098 10.9955C3.36316 10.9955 3.00098 11.3519 3.00098 12.0034C3.00098 12.6549 3.36316 12.9963 4.00098 12.9963Z"></path>
