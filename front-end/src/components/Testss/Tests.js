@@ -8,7 +8,7 @@ import { endPoint } from '../../utils/api/endPoint';
 import { Request } from '../../utils/axios';
 
 const Tests = () => {
-    const [elapsedTime, setElapsedTime] = useState(3600);
+    const [elapsedTime, setElapsedTime] = useState(1200);
     const [flashcards, setFlashcards] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState([]);
     const [answers, setAnswers] = useState([]);
@@ -95,7 +95,12 @@ const Tests = () => {
         const correctAnswerIndex = Math.floor(Math.random() * 4);
         const correctAnswer = flashcard.front_text;
         const randomAnswers = flashcards.map(flashcard => flashcard.front_text).filter(text => text !== correctAnswer);
-        const shuffledAnswers = shuffleArray(randomAnswers).slice(0, 3);
+        const shuffledAnswers = shuffleArray(randomAnswers);
+        // Add fake answers if needed to ensure there are at least 4 answers
+        const fakeAnswersCount = 4 - shuffledAnswers.length;
+        for (let i = 0; i < fakeAnswersCount; i++) {
+            shuffledAnswers.push(`Fake Answer ${i + 1}`);
+        }
         shuffledAnswers.splice(correctAnswerIndex, 0, correctAnswer);
         setAnswers(prevAnswers => {
             const updatedAnswers = [...prevAnswers];
