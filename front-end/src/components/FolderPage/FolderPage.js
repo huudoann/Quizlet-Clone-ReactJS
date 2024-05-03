@@ -101,9 +101,9 @@ const FolderPage = () => {
               },
             }
           );
-          setSetsInFolder(response.data);
+          setSetsInFolder(response.data.content);
           setTotalPages(response.data.totalPages);
-          console.log(totalPages);
+          console.log("totalPage:" + totalPages);
         } catch (error) {
           console.error("Lỗi khi lấy danh sách các set:", error.message);
         }
@@ -251,11 +251,11 @@ const FolderPage = () => {
           </div>
         </div>
       )}
-      {/* <Pagination className="pagination"
+      <Pagination className="pagination"
         count={totalPages}
         color="primary"
         onChange={handleChangePage}
-      /> */}
+      />
     </div>
   );
 };
