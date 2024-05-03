@@ -189,13 +189,16 @@ const Flashcard = () => {
             const userRating = {
                 user_id: userId,
                 set_id: set_id,
-                totalStars: selectedStars, // Thay rating thành selectedStars
+                totalStars: selectedStars,
             }
 
             let responseUser = await axios.get(`http://localhost:8080/api/set/get-all-sets`);
             let responseUserId = 0;
 
-            responseUser.data.forEach(item => {
+            // console.log(responseUser);
+
+
+            responseUser.data.content.forEach(item => {
                 if (item.set_id == set_id) {
                     responseUserId = item.user_id;
                 }
@@ -203,14 +206,14 @@ const Flashcard = () => {
 
             });
 
-            console.log("user_id", responseUserId, userId);
+            // console.log("user_id", responseUserId, userId);
 
 
             // Kiểm tra xem người dùng đã đánh giá trước đó chưa
             if (userId == responseUserId) {
                 console.log("K dgia dc");
                 return toast.error('Không thể tự đánh giá học phần!', {
-                    position: "bottom-center"
+                    position: "top-center"
                 })
             }
             else if (userReviewed > 0) {
@@ -225,7 +228,7 @@ const Flashcard = () => {
                 fetchReviewing();
                 setOpenDialog(false);
                 return toast.success('Sửa đánh giá thành công!', {
-                    position: "bottom-center"
+                    position: "top-center"
                 })
             } else {
                 // Nếu chưa đánh giá, thực hiện yêu cầu tạo mới đánh giá
@@ -236,7 +239,7 @@ const Flashcard = () => {
                 handleGetUserReview();
                 setOpenDialog(false);
                 toast.success('Gửi đánh giá thành công!', {
-                    position: "bottom-center"
+                    position: "top-center"
                 })
             }
 
@@ -478,10 +481,6 @@ const Flashcard = () => {
 
     const handleEditSet = () => {
         navigate('/edit-set');
-    }
-
-    const handleAddToFolder = () => {
-        AddModal();
     }
 
     return (
