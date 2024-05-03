@@ -42,9 +42,10 @@ export default function AddModal() {
       }
     };
 
-    fetchData();
-    console.log("data:" + sets);
-  }, []);
+    if (open) {
+      fetchData();
+    }
+  }, [open]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
