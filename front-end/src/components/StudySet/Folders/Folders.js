@@ -5,13 +5,16 @@ import Header from "../../Header/Header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
-import { Button, Input } from "@mui/material";
+import { Button, Input, Pagination } from "@mui/material";
 
 const Folders = () => {
     const location = useLocation()
     const [folders, setFolders] = useState([]);
+    const [filteredFolders, setFilteredFolders] = useState([]);
     const [activeLink, setActiveLink] = useState('');
     const [username, setUserName] = useState();
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     const navigate = useNavigate()
 
@@ -37,7 +40,7 @@ const Folders = () => {
             }
 
             try {
-                const response = await axios.get(`http://localhost:8080/api/folder/${user_id}/folders`, {
+                const response = await axios.get(`http://localhost:8080/api/folder/${user_id}/folders?page=${page}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -45,13 +48,14 @@ const Folders = () => {
                 console.log("Lay folders thanh cong", response.data);
                 setFolders(response.data);
                 setUserName(userName);
+                setTotalPages(response.data.totalPages);
             } catch (error) {
                 console.log("Loi khi lay folders");
             }
         };
 
         fetchFolderData();
-    }, [])
+    }, [page])
 
     useEffect(() => {
         setActiveLink(location.pathname);
@@ -62,6 +66,20 @@ const Folders = () => {
         localStorage.setItem('folderTitle', folder.title);
         navigate(`/folder-page`);
     }
+
+    const handleSearch = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        const filtered = folders.filter(folder => folder.title.toLowerCase().includes(searchTerm));
+        setFilteredFolders(filtered);
+    };
+
+    const handleChangePage = (event, value) => {
+        console.log(value);
+        setPage(value - 1);
+    }
+
+    const foldersToDisplay = filteredFolders.length > 0 ? filteredFolders : folders;
+
 
     return (
         <div className="folders">
@@ -77,22 +95,36 @@ const Folders = () => {
                     <NavLink to={`/folders`} className="folder" activeclassname="active" style={{ textDecoration: 'none', color: 'inherit', marginRight: '0.5rem' }}><Button style={{ color: 'white' }}>Thư mục</Button></NavLink>
                 </div>
                 <div className='search-term'>
-                    <Input type="text" placeholder="Tìm kiếm thư mục" style={{ width: '100%' }} />
+                    <Input type="text" placeholder="Tìm kiếm thư mục" style={{ width: '100%' }} onChange={handleSearch} />
                     <div className='icon-search'>
                         <FontAwesomeIcon icon={faSearch} />
                     </div>
                 </div>
 
                 <div className="folders-list">
-                    {folders.length > 0 ? (
-                        folders.map(folder => (
-                            <Button key={folder.setId} className="folder-item" onClick={() => handleFolderClick(folder)}>
+
+                    {foldersToDisplay.length > 0 ? (
+                        foldersToDisplay.map(folder => (
+                            <Button
+                                key={folder.folderId}
+                                className="folder-item"
+                                onClick={() => {
+                                    handleFolderClick(folder);
+                                }}
+                                style={{ textTransform: 'none' }}
+                            >
                                 <h3>{folder.title}</h3>
                             </Button>
                         ))
                     ) : (
-                        <p style={{ color: '#fff', fontSize: '2rem' }}>Bạn chưa tạo thư mục nào.</p>
+                        <p style={{ color: '#fff', fontSize: '2rem' }}>Không tìm thấy kết quả phù hợp.</p>
                     )}
+
+                    <Pagination className="pagination"
+                        count={totalPages}
+                        color="primary"
+                        onChange={handleChangePage}
+                    />
                 </div>
             </div>
         </div>

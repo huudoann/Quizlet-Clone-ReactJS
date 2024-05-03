@@ -13,6 +13,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast, Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import AddModal from './AddModal';
 
 const Flashcard = () => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -479,6 +480,10 @@ const Flashcard = () => {
         navigate('/edit-set');
     }
 
+    const handleAddToFolder = () => {
+        AddModal();
+    }
+
     return (
         <div>
             <Header />
@@ -652,7 +657,7 @@ const Flashcard = () => {
                             <button onClick={toggleMenu}><MoreHoriz /></button>
                             {showMenu && (
                                 <div className="menu">
-                                    <button onClick={() => console.log("Add to Folder")}><AddCircleOutline />Thêm vào thư mục</button>
+                                    <button> <AddModal />Thêm vào thư mục</button>
                                     {isOwner && (
                                         <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
                                     )}
