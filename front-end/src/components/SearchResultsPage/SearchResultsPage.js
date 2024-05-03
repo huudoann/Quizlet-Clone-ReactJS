@@ -33,7 +33,7 @@ const SearchResultsPage = () => {
               },
             }
           );
-          setSets(response.data.content);
+          setSets(response.data);
           setTotalPages(response.data.totalPages);
           console.log(response.data);
         } catch (error) {
