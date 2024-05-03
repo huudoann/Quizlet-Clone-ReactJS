@@ -34,7 +34,7 @@ export default function AddModal() {
               },
             }
           );
-          setSets(response.data);
+          setSets(response.data.content);
           console.log(response.data);
         } catch (error) {
           console.error("Lỗi khi lấy danh sách các set:", error.message);

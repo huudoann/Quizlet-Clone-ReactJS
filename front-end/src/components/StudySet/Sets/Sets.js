@@ -6,6 +6,7 @@ import axios from 'axios';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Input } from '@mui/material';
+import { Pagination } from "@mui/material";
 
 const Sets = () => {
     const [sets, setSets] = useState([]);
@@ -14,6 +15,8 @@ const Sets = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [activeLink, setActiveLink] = useState('');
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         setActiveLink(location.pathname);
@@ -30,13 +33,15 @@ const Sets = () => {
                 throw new Error('Token không tồn tại trong localStorage');
             } else {
                 try {
-                    const allSets = await axios.get(`http://localhost:8080/api/set/${userId}/sets`, {
+                    const allSets = await axios.get(`http://localhost:8080/api/set/${userId}/sets?page=${page}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
                     });
-                    setSets(allSets.data);
-                    console.log(allSets);
+                    setSets(allSets.data.content);
+                    console.log(allSets.data);
+                    console.log('totalPages:' + totalPages);
+                    setTotalPages(allSets.data.totalPages);
                     setUserName(userName);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
@@ -45,13 +50,18 @@ const Sets = () => {
         };
 
         fetchData();
-    }, []);
+    }, [page]);
 
     const handleSearch = (event) => {
         const searchTerm = event.target.value.toLowerCase();
         const filtered = sets.filter(set => set.title.toLowerCase().includes(searchTerm));
         setFilteredSets(filtered);
     };
+
+    const handleChangePage = (event, value) => {
+        console.log(value);
+        setPage(value - 1);
+    }
 
     const setsToDisplay = filteredSets.length > 0 ? filteredSets : sets;
 
@@ -106,6 +116,11 @@ const Sets = () => {
                         <p style={{ color: '#fff', fontSize: '2rem' }}>Không tìm thấy kết quả phù hợp.</p>
                     )}
                 </div>
+                <Pagination className="pagination"
+                    count={totalPages}
+                    color="primary"
+                    onChange={handleChangePage}
+                />
             </div>
         </div>
     );
