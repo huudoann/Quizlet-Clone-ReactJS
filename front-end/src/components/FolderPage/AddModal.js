@@ -34,8 +34,8 @@ export default function AddModal() {
               },
             }
           );
-          setSets(response.data.content);
-          console.log(response.data.content);
+          setSets(response.data);
+          console.log(response.data);
         } catch (error) {
           console.error("Lỗi khi lấy danh sách các set:", error.message);
         }
@@ -168,7 +168,7 @@ export default function AddModal() {
                 <span>{set.title}</span>
                 <Button
                   style={{ color: "white" }}
-                  onClick={() => handleAddSet(set.set_id)}
+                  onClick={() => handleAddSet(set.setId)}
                 >
                   Thêm
                 </Button>
