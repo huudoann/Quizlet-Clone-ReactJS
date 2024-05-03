@@ -8,10 +8,11 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import { Input } from "@mui/base";
 import AddModal from "./AddModal";
 import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import { Pagination } from "@mui/material";
+
 
 const FolderPage = () => {
   const [setsInFolder, setSetsInFolder] = useState([]);
@@ -23,6 +24,13 @@ const FolderPage = () => {
   const navigate = useNavigate();
   const folder_id = localStorage.getItem("folder_id");
   const folder_title = localStorage.getItem("folderTitle");
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const handleChangePage = (event, value) => {
+    console.log(value);
+    setPage(value - 1);
+  };
 
   const handleEditFolder = async () => {
     setShowEditFolder(false);
@@ -86,7 +94,7 @@ const FolderPage = () => {
         try {
           // Thực hiện gọi API ở đây
           const response = await axios.get(
-            `http://localhost:8080/api/folder/${folder_id}/sets`,
+            `http://localhost:8080/api/folder/${folder_id}/sets?page=${page}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -94,6 +102,8 @@ const FolderPage = () => {
             }
           );
           setSetsInFolder(response.data);
+          setTotalPages(response.data.totalPages);
+          console.log(totalPages);
         } catch (error) {
           console.error("Lỗi khi lấy danh sách các set:", error.message);
         }
@@ -102,7 +112,7 @@ const FolderPage = () => {
 
     fetchData();
     console.log("data:" + setsInFolder);
-  }, []);
+  }, [page]);
 
   return (
     <div className="folder-page">
@@ -241,6 +251,11 @@ const FolderPage = () => {
           </div>
         </div>
       )}
+      {/* <Pagination className="pagination"
+        count={totalPages}
+        color="primary"
+        onChange={handleChangePage}
+      /> */}
     </div>
   );
 };

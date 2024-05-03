@@ -9,7 +9,7 @@
         font-size: 15px;
         margin-top: 40px;
         display: flex;
-        gap: 56vw;
+        gap: 40vw;
     }
 
     .folder-details {
@@ -149,5 +149,16 @@
         justify-content: center;
         gap: 20px;
         margin-top: 20px;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
+        color: white;
     }
 }

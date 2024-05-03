@@ -25,4 +25,15 @@
         gap: 20px;
         flex-wrap: wrap;
     }
+    
+    .pagination {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
+        color: white;
+    }
 }

@@ -27,15 +27,15 @@ export default function AddModal() {
         try {
           // Thực hiện gọi API ở đây
           const response = await axios.get(
-            `http://localhost:8080/api/set/${user_id}/sets`,
+            `http://localhost:8080/api/set/${user_id}/sets?size=1000`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-          setSets(response.data);
-          console.log(response.data);
+          setSets(response.data.content);
+          console.log(response.data.content);
         } catch (error) {
           console.error("Lỗi khi lấy danh sách các set:", error.message);
         }
@@ -61,6 +61,7 @@ export default function AddModal() {
 
   const handleClose = () => {
     setOpen(false);
+    window.location.reload();
   };
 
   const handleAddSet = async (set_id) => {
@@ -82,9 +83,6 @@ export default function AddModal() {
           }
         );
         toast.success("Thêm set thành công!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
       } catch (error) {
         toast.error("Set đã tồn tại trong folder này!");
       }
@@ -170,7 +168,7 @@ export default function AddModal() {
                 <span>{set.title}</span>
                 <Button
                   style={{ color: "white" }}
-                  onClick={() => handleAddSet(set.setId)}
+                  onClick={() => handleAddSet(set.set_id)}
                 >
                   Thêm
                 </Button>
