@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LogIn.scss';
-import { Box, TextField, Button } from '@mui/material';
+import { Box, TextField, Button, Link } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import axios from 'axios';
@@ -120,6 +120,7 @@ const LoginForm = ({ switchForm }) => {
         />
 
         {error && <ErrorMessage message={error} />}
+        <Link className='forgot-password-link' href="/forgot-password">Quên mật khẩu</Link>
         <Button variant="contained" onClick={handleLogin} style={{ width: '100%', marginBottom: '1rem', padding: '1rem' }}>Đăng nhập</Button>
 
         <Button className='switch-status-btn' type='button' onClick={() => navigate('/')} style={{ width: '100%', border: '1px solid #1976d2', padding: '1rem' }}>

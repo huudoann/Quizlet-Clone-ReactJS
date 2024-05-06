@@ -7,9 +7,10 @@ import { faPlus, faTrashAlt, faBell, faUser, faStickyNote, faFolder, faUsers } f
 import Header from '../Header/Header';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 const CreateSet = () => {
-    
+
     const [isPrivateSelected, setIsPrivateSelected] = useState(true); // State cho nút private
     const [isPublicSelected, setIsPublicSelected] = useState(false); // State cho nút public
     const [inputElements, setInputElements] = useState([]);
@@ -74,6 +75,7 @@ const CreateSet = () => {
                 });
                 console.log(responseCard)
             })
+            toast.success("Tạo thành công")
 
             //chuyển về trang có set_id đó
             navigate(`/flashcard`)
@@ -85,6 +87,7 @@ const CreateSet = () => {
             // return responseCard.data;
         } catch (error) {
             console.error('Lỗi khi tạo:', error.message);
+            toast.error("Có lỗi xảy ra " + error.message)
             throw error;
         }
 
@@ -144,13 +147,14 @@ const CreateSet = () => {
 
     return (
         <div className='create-set'>
+            <Toaster />
             {<Header />}
             <div className="body">
                 <div className="toolbar">
 
                     <span className='create-a-new-course'>Tạo học phần mới</span>
                     <div>
-                    {isCreateButtonVisible && (
+                        {isCreateButtonVisible && (
                             <Button variant="contained" className='bt-create' onClick={handleCreateButtonClick}>
                                 Tạo
                             </Button>
