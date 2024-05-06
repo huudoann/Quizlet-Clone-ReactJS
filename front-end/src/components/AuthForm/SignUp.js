@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import toast, { Toaster } from 'react-hot-toast';
+import DialogConfirmEmail from './DialogConfirmEmail';
 
 const SignUpForm = ({ switchForm }) => {
     const [username, setUsername] = useState('');
@@ -14,6 +15,8 @@ const SignUpForm = ({ switchForm }) => {
     const [error, setError] = useState(null);
     const [termsChecked, setTermsChecked] = useState(false);
     const navigate = useNavigate();
+    const [confirmEmailDialogOpen, setConfirmEmailDialogOpen] = useState(false);
+
 
     const handleSignUp = async () => {
         if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim() || !termsChecked) {
@@ -50,19 +53,20 @@ const SignUpForm = ({ switchForm }) => {
             console.log('Đăng ký thành công:', response.data);
 
             const token = response.data.token;
-            console.log(token)
-            localStorage.setItem('token', token);
-            const successToast = {
-                message: 'Đăng ký thành công!',
-                position: 'top-center'
-            };
-            sessionStorage.setItem('toast', JSON.stringify(successToast));
-            navigate('/login');
+            // console.log(token)
+            // localStorage.setItem('token', token);
+            setConfirmEmailDialogOpen(true);
+
 
         } catch (error) {
             console.error('Lỗi khi đăng ký:', error.message);
             throw error;
         }
+    };
+
+    const handleCloseConfirmEmailDialog = () => {
+        setConfirmEmailDialogOpen(false);
+        navigate('/login');
     };
 
     const handleInputUsernameChange = (e) => {
@@ -145,14 +149,14 @@ const SignUpForm = ({ switchForm }) => {
                     control={<Checkbox defaultChecked checked={termsChecked} onChange={handleTermsChecked} />}
                     label={
                         <span>
-                            I accept
+                            Tôi đồng ý với các
                             <Button
                                 component="span"
                                 color="primary"
                                 onClick={handleClickTOS}
                                 style={{ textTransform: 'none' }}
                             >
-                                Terms of Services and Privacy Policy
+                                Điều khoản và Chính sách bảo mật
                             </Button>
 
                         </span>
@@ -165,6 +169,8 @@ const SignUpForm = ({ switchForm }) => {
                     <span>Đã có tài khoản? Đăng nhập ngay!</span>
                 </Button>
             </Box>
+
+            <DialogConfirmEmail open={confirmEmailDialogOpen} handleClose={handleCloseConfirmEmailDialog} />
         </div>
     );
 };

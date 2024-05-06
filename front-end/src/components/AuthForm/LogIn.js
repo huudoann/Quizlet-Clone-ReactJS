@@ -9,31 +9,16 @@ import { Toaster, toast } from 'react-hot-toast';
 const LoginForm = ({ switchForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Kiểm tra nếu có toast trong session storage
-    const toastData = sessionStorage.getItem('toast');
-    if (toastData) {
-      const toastObject = JSON.parse(toastData);
-      // Hiển thị toast
-      toast.success(toastObject.message, {
-        position: toastObject.position
-      });
-      // Xóa toast khỏi session storage
-      sessionStorage.removeItem('toast');
-    }
-  }, []);
-
   const handleLogin = async () => {
     if (!email.trim()) {
-      setError("Your username cannot be blank!");
+      setError("Nhập Email để tiếp tục");
       return;
     }
     else if (!password.trim()) {
-      setError("Your password cannot be blank!")
+      setError("Nhập mật khẩu để tiếp tục!")
     }
 
     const userData = {
@@ -64,11 +49,7 @@ const LoginForm = ({ switchForm }) => {
 
     } catch (error) {
       console.error('Lỗi khi đăng nhập:', error.message);
-      if (error.response && error.response.data && error.response.data.error === "Forbidden") {
-        setError("Bạn cần kích hoạt Email trước.");
-      } else {
-        setError("Thông tin đăng nhập không chính xác, vui lòng thử lại");
-      }
+      setError("Thông tin đăng nhập không chính xác, vui lòng thử lại");
     }
   };
 
@@ -81,10 +62,6 @@ const LoginForm = ({ switchForm }) => {
   const handleInputChange = (e) => {
     setEmail(e.target.value);
   };
-
-  // const handleForgotPassword = () => {
-  //   console.log('Forgot Password:', email);
-  // };
 
   return (
     <div className='auth-form'>
@@ -119,8 +96,10 @@ const LoginForm = ({ switchForm }) => {
           autoComplete="current-password"
         />
 
-        {error && <ErrorMessage message={error} />}
         <Link className='forgot-password-link' href="/forgot-password">Quên mật khẩu</Link>
+
+        {error && <ErrorMessage message={error} />}
+
         <Button variant="contained" onClick={handleLogin} style={{ width: '100%', marginBottom: '1rem', padding: '1rem' }}>Đăng nhập</Button>
 
         <Button className='switch-status-btn' type='button' onClick={() => navigate('/')} style={{ width: '100%', border: '1px solid #1976d2', padding: '1rem' }}>
