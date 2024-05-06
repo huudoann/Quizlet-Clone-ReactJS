@@ -119,12 +119,13 @@ const Folders = () => {
                     ) : (
                         <p style={{ color: '#fff', fontSize: '2rem' }}>Không tìm thấy kết quả phù hợp.</p>
                     )}
-
-                    <Pagination className="pagination"
-                        count={totalPages}
-                        color="primary"
-                        onChange={handleChangePage}
-                    />
+                    {totalPages > 1 && (
+                        <Pagination className="pagination"
+                            count={totalPages}
+                            color="primary"
+                            onChange={handleChangePage}
+                        />
+                    )}
                 </div>
             </div>
         </div>
