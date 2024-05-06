@@ -116,11 +116,13 @@ const Sets = () => {
                         <p style={{ color: '#fff', fontSize: '2rem' }}>Không tìm thấy kết quả phù hợp.</p>
                     )}
                 </div>
-                <Pagination className="pagination"
+                {totalPages > 1 && (
+                    <Pagination className="pagination"
                     count={totalPages}
                     color="primary"
                     onChange={handleChangePage}
                 />
+                )}
             </div>
         </div>
     );

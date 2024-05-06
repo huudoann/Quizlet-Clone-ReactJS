@@ -10,7 +10,7 @@ const SearchResultsPage = () => {
   const [page, setPage] = useState(0);
   const filterTitle = localStorage.getItem("filterTitle");
   const [totalPages, setTotalPages] = useState(0);
-  
+
   const handleChangePage = (event, value) => {
     console.log(value);
     setPage(value - 1);
@@ -70,11 +70,14 @@ const SearchResultsPage = () => {
           </div>
         </div>
       </div>
-      <Pagination className="pagination"
-        count={totalPages}
-        color="primary"
-        onChange={handleChangePage}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          className="pagination"
+          count={totalPages}
+          color="primary"
+          onChange={handleChangePage}
+        />
+      )}
     </div>
   );
 };
