@@ -62,6 +62,9 @@ const SearchResultsPage = () => {
               sets.map((set) => (
                 <SetItem
                   set_id={set.setId}
+                  public={set.public}
+                  ownerName={set.ownerName}
+                  description={set.description}
                   title={set.title}
                   rating={set.rating}
                   username={set.user}

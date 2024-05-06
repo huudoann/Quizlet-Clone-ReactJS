@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./SetItem.scss";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -34,9 +34,13 @@ const SetItem = (item) => {
     fetchData();
   }, []);
 
-  const handleNavigate = () => {
+  const handleNavigate = async () => {
     localStorage.setItem('set_id', item.set_id);
     localStorage.setItem('flashcardTitle', item.title);
+    localStorage.setItem('public', item.public);
+    localStorage.setItem('description', item.description);
+    const userInfo = await axios.get(`http://localhost:8080/api/user/username/${item.ownerName}`);
+    localStorage.setItem('ownerId', userInfo.data.user_id)
     navigate('/flashcard');
   }
 

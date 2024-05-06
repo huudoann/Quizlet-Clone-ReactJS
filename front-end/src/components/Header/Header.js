@@ -235,10 +235,10 @@ const Header = () => {
                     <div className="close-icon" onClick={toggleFolderDialog}>
                         <FontAwesomeIcon icon={faTimes} />
                     </div>
-                    <h2>Create new folder</h2>
-                    <input type="text" placeholder="Folder name" value={title} onChange={(e) => setTitle(e.target.value)} />
-                    <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    <button onClick={handleCreateFolder}>Create</button>
+                    <h2>Tạo học phần mới</h2>
+                    <input type="text" placeholder="Tên học phần" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input type="text" placeholder="Mô tả" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <button onClick={handleCreateFolder}>Thêm mới</button>
                 </div>
             )}
         </div>
