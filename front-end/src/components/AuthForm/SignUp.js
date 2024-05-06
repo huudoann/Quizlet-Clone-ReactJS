@@ -4,6 +4,7 @@ import { Box, TextField, Button, Checkbox, FormControlLabel } from '@mui/materia
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignUpForm = ({ switchForm }) => {
     const [username, setUsername] = useState('');
@@ -51,9 +52,13 @@ const SignUpForm = ({ switchForm }) => {
             const token = response.data.token;
             console.log(token)
             localStorage.setItem('token', token);
+            const successToast = {
+                message: 'Đăng ký thành công!',
+                position: 'top-center'
+            };
+            sessionStorage.setItem('toast', JSON.stringify(successToast));
             navigate('/login');
 
-            return response.data;
         } catch (error) {
             console.error('Lỗi khi đăng ký:', error.message);
             throw error;
@@ -85,6 +90,7 @@ const SignUpForm = ({ switchForm }) => {
 
     return (
         <div className="auth-form">
+            <Toaster />
             <Box
                 component="form"
                 sx={{

@@ -8,6 +8,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import axios from 'axios';
 import SetItem from './SetItem';
 import FolderItem from './FolderItem';
+import { Toaster, toast } from 'react-hot-toast';
 
 
 const HomePage = () => {
@@ -20,12 +21,25 @@ const HomePage = () => {
     ];
     const [sets, setSets] = useState([]);
     // const [folders, setFolders] = useState([]);
-
     const texts = [
         ["Tìm kiếm mạnh mẽ hơn", "Tìm thẻ ghi nhớ bạn cần để học về bất kì chủ đề nào"],
         ["Cải thiện điểm số với chế độ Học", "Học với các câu hỏi hay hơn, kiểm soát nhiều hơn, và gợi ý"],
         ["Hãy sẵn sàng cho kì thi", "Kiểm tra với gợi ý và chỉ dẫn học được tăng cường bởi AI"]
     ];
+
+    useEffect(() => {
+        // Kiểm tra nếu có toast trong session storage
+        const toastData = sessionStorage.getItem('toast');
+        if (toastData) {
+            const toastObject = JSON.parse(toastData);
+            // Hiển thị toast
+            toast.success(toastObject.message, {
+                position: toastObject.position
+            });
+            // Xóa toast khỏi session storage
+            sessionStorage.removeItem('toast');
+        }
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -88,7 +102,7 @@ const HomePage = () => {
     return (
         <div className="home-page">
             {<Header />}
-
+            {<Toaster />}
             <div className='content'>
                 <div className="start-learn">
                     <img src={images[currentImageIndex]} alt="Start learning" />

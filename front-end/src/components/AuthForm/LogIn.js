@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LogIn.scss';
 import { Box, TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import axios from 'axios';
+import { Toaster, toast } from 'react-hot-toast';
 
 const LoginForm = ({ switchForm }) => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,20 @@ const LoginForm = ({ switchForm }) => {
   // const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Kiểm tra nếu có toast trong session storage
+    const toastData = sessionStorage.getItem('toast');
+    if (toastData) {
+      const toastObject = JSON.parse(toastData);
+      // Hiển thị toast
+      toast.success(toastObject.message, {
+        position: toastObject.position
+      });
+      // Xóa toast khỏi session storage
+      sessionStorage.removeItem('toast');
+    }
+  }, []);
 
   const handleLogin = async () => {
     if (!email.trim()) {
@@ -39,12 +54,21 @@ const LoginForm = ({ switchForm }) => {
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('user_name', username);
       localStorage.setItem('email', email);
-      navigate('/lastest');
+      const successToast = {
+        message: 'Đăng nhập thành công!',
+        position: 'top-center'
+      };
+      sessionStorage.setItem('toast', JSON.stringify(successToast));
 
-      return response.data;
+      navigate('/lastest')
+
     } catch (error) {
       console.error('Lỗi khi đăng nhập:', error.message);
-      setError("The login details you entered are incorrect. Try again...");
+      if (error.response && error.response.data && error.response.data.error === "Forbidden") {
+        setError("Bạn cần kích hoạt Email trước.");
+      } else {
+        setError("Thông tin đăng nhập không chính xác, vui lòng thử lại");
+      }
     }
   };
 
@@ -64,6 +88,7 @@ const LoginForm = ({ switchForm }) => {
 
   return (
     <div className='auth-form'>
+      {<Toaster />}
       <Box
         component="form"
         sx={{
