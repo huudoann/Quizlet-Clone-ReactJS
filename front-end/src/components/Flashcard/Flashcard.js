@@ -52,6 +52,20 @@ const Flashcard = () => {
     const user_id = localStorage.getItem('user_id');
     const isOwner = ownerId === user_id;
 
+    useEffect(() => {
+        // Kiểm tra nếu có toast trong session storage
+        const toastData = sessionStorage.getItem('toast');
+        if (toastData) {
+            const toastObject = JSON.parse(toastData);
+            // Hiển thị toast
+            toast.success(toastObject.message, {
+                position: toastObject.position
+            });
+            // Xóa toast khỏi session storage
+            sessionStorage.removeItem('toast');
+        }
+    }, []);
+
     const shuffleArray = (array) => {
         if (!Array.isArray(array)) {
             return array;

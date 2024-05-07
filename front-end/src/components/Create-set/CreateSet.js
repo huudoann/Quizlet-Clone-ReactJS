@@ -17,7 +17,7 @@ const CreateSet = () => {
     const [sttCount, setSttCount] = useState(1); // Biến đếm số thứ tự
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [is_public, setPublic] = useState('');
+    const [is_public, setPublic] = useState(false);
     const [isCreateButtonVisible, setIsCreateButtonVisible] = useState(false);
     const navigate = useNavigate()
 
@@ -54,7 +54,10 @@ const CreateSet = () => {
             localStorage.setItem("set_id", set_id);
             localStorage.setItem("flashcardTitle", title);
             localStorage.setItem("description", description);
-            localStorage.setItem("is_public", is_public)
+            localStorage.setItem("public", is_public)
+            const user_name = localStorage.getItem('user_name');
+            const userInfo = await axios.get(`http://localhost:8080/api/user/username/${user_name}`);
+            localStorage.setItem('ownerId', userInfo.data.user_id)
             // Gửi dữ liệu các cards
             const cardData = inputElements.map(input => ({
                 front_text: input.content1,
@@ -75,8 +78,11 @@ const CreateSet = () => {
                 });
                 console.log(responseCard)
             })
-            toast.success("Tạo thành công")
-
+            const successToast = {
+                message: 'Tạo học phần thành công!',
+                position: 'top-center'
+            };
+            sessionStorage.setItem('toast', JSON.stringify(successToast));
             //chuyển về trang có set_id đó
             navigate(`/flashcard`)
 

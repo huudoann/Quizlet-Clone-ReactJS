@@ -49,7 +49,7 @@ const Learn = () => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key === 'Enter' && !disableKeyPress && isCorrect !== null && document.activeElement.tagName !== 'INPUT') {
+      if (event.key === 'Enter' && !disableKeyPress && isCorrect !== null && document.activeElement.tagName !== 'INPUT' && userInput.trim()) {
         setCurrentIndex(prevIndex => prevIndex + 1);
         setUserInput('');
         setIsCorrect(null);
@@ -67,7 +67,7 @@ const Learn = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [disableKeyPress, isCorrect]);
+  }, [disableKeyPress, isCorrect, userInput]);
 
   const handleSkip = () => {
     setUserInput(' ');
@@ -97,6 +97,7 @@ const Learn = () => {
   };
 
   const handleSubmit = () => {
+    if (!userInput.trim()) return;
     if (userInput.trim().toLowerCase() === flashcards[currentIndex].front_text.trim().toLowerCase()) {
       setIsCorrect(true);
       setNumCorrect(prevNumCorrect => prevNumCorrect + 1);

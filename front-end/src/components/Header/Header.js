@@ -132,11 +132,17 @@ const Header = () => {
 
     const handleSearchKeyDown = (event) => {
         if (event.key === 'Enter') {
-            localStorage.setItem('filterTitle', searchKeyword);
-            if (currentPage === '/search-results-page') {
-                window.location.reload();
+            // Kiểm tra xem có từ khóa tìm kiếm nào được nhập vào không
+            if (searchKeyword.trim() !== '') {
+                localStorage.setItem('filterTitle', searchKeyword);
+                if (currentPage === '/search-results-page') {
+                    window.location.reload();
+                } else {
+                    navigate('/search-results-page');
+                }
             } else {
-                navigate('/search-results-page');
+                // Ngăn chặn chuyển trang nếu không có từ khóa tìm kiếm
+                event.preventDefault();
             }
         }
     };
