@@ -59,8 +59,12 @@ const SignUpForm = ({ switchForm }) => {
 
 
         } catch (error) {
-            console.error('Lỗi khi đăng ký:', error.message);
-            throw error;
+            if (error.response.status === 400) {
+                setError("Email đã tồn tại");
+            } else {
+                console.error('Lỗi khi đăng ký:', error.message);
+                throw error;
+            }
         }
     };
 

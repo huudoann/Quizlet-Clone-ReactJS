@@ -18,6 +18,7 @@ import FolderPage from '../components/FolderPage/FolderPage';
 import SettingPage from '../components/SettingPage/SettingPage';
 import '../styles/global.scss';
 import ForgotPasswordPage from '../components/ForgotPassword/ForgotPassword';
+import ConfirmForgotPassword from '../components/ForgotPassword/ConfirmForgotPassword'
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,6 +46,7 @@ function App() {
                     <Route exact path='/edit-set' element={<EditSet />} />
                     <Route exact path='/setting' element={<SettingPage />} />
                     <Route exact path='/forgot-password' element={<ForgotPasswordPage />} />
+                    <Route exact path='/reset-password' element={<ConfirmForgotPassword />} />
                 </Routes>
             </div>
         </Router>
