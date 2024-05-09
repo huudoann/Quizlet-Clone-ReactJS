@@ -124,7 +124,7 @@ const HomePage = () => {
             <div className="search-results-container">
                 <div className="search-results-page-container">
                     <div className="search-results-page-content">
-                        <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách học phần:</span>
+                        <span className='search-results-page-content-header' style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách học phần:</span>
                         <div className="set-items">
                             {sets && sets.map((set, index) => (
                                 <SetItem
@@ -139,24 +139,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="search-results-container">
-                <div className="search-results-page-container">
-                    <div className="search-results-page-content">
-                        <span style={{ color: '#fff', fontSize: '1.5rem' }}>Danh sách thư mục:</span>
-                        <div className="set-items">
-                            {folders && folders.map((folder, index) => (
-                                <FolderItem
-                                    key={index}
-                                    set_id={folder.folder_id}
-                                    title={folder.title}
-                                // username={folder.ownerName}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div> */}
 
             {<Footer />}
         </div >
