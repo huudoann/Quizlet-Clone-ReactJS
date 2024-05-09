@@ -184,4 +184,24 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
+
+  @media only screen and (max-width: 768px) {
+    .learn-form {
+      width: 90%;
+    }
+
+    .input-box input {
+      width: 90%;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    .learn-form {
+      width: 90%;
+    }
+
+    .input-box input {
+      width: 85%;
+    }
+  }
 }

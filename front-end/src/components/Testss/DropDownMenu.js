@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const CustomizedButton = styled(Button)(({ theme }) => ({
     padding: '1rem 0',
-    minWidth: '200px',
+    // minWidth: '200px',
     fontSize: '1rem',
     borderRadius: '6px',
     color: 'white',

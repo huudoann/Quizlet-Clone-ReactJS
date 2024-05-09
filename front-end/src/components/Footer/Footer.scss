@@ -54,8 +54,13 @@
         align-items: center;
     }
 
-    // .footer .row ul li {
-    //     display: block;
-    //     text-align: center;
-    // }
+    .footer .row ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .footer .row ul li {
+        margin: 10px;
+    }
 }

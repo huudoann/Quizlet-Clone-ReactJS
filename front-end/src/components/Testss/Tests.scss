@@ -40,7 +40,6 @@
         background-color: #2e3856;
         border-radius: 10px;
         display: flex;
-        cursor: pointer;
         transition: transform 0.5s ease;
         flex-direction: column;
         margin: 0 auto;
@@ -129,5 +128,18 @@
         &:hover {
             background-color: #423ed8;
         }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .tests-form {
+            width: 90%;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
     }
 }
