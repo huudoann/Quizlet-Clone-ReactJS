@@ -19,34 +19,62 @@ import SettingPage from '../components/SettingPage/SettingPage';
 import '../styles/global.scss';
 import ForgotPasswordPage from '../components/ForgotPassword/ForgotPassword';
 import ConfirmForgotPassword from '../components/ForgotPassword/ConfirmForgotPassword'
+import PrivateRoute from './PrivateRoute';
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
+    const isAuthenticated = false
 
     return (
         <Router>
             <div className="App">
                 <Routes>
+                    {/* non protected routes */}
                     <Route exact path='/' element={<Home />} />
-                    <Route exact path='/lastest' element={<HomePage />} />
                     <Route exact path='/signup' element={<SignUpForm />} />
                     <Route exact path='/login' element={<LoginForm />} />
-                    <Route exact path='/sets' element={<Sets />} />
-                    <Route exact path='/create-set' element={<CreateSet />} />
-                    <Route exact path='/flashcard' element={<Flashcard />} />
-                    <Route exact path='/learn' element={<Learn />} />
-                    <Route exact path='/test' element={<Tests />} />
-                    <Route exact path='/match' element={<Match />} />
-                    <Route exact path='/folders' element={<Folders />} />
                     <Route exact path='/tos' element={<Tos />} />
-                    <Route exact path='/search-results-page' element={<SearchResultsPage />} />
-                    <Route exact path='/folder-page' element={<FolderPage />} />
-                    <Route exact path='/edit-set' element={<EditSet />} />
-                    <Route exact path='/setting' element={<SettingPage />} />
                     <Route exact path='/forgot-password' element={<ForgotPasswordPage />} />
                     <Route exact path='/reset-password' element={<ConfirmForgotPassword />} />
+
+                    {/* protected route */}
+                    <Route exact path='/sets' element={<PrivateRoute />}>
+                        <Route exact path='/sets' element={<Sets />} />
+                    </Route>
+                    <Route exact path='/lastest' element={<PrivateRoute />}>
+                        <Route exact path='/lastest' element={<HomePage />} />
+                    </Route>
+                    <Route exact path='/create-set' element={<PrivateRoute />}>
+                        <Route exact path='/create-set' element={<CreateSet />} />
+                    </Route>
+                    <Route exact path='/flashcard' element={<PrivateRoute />}>
+                        <Route exact path='/flashcard' element={<Flashcard />} />
+                    </Route>
+                    <Route exact path='/learn' element={<PrivateRoute />}>
+                        <Route exact path='/learn' element={<Learn />} />
+                    </Route>
+                    <Route exact path='/test' element={<PrivateRoute />}>
+                        <Route exact path='/test' element={<Tests />} />
+                    </Route>
+                    <Route exact path='/match' element={<PrivateRoute />}>
+                        <Route exact path='/match' element={<Match />} />
+                    </Route>
+                    <Route exact path='/folders' element={<PrivateRoute />}>
+                        <Route exact path='/folders' element={<Folders />} />
+                    </Route>
+                    <Route exact path='/search-results-page' element={<PrivateRoute />}>
+                        <Route exact path='/search-results-page' element={<SearchResultsPage />} />
+                    </Route>
+                    <Route exact path='/folder-page' element={<PrivateRoute />}>
+                        <Route exact path='/folder-page' element={<FolderPage />} />
+                    </Route>
+                    <Route exact path='/edit-set' element={<PrivateRoute />}>
+                        <Route exact path='/edit-set' element={<EditSet />} />
+                    </Route>
+                    <Route exact path='/setting' element={<PrivateRoute />}>
+                        <Route exact path='/setting' element={<SettingPage />} />
+                    </Route>
+
                 </Routes>
             </div>
         </Router>
