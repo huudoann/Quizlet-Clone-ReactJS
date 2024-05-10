@@ -1,6 +1,6 @@
 .set-item {
     color: white;
-    width: 26%;
+    width: 25%;
     border-radius: 10px;
     padding: 20px;
     background-color: #2E3856;
@@ -58,5 +58,12 @@
         &:hover:not(.preview-button) {
             background-color: #586380;
         }
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
+    .set-item {
+        width: 100%;
     }
 }

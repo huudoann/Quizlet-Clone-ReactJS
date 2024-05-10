@@ -3,13 +3,14 @@
 
     .container {
         margin-left: 10%;
+        margin-right: 10%;
     }
 
     .folder-page-header {
         font-size: 15px;
         margin-top: 40px;
         display: flex;
-        gap: 40vw;
+        justify-content: space-between;
     }
 
     .folder-details {
@@ -24,6 +25,11 @@
         display: flex;
         gap: 1.2vw;
         font-weight: bold;
+    }
+
+    .folder-title span {
+        display: block;
+        width: 100%;
     }
 
     .folder-page-header-actions {
@@ -52,7 +58,7 @@
 
         &:hover {
             background-color: #282E3E;
-        }   
+        }
     }
 
     .edit-button {
@@ -61,10 +67,10 @@
         cursor: pointer;
         border: 2px solid #586380;
         border-radius: 100px;
-        
+
         &:hover {
             background-color: #282E3E;
-        }   
+        }
     }
 
     .delete-folder-button {
@@ -76,7 +82,7 @@
 
         &:hover {
             background-color: #282E3E;
-        }   
+        }
     }
 
     .main {
@@ -89,7 +95,7 @@
         gap: 20px;
         flex-wrap: wrap;
     }
-    
+
     .overlay {
         position: fixed;
         top: 0;
@@ -121,7 +127,7 @@
         margin-top: 20px;
     }
 
-    .edit-folder{
+    .edit-folder {
         position: relative;
         top: 0px;
         display: flex;
@@ -160,5 +166,19 @@
 
     .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
         color: white;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .folder-page-header {
+            flex-direction: column;
+        }
+
+        .main {
+            margin-top: 40px;
+        }
+
+        .folder-page-header-actions {
+            margin-top: 20px;
+        }
     }
 }

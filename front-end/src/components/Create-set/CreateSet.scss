@@ -176,7 +176,7 @@
         flex-direction: column;
         margin-top: 20px;
         gap: 20px;
-        padding: 20px;
+        // padding: 20px;
         background-color: #0a092d;
         border-radius: 10px;
     }
@@ -255,5 +255,44 @@
             color: #000;
             /* Đổi màu background khi hover */
         }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .item-card {
+            flex-direction: column;
+        }
+
+        .item-card .stt-input {
+            font-size: 24px;
+        }
+
+        .item-card .delete-icon {
+            margin: 0;
+            width: 100%;
+            background-color: red;
+            border-radius: 2px;
+        }
+
+        .item-card .input-terms,
+        .item-card .input-define {
+            width: 95%;
+            margin: 0;
+        }
+
+        .item-card .input-define {
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .card {
+            padding: 0;
+        }
+    }
+}
+
+
+@media only screen and (max-width: 500px) {
+    .create-set .body {
+        padding: 20px;
     }
 }
