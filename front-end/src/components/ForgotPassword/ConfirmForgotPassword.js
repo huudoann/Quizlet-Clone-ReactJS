@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ConfirmForgotPassword.scss";
 import toast, { Toaster } from "react-hot-toast";
 import { Button } from "@mui/material";
@@ -8,8 +8,8 @@ import { Button } from "@mui/material";
 const ResetPasswordPage = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmedPassword, setConfirmedPassword] = useState("");
-    const user_id = localStorage.getItem("user_id");
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleChangePassword = async () => {
         if (newPassword !== confirmedPassword) {
@@ -23,24 +23,27 @@ const ResetPasswordPage = () => {
             return;
         }
 
-        let token = localStorage.getItem("token");
-        // if (true) {
 
-        // } else {
+        const user_id = new URLSearchParams(location.search).get('user_id');
+
         try {
             await axios.put(
                 `http://localhost:8080/api/user/change-password/${user_id}`,
                 {
                     password: newPassword,
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                // {
+                //     headers: {
+                //         Authorization: `Bearer ${token}`,
+                //     },
+                // }
             );
-            window.location.reload();
-            toast.success("Đổi mật khẩu thành công");
+            const successToast = {
+                message: 'Đổi mật khẩu thành công!',
+                position: 'top-center'
+            };
+            sessionStorage.setItem('toast', JSON.stringify(successToast));
+            navigate('/login')
         } catch (error) {
             toast.error("Lỗi khi đổi mật khẩu");
         }

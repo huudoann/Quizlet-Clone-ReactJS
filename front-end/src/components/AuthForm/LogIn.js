@@ -12,6 +12,20 @@ const LoginForm = ({ switchForm }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Kiểm tra nếu có toast trong session storage
+    const toastData = sessionStorage.getItem('toast');
+    if (toastData) {
+      const toastObject = JSON.parse(toastData);
+      // Hiển thị toast
+      toast.success(toastObject.message, {
+        position: toastObject.position
+      });
+      // Xóa toast khỏi session storage
+      sessionStorage.removeItem('toast');
+    }
+  }, []);
+
   const handleLogin = async () => {
     if (!email.trim()) {
       setError("Nhập Email để tiếp tục");
@@ -96,11 +110,11 @@ const LoginForm = ({ switchForm }) => {
           autoComplete="current-password"
         />
 
-        <Link className='forgot-password-link' href="/forgot-password">Quên mật khẩu</Link>
+        <Link className='forgot-password-link' href="/forgot-password" style={{ textDecoration: 'none' }}>Quên mật khẩu?</Link>
 
         {error && <ErrorMessage message={error} />}
 
-        <Button variant="contained" onClick={handleLogin} style={{ width: '100%', marginBottom: '1rem', padding: '1rem' }}>Đăng nhập</Button>
+        <Button variant="contained" onClick={handleLogin} style={{ width: '100%', marginTop: '.5rem', marginBottom: '1rem', padding: '1rem' }}>Đăng nhập</Button>
 
         <Button className='switch-status-btn' type='button' onClick={() => navigate('/')} style={{ width: '100%', border: '1px solid #1976d2', padding: '1rem' }}>
           <span>Chưa có tài khoản? Đăng ký ngay!</span>

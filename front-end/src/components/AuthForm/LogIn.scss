@@ -10,6 +10,7 @@
   right: 0;
 }
 
-.forgot-password:hover {
-  text-decoration: underline;
+.forgot-password,
+a:hover {
+  text-decoration: underline !important;
 }
