@@ -6,10 +6,12 @@ import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button, Input } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStickyNote, faFolder, faTimes, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import MenuIcon from '@mui/icons-material/Menu'
 import axios from 'axios';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
     const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
     const navigate = useNavigate();
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State cho menu người dùng
@@ -30,7 +32,6 @@ const Header = () => {
                 setIsMenuOpen(false); // Đóng menu nếu click ra ngoài
             }
         };
-
         // Thêm sự kiện nghe click vào document
         document.addEventListener('click', handleClickOutside);
 
@@ -59,6 +60,7 @@ const Header = () => {
         event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
         setIsMenuOpen(!isMenuOpen);
         setIsUserMenuOpen(false);
+        setIsSubMenuOpen(false); // Ẩn menu con khi ẩn menu chính
     };
 
     const toggleFolderDialog = () => {
@@ -164,6 +166,19 @@ const Header = () => {
         <div className='nav-header'>
             <header>
                 <div className='home-library-container'>
+                <div className="menu-icon" onClick={() => setIsSubMenuOpen(!isSubMenuOpen)}>
+                    <MenuIcon />
+                    {isSubMenuOpen && (
+                        <div className="sub-menu">
+                            <NavLink to="/lastest" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <div className="sub-menu-item" onClick={handleNavigate}>Trang chủ</div>
+                            </NavLink>
+                            <NavLink to="/sets" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <div className="sub-menu-item" onClick={handleNavigate}>Thư viện</div>
+                            </NavLink>
+                        </div>
+                    )}
+                </div>
                     <Link to="/lastest"
                         style={{ color: 'inherit', textDecoration: 'inherit', border: 'none' }}
                         onClick={handleNavigate}
