@@ -20,6 +20,9 @@ import '../styles/global.scss';
 import ForgotPasswordPage from '../components/ForgotPassword/ForgotPassword';
 import ConfirmForgotPassword from '../components/ForgotPassword/ConfirmForgotPassword'
 import PrivateRoute from './PrivateRoute';
+import UserManagement from '../components/AdminPages/UserManagement';
+import DashboardAdmin from '../components/AdminPages/DashboardAdmin';
+import SetManager from '../components/AdminPages/SetManager';
 
 function App() {
 
@@ -74,7 +77,15 @@ function App() {
                     <Route exact path='/setting' element={<PrivateRoute />}>
                         <Route exact path='/setting' element={<SettingPage />} />
                     </Route>
-
+                    {/* <Route exact path='/admin' element={<PrivateRoute />}> */}
+                    <Route exact path='/user-management' element={<UserManagement />} />
+                    {/* </Route> */}
+                    {/* <Route exact path='/admin' element={<PrivateRoute />}> */}
+                    <Route exact path='/admin' element={<DashboardAdmin />} />
+                    {/* </Route> */}
+                    {/* <Route exact path='/admin' element={<PrivateRoute />}> */}
+                    <Route exact path='/sets-management' element={<SetManager />} />
+                    {/* </Route> */}
                 </Routes>
             </div>
         </Router>

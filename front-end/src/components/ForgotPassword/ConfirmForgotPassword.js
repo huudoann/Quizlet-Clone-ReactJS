@@ -23,20 +23,19 @@ const ResetPasswordPage = () => {
             return;
         }
 
-
         const user_id = new URLSearchParams(location.search).get('user_id');
 
         try {
             await axios.put(
-                `http://localhost:8080/api/user/change-password/${user_id}`,
+                `http://localhost:8080/api/user/reset-password/${user_id}`,
                 {
                     password: newPassword,
                 },
-                // {
-                //     headers: {
-                //         Authorization: `Bearer ${token}`,
-                //     },
-                // }
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
             );
             const successToast = {
                 message: 'Đổi mật khẩu thành công!',
