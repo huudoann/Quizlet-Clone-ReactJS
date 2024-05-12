@@ -15,6 +15,9 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import axios from "axios";
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import HomeIcon from '@mui/icons-material/Home';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -356,7 +359,7 @@ const Header = () => {
             style={{
               display: "flex",
               justifyContent: "flex-end",
-              width: "100%",
+              width: "95%",
             }}
           >
             <CloseIcon
@@ -371,23 +374,17 @@ const Header = () => {
             />
           </div>
           <div className="NavigationTabs">
-            <div className="home-navigation" onClick={() => {navigate("/lastest")}}>Trang chủ</div>
-            <div className="set-navigation" onClick={() => {navigate("/sets")}}>Học phần</div>
-            <divc className="folder-navigation" onClick={() => {navigate("/folders")}}>Thư mục</divc>
-            <div className="logout-navigation">
-              <Button
-                style={{
-                    fontSize: "20px",
-                  color: "white",
-                  backgroundColor: "red",
-                  borderRadius: "5px",
-                  padding: "5px 10px",
-                  margin: "5px 0px",
-                }}
-                onClick={handleLogout}
-              >
-                Đăng xuất
-              </Button>
+            <div className="home-navigation" onClick={() => {navigate("/lastest")}}>
+              <HomeIcon style={{fontSize: "30px", paddingTop: "8px"}} />
+              <span>Trang chủ</span>
+            </div>
+            <div className="set-navigation" onClick={() => {navigate("/sets")}}>
+              <ContentCopyIcon style={{fontSize: "30px", paddingTop: "8px"}} />
+              <span>Học phần</span>
+            </div>
+            <div className="folder-navigation" onClick={() => {navigate("/folders")}}>
+              <FolderOpenIcon style={{fontSize: "30px", paddingTop: "8px"}} />
+              <span>Thư mục</span>
             </div>
           </div>
         </div>
