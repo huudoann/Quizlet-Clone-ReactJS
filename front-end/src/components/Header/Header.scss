@@ -231,13 +231,10 @@
         flex-direction: column;
 
         .close-icon {
-            top: 10px;
-            right: 10px;
             cursor: pointer;
             color: #ccc;
             transition: color 0.3s ease;
-            align-self: flex-end;
-            justify-self: flex-end;
+            
             &:hover {
                 color: #999;
             }
@@ -251,22 +248,25 @@
 
         .home-navigation {
             font-size: 30px;
-            cursor: pointer;
-            &hover {
-                color: #ccc;
-            }
+            display: flex;
+            gap: 20px;
         }
 
         .set-navigation {
             font-size: 30px;
+            display: flex;
+            gap: 20px;
         }
 
         .folder-navigation {
             font-size: 30px;
+            display: flex;
+            gap: 20px;
         }
 
         .logout-navigation {
-            font-size: 30px;
+            align-items: center;
+            font-size: 20px;
         }
     }
 }
