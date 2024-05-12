@@ -1,7 +1,7 @@
 .sets-management-page {
     display: flex;
     flex-direction: column;
-    margin: 1rem 4rem 0 4rem;
+    margin: 1rem 4rem;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -123,7 +123,7 @@
     }
 
     .pagination {
-        margin: 1rem 0;
+        margin: .5 rem 0;
         display: flex;
         justify-content: center;
         gap: 10px;

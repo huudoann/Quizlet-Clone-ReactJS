@@ -66,12 +66,12 @@ const FolderManager = () => {
     }
 
     const editExam = (folder) => {
-        localStorage.setItem('set_id', folder.set_id);
+        localStorage.setItem('set_id', folder.folder_id);
         localStorage.setItem('public', folder.public);
         localStorage.setItem('user_id', folder.user_id);
-        localStorage.setItem('flashcardTitle', folder.title);
+        localStorage.setItem('folderTitle', folder.title);
         localStorage.setItem('description', folder.description);
-        navigate('/forder-set')
+        navigate('/folder-page')
     }
 
     const showDeleteForm = (folder, index) => {

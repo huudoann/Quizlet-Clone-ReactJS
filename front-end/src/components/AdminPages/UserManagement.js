@@ -90,7 +90,7 @@ const UserManagement = () => {
     }
 
     return (
-        <div className='UserManagement'>
+        <div className='user-management-page'>
             <div className="create-container-user">
                 <input type="text" id="full_name" placeholder="Username" />
                 {/* <input type="date" id="birth_date" /> */}

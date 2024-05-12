@@ -3,27 +3,27 @@ import "./SetManager.scss"
 import { Request } from '../../utils/axios'
 import { endPoint } from '../../utils/api/endPoint'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button, Pagination } from '@mui/material'
+import { Button, Pagination, MenuItem, TextField } from '@mui/material'
 
 const SetManager = () => {
     const [sets, setSets] = useState([])
     const [deletingIndex, setDeletingIndex] = useState(null)
     const [deteleSetId, setSetId] = useState(null)
-    console.log(sets)
-    const navigate = useNavigate();
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(0);
+    const [selectedType, setSelectedType] = useState('public');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getListSets = async () => {
-            const response = await Request.Server.get(`http://localhost:8080/api/set/get-all-sets?page=${page}`)
+            const response = await Request.Server.get(`http://localhost:8080/api/set/get-all-sets?page=${page}`);
             console.log(response)
             setSets(response.content)
             setTotalPages(response.totalPages);
         }
 
         getListSets()
-    }, [page])
+    }, [page, selectedType])
 
     const addExam = async () => {
 
@@ -38,6 +38,7 @@ const SetManager = () => {
                         <th>Tên học phần</th>
                         <th>Loại học phần</th>
                         <th>Ngày tạo</th>
+                        <th>Lần sửa cuối</th>
                         <th>Mô tả</th>
                         <th>Chỉnh sửa</th>
                     </tr>
@@ -49,6 +50,7 @@ const SetManager = () => {
                             <td>{set.title}</td>
                             <td>{set.public ? "Công khai" : "Riêng tư"}</td>
                             <td>{new Date(set.createdAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                            <td>{new Date(set.updatedAt || set.createdAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
                             <td>{set.description}</td>
                             <td>
                                 <div className="edit-delete-buttons">
@@ -99,11 +101,13 @@ const SetManager = () => {
         }
     }
 
+
+
     return (
         <div className="sets-management-page">
             <div className="create-container">
                 <div className="button-container">
-                    <Button onClick={addExam} variant="contained" color='success' style={{ justifyItems: 'right' }}>Tạo học phần</Button>
+                    <Button onClick={addExam} variant="contained" color='success' style={{ justifyItems: 'right', padding: '1rem' }}>Tạo học phần</Button>
                 </div>
             </div>
             <ul id="exam_list">
