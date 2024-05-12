@@ -251,11 +251,12 @@ const FolderPage = () => {
           </div>
         </div>
       )}
-      <Pagination className="pagination"
+      {totalPages > 1 && (
+        <Pagination className="pagination"
         count={totalPages}
         color="primary"
         onChange={handleChangePage}
-      />
+      />)}
     </div>
   );
 };
