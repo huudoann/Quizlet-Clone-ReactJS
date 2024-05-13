@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createSvgIcon } from "@mui/material/utils";
-import PersonIcon from "@mui/icons-material/Person";
 import "./Header.scss";
 import { NavLink, useNavigate, Link, useLocation } from "react-router-dom";
 import { Button, Input } from "@mui/material";
@@ -34,7 +33,8 @@ const Header = () => {
   const location = useLocation();
   const menuRef = useRef(null); // Ref cho menu
   const menuUserRef = useRef(null); // Ref cho menu người dùng
-  const role = localStorage.getItem('role')
+  const role = localStorage.getItem('role');
+  const user_name = localStorage.getItem('user_name');
   const isActive =
     location.pathname.includes("folders") || location.pathname.includes("sets");
 
@@ -283,7 +283,7 @@ const Header = () => {
               className="icon-container icon-container-user"
               onClick={toggleUserMenu}
             >
-              <PersonIcon />
+              <FontAwesomeIcon icon={faUser} style={{ marginRight: '.5rem' }} /> {user_name}
               {isUserMenuOpen && (
                 <div
                   ref={menuUserRef}

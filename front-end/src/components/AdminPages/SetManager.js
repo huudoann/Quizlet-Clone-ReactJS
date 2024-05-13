@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import "./SetManager.scss"
 import { Request } from '../../utils/axios'
 import { endPoint } from '../../utils/api/endPoint'
-import { Link, useNavigate } from 'react-router-dom'
-import { Button, Pagination, MenuItem, TextField } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Pagination, Button } from '@mui/material'
 
 const SetManager = () => {
     const [sets, setSets] = useState([])
@@ -24,10 +24,6 @@ const SetManager = () => {
 
         getListSets()
     }, [page, selectedType])
-
-    const addExam = async () => {
-
-    }
 
     const updateSetsList = (updatedSet) => {
         return (
@@ -54,8 +50,8 @@ const SetManager = () => {
                             <td>{set.description}</td>
                             <td>
                                 <div className="edit-delete-buttons">
-                                    <button className="edit" onClick={() => editExam(set)}>Sửa</button>
-                                    <button className="del" onClick={() => showDeleteForm(set, index)}>Xóa</button>
+                                    <Button className="edit" onClick={() => editSet(set)} style={{ backgroundColor: 'white', color: 'black', border: '1px solid #aaa', textTransform: 'none' }}>Sửa</Button>
+                                    <Button className="del" onClick={() => showDeleteForm(set, index)} style={{ textTransform: 'none' }}>Xóa</Button>
                                 </div>
                             </td>
                         </tr>
@@ -70,10 +66,9 @@ const SetManager = () => {
         setPage(value - 1);
     }
 
-    const editExam = (set) => {
+    const editSet = (set) => {
         localStorage.setItem('set_id', set.set_id);
         localStorage.setItem('public', set.public);
-        localStorage.setItem('user_id', set.user_id);
         localStorage.setItem('flashcardTitle', set.title);
         localStorage.setItem('description', set.description);
         navigate('/edit-set')
@@ -101,22 +96,14 @@ const SetManager = () => {
         }
     }
 
-
-
     return (
         <div className="sets-management-page">
-            <div className="create-container">
-                <div className="button-container">
-                    <Button onClick={addExam} variant="contained" color='success' style={{ justifyItems: 'right', padding: '1rem' }}>Tạo học phần</Button>
-                </div>
-            </div>
             <ul id="exam_list">
                 {updateSetsList(sets)}
             </ul>
-
             {deletingIndex !== null && (
                 <div id="delete_form" className="delete-dialog">
-                    <p>Bạn có chắc chắn muốn xóa sets này không?</p>
+                    <p>Bạn có chắc chắn muốn xóa học phần này không?</p>
                     <button onClick={deleteSet}>Có</button>
                     <button onClick={() => setDeletingIndex(null)}>Không</button>
                 </div>

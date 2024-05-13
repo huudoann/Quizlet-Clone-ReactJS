@@ -67,10 +67,6 @@ export default function CustomizedMenus() {
         navigate('/login');
     };
 
-    // const handleCreateNewAdmin = () => {
-    //     navigate('/admin-register');
-    // }
-
     return (
         <div>
             <Button
@@ -83,7 +79,7 @@ export default function CustomizedMenus() {
                 onClick={handleClick}
                 backgroundColor='#54'
                 endIcon={<KeyboardArrowDown />}
-                style={{ backgroundColor: '#dc3545' }}
+                style={{ backgroundColor: '#fff', color: '#000' }}
             >
                 <FontAwesomeIcon icon={faUserTie} style={{ marginRight: '.5rem' }} /> {user_name}
             </Button>

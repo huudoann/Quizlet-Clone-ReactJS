@@ -1,7 +1,6 @@
 .dashboard_admin {
 
     .navigation {
-
         margin-top: 2.5rem;
         min-height: 2.5rem;
         max-height: 2.5rem;
@@ -14,24 +13,22 @@
     .inline-heading {
         display: inline;
         margin-right: 20px;
-        /* Khoảng cách giữa các tiêu đề */
     }
 
     .inline-link {
         display: inline;
         margin-right: 20px;
-        /* Khoảng cách giữa các liên kết */
     }
 
     .auth-tabs {
         margin: 1rem 4rem 0 4rem;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
         display: flex;
         flex-grow: 1;
         align-items: flex-start;
         justify-content: space-around;
         flex-direction: row;
-        background-color: #ccc;
+        background-color: #fff;
         border-radius: 1rem;
     }
 
@@ -50,6 +47,5 @@
     .auth-tabs button.active {
         color: #000;
         font-weight: bold;
-        // border: 1px solid #000;
     }
 }

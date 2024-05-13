@@ -24,10 +24,6 @@ const FolderManager = () => {
         getListFolders()
     }, [page])
 
-    const addExam = async () => {
-
-    }
-
     const updateFoldersList = (updatedFolder) => {
         return (
             <table>
@@ -49,8 +45,8 @@ const FolderManager = () => {
                             <td>{folder.description}</td>
                             <td>
                                 <div className="edit-delete-buttons">
-                                    <button className="edit" onClick={() => editExam(folder)}>Sửa</button>
-                                    <button className="del" onClick={() => showDeleteForm(folder, index)}>Xóa</button>
+                                    <Button className="edit" onClick={() => editFolder(folder)} style={{ backgroundColor: 'white', color: 'black', border: '1px solid #aaa', textTransform: 'none' }}>Sửa</Button>
+                                    <Button className="del" onClick={() => showDeleteForm(folder, index)} style={{ textTransform: 'none' }}>Xóa</Button>
                                 </div>
                             </td>
                         </tr>
@@ -65,10 +61,9 @@ const FolderManager = () => {
         setPage(value - 1);
     }
 
-    const editExam = (folder) => {
-        localStorage.setItem('set_id', folder.folder_id);
+    const editFolder = (folder) => {
+        localStorage.setItem('folder_id', folder.folder_id);
         localStorage.setItem('public', folder.public);
-        localStorage.setItem('user_id', folder.user_id);
         localStorage.setItem('folderTitle', folder.title);
         localStorage.setItem('description', folder.description);
         navigate('/folder-page')
@@ -76,7 +71,7 @@ const FolderManager = () => {
 
     const showDeleteForm = (folder, index) => {
         setDeletingIndex(index)
-        setFolderId(folder.set_id)
+        setFolderId(folder.folder_id)
     }
 
     const deleteSet = async () => {
@@ -87,7 +82,7 @@ const FolderManager = () => {
         setDeletingIndex(null)
         try {
             console.log(deleteFolderId)
-            await Request.Server.delete(endPoint.deleteSetBySetId(deleteFolderId))
+            await Request.Server.delete(endPoint.deleteFolderById(deleteFolderId))
             setFolders(prevExams => prevExams.filter(folder => folder.deleteFolderId !== deleteFolderId))
         } catch (error) {
             console.error('Error deleting folder:', error)
@@ -98,11 +93,6 @@ const FolderManager = () => {
 
     return (
         <div className="sets-management-page">
-            <div className="create-container">
-                <div className="button-container">
-                    <Button onClick={addExam} variant="contained" color='success' style={{ justifyItems: 'right' }}>Tạo thư mục</Button>
-                </div>
-            </div>
             <ul id="exam_list">
                 {updateFoldersList(folders)}
             </ul>

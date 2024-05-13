@@ -1,9 +1,11 @@
 .user-management-page {
-    margin: 70px;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 4rem;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #fff;
 
     .create-container-user {
         margin-bottom: 20px;
@@ -135,7 +137,7 @@
     th,
     td {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 1rem 2rem;
         text-align: center;
     }
 
