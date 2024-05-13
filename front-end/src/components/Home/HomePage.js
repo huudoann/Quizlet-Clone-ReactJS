@@ -48,7 +48,7 @@ const HomePage = () => {
                 throw new Error('Token không tồn tại trong localStorage');
             } else {
                 try {
-                    const responseSet = await axios.get(`http://localhost:8080/api/set/get-public-sets`, { params: { size: 150 } }, {
+                    const responseSet = await axios.get(`http://localhost:8080/api/set/get-public-sets`, { params: { size: 75 } }, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
