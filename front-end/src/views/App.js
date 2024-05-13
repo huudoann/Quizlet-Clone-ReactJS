@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from '../components/Home/HomePage';
 import CreateSet from '../components/Create-set/CreateSet';
 import Home from '../components/Home/Home';
@@ -18,21 +18,22 @@ import FolderPage from '../components/FolderPage/FolderPage';
 import SettingPage from '../components/SettingPage/SettingPage';
 import '../styles/global.scss';
 import ForgotPasswordPage from '../components/ForgotPassword/ForgotPassword';
-import ConfirmForgotPassword from '../components/ForgotPassword/ConfirmForgotPassword'
+import ConfirmForgotPassword from '../components/ForgotPassword/ConfirmForgotPassword';
 import PrivateRoute from './PrivateRoute';
+import AdminRoute from './AdminRoute';
 import UserManagement from '../components/AdminPages/UserManagement';
 import DashboardAdmin from '../components/AdminPages/DashboardAdmin';
 import SetManager from '../components/AdminPages/SetManager';
+import FolderManager from '../components/AdminPages/FolderManager';
 
 function App() {
-
     const isAuthenticated = false
 
     return (
         <Router>
             <div className="App">
                 <Routes>
-                    {/* non protected routes */}
+                    {/* Non-protected routes */}
                     <Route exact path='/' element={<Home />} />
                     <Route exact path='/signup' element={<SignUpForm />} />
                     <Route exact path='/login' element={<LoginForm />} />
@@ -40,7 +41,7 @@ function App() {
                     <Route exact path='/forgot-password' element={<ForgotPasswordPage />} />
                     <Route exact path='/reset-password' element={<ConfirmForgotPassword />} />
 
-                    {/* protected route */}
+                    {/* Protected routes */}
                     <Route exact path='/sets' element={<PrivateRoute />}>
                         <Route exact path='/sets' element={<Sets />} />
                     </Route>
@@ -77,15 +78,20 @@ function App() {
                     <Route exact path='/setting' element={<PrivateRoute />}>
                         <Route exact path='/setting' element={<SettingPage />} />
                     </Route>
-                    {/* <Route exact path='/admin' element={<PrivateRoute />}> */}
-                    <Route exact path='/user-management' element={<UserManagement />} />
-                    {/* </Route> */}
-                    {/* <Route exact path='/admin' element={<PrivateRoute />}> */}
-                    <Route exact path='/admin' element={<DashboardAdmin />} />
-                    {/* </Route> */}
-                    {/* <Route exact path='/admin' element={<PrivateRoute />}> */}
-                    <Route exact path='/sets-management' element={<SetManager />} />
-                    {/* </Route> */}
+
+                    {/* Admin routes */}
+                    <Route exact path='/sets-management' element={<AdminRoute />}>
+                        <Route exact path='/sets-management' element={<SetManager />} />
+                    </Route>
+                    <Route exact path='/folders-management' element={<AdminRoute />}>
+                        <Route exact path='/folders-management' element={<FolderManager />} />
+                    </Route>
+                    <Route exact path='/user-management' element={<AdminRoute />}>
+                        <Route exact path='/user-management' element={<UserManagement />} />
+                    </Route>
+                    <Route exact path='/admin' element={<AdminRoute />}>
+                        <Route exact path='/admin' element={<DashboardAdmin />} />
+                    </Route>
                 </Routes>
             </div>
         </Router>

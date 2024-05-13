@@ -4,27 +4,13 @@ import { Box, TextField, Button, Link } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import axios from 'axios';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 const LoginForm = ({ switchForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Kiểm tra nếu có toast trong session storage
-    const toastData = sessionStorage.getItem('toast');
-    if (toastData) {
-      const toastObject = JSON.parse(toastData);
-      // Hiển thị toast
-      toast.success(toastObject.message, {
-        position: toastObject.position
-      });
-      // Xóa toast khỏi session storage
-      sessionStorage.removeItem('toast');
-    }
-  }, []);
 
   const handleLogin = async () => {
     if (!email.trim()) {
@@ -61,6 +47,7 @@ const LoginForm = ({ switchForm }) => {
       sessionStorage.setItem('toast', JSON.stringify(successToast));
 
       if (response.data.role === 'ADMIN') {
+        localStorage.setItem('admin_id', user_id);
         navigate('/admin')
       }
       else {

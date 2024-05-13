@@ -72,6 +72,7 @@ export const endPoint = {
     getUserByUserId: (user_id) => `${baseUrl}/user/${user_id}`,
     getUserByUsername: (username) => `${baseUrl}/user/username/${username}`,
     getUserByEmail: (email) => `${baseUrl}/user/email/${email}`,
+    updateUsernameByUserId: (user_id) => `${baseUrl}/user/change-username/${user_id}`
     // resetPassword:
 }
 

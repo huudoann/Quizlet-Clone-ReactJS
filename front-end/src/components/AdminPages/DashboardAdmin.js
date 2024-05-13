@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './DashboardAdmin.scss';
 import SetManager from './SetManager';
 import FolderManager from './FolderManager'
 import UserManagement from './UserManagement';
 import AdminNavBar from '../AdminPages/AdminNavBar';
-
+import { Toaster, toast } from 'react-hot-toast'
 
 const DashboardAdmin = () => {
     const [currentPage, setCurrentPage] = useState('sets-management');
@@ -15,6 +15,7 @@ const DashboardAdmin = () => {
 
     return (
         <div className='dashboard_admin'>
+            <Toaster />
             <div className='navigation'>
                 <AdminNavBar />
             </div>

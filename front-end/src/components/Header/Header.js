@@ -15,6 +15,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import axios from "axios";
+import { Person } from '@mui/icons-material';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import HomeIcon from '@mui/icons-material/Home';
@@ -283,7 +284,7 @@ const Header = () => {
               className="icon-container icon-container-user"
               onClick={toggleUserMenu}
             >
-              <FontAwesomeIcon icon={faUser} style={{ marginRight: '.5rem' }} /> {user_name}
+              <Person />
               {isUserMenuOpen && (
                 <div
                   ref={menuUserRef}

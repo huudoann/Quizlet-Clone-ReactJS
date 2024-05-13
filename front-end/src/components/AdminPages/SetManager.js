@@ -4,6 +4,7 @@ import { Request } from '../../utils/axios'
 import { endPoint } from '../../utils/api/endPoint'
 import { useNavigate } from 'react-router-dom'
 import { Pagination, Button } from '@mui/material'
+import { Toaster, toast } from 'react-hot-toast'
 
 const SetManager = () => {
     const [sets, setSets] = useState([])
@@ -13,6 +14,20 @@ const SetManager = () => {
     const [page, setPage] = useState(0);
     const [selectedType, setSelectedType] = useState('public');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Kiểm tra nếu có toast trong session storage
+        const toastData = sessionStorage.getItem('toast');
+        if (toastData) {
+            const toastObject = JSON.parse(toastData);
+            // Hiển thị toast
+            toast.success(toastObject.message, {
+                position: toastObject.position
+            });
+            // Xóa toast khỏi session storage
+            sessionStorage.removeItem('toast');
+        }
+    }, []);
 
     useEffect(() => {
         const getListSets = async () => {
@@ -68,6 +83,7 @@ const SetManager = () => {
 
     const editSet = (set) => {
         localStorage.setItem('set_id', set.set_id);
+        localStorage.setItem('user_id', set.user_id);
         localStorage.setItem('public', set.public);
         localStorage.setItem('flashcardTitle', set.title);
         localStorage.setItem('description', set.description);
@@ -89,6 +105,9 @@ const SetManager = () => {
             console.log(deteleSetId)
             await Request.Server.delete(endPoint.deleteSetBySetId(deteleSetId))
             setSets(prevExams => prevExams.filter(set => set.deteleSetId !== deteleSetId))
+            return toast.success('Xóa thành công!', {
+                position: "top-center"
+            })
         } catch (error) {
             console.error('Error deleting set:', error)
         } finally {
@@ -98,6 +117,7 @@ const SetManager = () => {
 
     return (
         <div className="sets-management-page">
+            <Toaster />
             <ul id="exam_list">
                 {updateSetsList(sets)}
             </ul>

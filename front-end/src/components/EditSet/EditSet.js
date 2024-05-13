@@ -24,8 +24,9 @@ const EditSet = () => {
     const [isClickAddCard, setIsClickAddCard] = useState(false);
     const [editCards, setEditCards] = useState([])
     const [isPublic, setIsPublic] = useState('false');
+    const role = localStorage.getItem('role')
 
-    console.log({isPublic});
+    console.log({ isPublic });
     // console.log({ flashcardsArray });
     // console.log({ flashcardsArray });
     //gọi API lấy tất cả thẻ theo set_id
@@ -155,7 +156,11 @@ const EditSet = () => {
                 });
                 console.log({ responseCard })
             })
-            navigate(`/flashcard`)
+            if (role === 'ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate('/flashcard');
+            }
         } else {
             editCards.forEach(async (card, index) => {
                 const updateCardApiUrl = `http://localhost:8080/api/card/edit/${card.card_id}`;
@@ -166,7 +171,11 @@ const EditSet = () => {
                 });
                 console.log({ responseCard })
             })
-            navigate(`/flashcard`)
+            if (role === 'ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate('/flashcard');
+            }
         }
 
         // update cập nhập thông tin, mô tả, quyền truy cập
@@ -178,7 +187,7 @@ const EditSet = () => {
         console.log(updateDataEditSet);
         try {
             const updateData = Request.Server.put(endPoint.editSetBySetId(set_id), updateDataEditSet)
-            
+
         } catch (error) {
             console.error('Lỗi khi cập nhật set:', error.message);
             throw error;
@@ -190,16 +199,29 @@ const EditSet = () => {
             {<Header />}
             <div className="body">
                 <div className="toolbar">
-                    <Link to='/flashcard' style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                        <span className='return-to-the-module'>
-                            <IconButton
-                                aria-label="arrow" size="large"
-                                className="arrow-icon">
-                                <ArrowBack fontSize="inherit" />
-                            </IconButton>
-                            Trở về học phần
-                        </span>
-                    </Link>
+                    {role === 'ADMIN' ? (
+                        <Link to='/admin' style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                            <span className='return-to-the-module'>
+                                <IconButton
+                                    aria-label="arrow" size="large"
+                                    className="arrow-icon">
+                                    <ArrowBack fontSize="inherit" />
+                                </IconButton>
+                                Trở về trang admin
+                            </span>
+                        </Link>
+                    ) : (
+                        <Link to='/flashcard' style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                            <span className='return-to-the-module'>
+                                <IconButton
+                                    aria-label="arrow" size="large"
+                                    className="arrow-icon">
+                                    <ArrowBack fontSize="inherit" />
+                                </IconButton>
+                                Trở về học phần
+                            </span>
+                        </Link>
+                    )}
                     <div>
                         <Button variant="contained" className='completed' onClick={() => {
                             handleCompletedButtonClick()

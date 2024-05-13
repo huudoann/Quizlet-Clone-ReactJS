@@ -4,6 +4,7 @@ import { Request } from '../../utils/axios'
 import { endPoint } from '../../utils/api/endPoint'
 import { useNavigate } from 'react-router-dom'
 import { Button, Pagination } from '@mui/material'
+import { Toaster, toast } from 'react-hot-toast'
 
 const FolderManager = () => {
     const [folders, setFolders] = useState([])
@@ -84,6 +85,9 @@ const FolderManager = () => {
             console.log(deleteFolderId)
             await Request.Server.delete(endPoint.deleteFolderById(deleteFolderId))
             setFolders(prevExams => prevExams.filter(folder => folder.deleteFolderId !== deleteFolderId))
+            return toast.success('Xóa thành công!', {
+                position: "top-center"
+            })
         } catch (error) {
             console.error('Error deleting folder:', error)
         } finally {
@@ -93,6 +97,7 @@ const FolderManager = () => {
 
     return (
         <div className="sets-management-page">
+            <Toaster />
             <ul id="exam_list">
                 {updateFoldersList(folders)}
             </ul>
