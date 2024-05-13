@@ -210,6 +210,10 @@
 }
 
 @media (max-width: 480px) {
+    .folder-dialog {
+        width: 200px;
+    }
+
     .menu-icon {
         display: block;
     }

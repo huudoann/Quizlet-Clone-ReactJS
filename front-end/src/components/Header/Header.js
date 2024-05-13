@@ -365,6 +365,7 @@ const Header = () => {
             <CloseIcon
               className="close-icon-dialog"
               style={{
+                color: "white",
                 margin: "8px",
                 padding: "5px",
                 border: "2px solid #586380",
