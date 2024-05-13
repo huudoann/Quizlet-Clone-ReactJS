@@ -154,6 +154,8 @@
           align-items: center;
           backface-visibility: hidden;
           transform-style: preserve-3d;
+          max-width: 100%;
+          text-wrap: wrap;
         }
 
         .flashcard .front {

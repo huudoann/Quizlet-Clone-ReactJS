@@ -337,7 +337,7 @@ const Header = () => {
           <div className="close-icon" onClick={toggleFolderDialog}>
             <FontAwesomeIcon icon={faTimes} />
           </div>
-          <h2>Tạo học phần mới</h2>
+          <h2 className="folder-dialog-header">Tạo học phần mới</h2>
           <input
             type="text"
             placeholder="Tên học phần"
@@ -363,7 +363,7 @@ const Header = () => {
             }}
           >
             <CloseIcon
-              className="close-icon"
+              className="close-icon-dialog"
               style={{
                 margin: "8px",
                 padding: "5px",
@@ -374,16 +374,16 @@ const Header = () => {
             />
           </div>
           <div className="NavigationTabs">
-            <div className="home-navigation" onClick={() => {navigate("/lastest")}}>
-              <HomeIcon style={{fontSize: "30px", paddingTop: "8px"}} />
+            <div className="home-navigation" onClick={() => { navigate("/lastest") }}>
+              <HomeIcon style={{ fontSize: "30px", paddingTop: "8px" }} />
               <span>Trang chủ</span>
             </div>
-            <div className="set-navigation" onClick={() => {navigate("/sets")}}>
-              <ContentCopyIcon style={{fontSize: "30px", paddingTop: "8px"}} />
+            <div className="set-navigation" onClick={() => { navigate("/sets") }}>
+              <ContentCopyIcon style={{ fontSize: "30px", paddingTop: "8px" }} />
               <span>Học phần</span>
             </div>
-            <div className="folder-navigation" onClick={() => {navigate("/folders")}}>
-              <FolderOpenIcon style={{fontSize: "30px", paddingTop: "8px"}} />
+            <div className="folder-navigation" onClick={() => { navigate("/folders") }}>
+              <FolderOpenIcon style={{ fontSize: "30px", paddingTop: "8px" }} />
               <span>Thư mục</span>
             </div>
           </div>

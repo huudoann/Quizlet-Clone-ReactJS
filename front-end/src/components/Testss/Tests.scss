@@ -142,4 +142,30 @@
         }
 
     }
+
+    @media only screen and (max-width: 500px) {
+        .term-box .buttons-answer {
+            .button-row {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .button-row button {
+                width: 90%;
+            }
+        }
+
+        .tests-form {
+            height: 80vh;
+            padding: 20px 0;
+        }
+
+        .defi-box {
+            height: 25%;
+
+            p {
+                margin: 20px;
+            }
+        }
+    }
 }

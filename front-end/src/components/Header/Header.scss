@@ -171,8 +171,9 @@
         text-align: center;
         z-index: 999;
 
-        h2 {
+        .folder-dialog-header {
             font-size: 20px;
+            color: black;
         }
 
         input[type="text"],
@@ -196,6 +197,10 @@
                 background-color: #423ed8;
             }
         }
+
+        .close-icon {
+            // color: black;
+        }
     }
 }
 
@@ -212,12 +217,15 @@
     .homepage-btn {
         display: none;
     }
+
     .library-btn {
         display: none;
     }
+
     .search {
         display: none;
     }
+
     .sub-menu {
         position: fixed;
         top: 0;
@@ -226,7 +234,8 @@
         height: 100vh;
         padding-left: 20px;
         background-color: #0A092D;
-        z-index: 999; /* Ensure the menu is on top of other content */
+        z-index: 999;
+        /* Ensure the menu is on top of other content */
         display: flex;
         flex-direction: column;
 
@@ -234,11 +243,11 @@
             cursor: pointer;
             color: #ccc;
             transition: color 0.3s ease;
-            
+
             &:hover {
                 color: #999;
             }
-            
+
         }
 
         .NavigationTabs {
