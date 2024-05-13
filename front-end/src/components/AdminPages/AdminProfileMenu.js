@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import { Button, Menu, MenuItem, Divider } from '@mui/material';
-import { KeyboardArrowDown, Person, PersonOutline, Logout } from '@mui/icons-material';
+import { KeyboardArrowDown } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { faRightFromBracket, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -83,7 +85,7 @@ export default function CustomizedMenus() {
                 endIcon={<KeyboardArrowDown />}
                 style={{ backgroundColor: '#dc3545' }}
             >
-                <Person style={{ marginRight: '.5rem' }} /> {user_name}
+                <FontAwesomeIcon icon={faUserTie} style={{ marginRight: '.5rem' }} /> {user_name}
             </Button>
             <StyledMenu
                 id="demo-customized-menu"
@@ -94,13 +96,9 @@ export default function CustomizedMenus() {
                 open={open}
                 onClose={handleClose}
             >
-                {/* <MenuItem onClick={handleCreateNewAdmin} disableRipple>
-                    <PersonOutline />
-                    Tạo tài khoản admin mới
-                </MenuItem> */}
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem onClick={handleLogout} disableRipple>
-                    <Logout />
+                    <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: '.5rem' }} />
                     Đăng xuất
                 </MenuItem>
             </StyledMenu>

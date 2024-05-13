@@ -11,6 +11,7 @@ import {
   faTimes,
   faUser,
   faCog,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -18,6 +19,7 @@ import axios from "axios";
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import HomeIcon from '@mui/icons-material/Home';
+import Close from "@mui/icons-material/Close";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,7 +34,7 @@ const Header = () => {
   const location = useLocation();
   const menuRef = useRef(null); // Ref cho menu
   const menuUserRef = useRef(null); // Ref cho menu người dùng
-
+  const role = localStorage.getItem('role')
   const isActive =
     location.pathname.includes("folders") || location.pathname.includes("sets");
 
@@ -290,15 +292,26 @@ const Header = () => {
                 >
                   {/* Thêm các menu item cho menu người dùng ở đây */}
 
-                  <Button className="menu-item" sx={{ textTransform: "none" }}>
+                  <Button
+                    className="menu-item"
+                    sx={{ textTransform: "none" }}
+                    onClick={() => navigate("/sets")}
+                  >
                     <FontAwesomeIcon icon={faUser} />
-                    <Link
-                      to="/sets"
-                      style={{ color: "inherit", textDecoration: "inherit" }}
-                    >
-                      Hồ sơ
-                    </Link>
+                    Hồ sơ
                   </Button>
+
+                  {
+                    role === 'ADMIN' &&
+                    <Button
+                      className="menu-item"
+                      sx={{ textTransform: "none" }}
+                      onClick={() => navigate("/admin")}
+                    >
+                      <FontAwesomeIcon icon={faUserTie} />
+                      Chuyển sang giao diện admin
+                    </Button>
+                  }
 
                   <Button
                     className="menu-item"
@@ -309,13 +322,12 @@ const Header = () => {
                     Cài đặt
                   </Button>
 
-                  <Button className="menu-item" sx={{ textTransform: "none" }}>
-                    <Link
-                      to="/tos"
-                      style={{ color: "inherit", textDecoration: "inherit" }}
-                    >
-                      Quyền riêng tư
-                    </Link>
+                  <Button
+                    className="menu-item"
+                    sx={{ textTransform: "none" }}
+                    onClick={() => navigate("/tos")}
+                  >
+                    Quyền riêng tư
                   </Button>
 
                   <Button
@@ -333,24 +345,26 @@ const Header = () => {
       </header>
 
       {isFolderDialogOpen && (
-        <div className="folder-dialog">
-          <div className="close-icon" onClick={toggleFolderDialog}>
-            <FontAwesomeIcon icon={faTimes} />
+        <div className="overlay">
+          <div className="folder-dialog">
+            <div className="close-icon" onClick={toggleFolderDialog}>
+              <Close />
+            </div>
+            <h1 className="folder-dialog-header">Tạo thư mục mới</h1>
+            <input
+              type="text"
+              placeholder="Tên thư mục"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Mô tả"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <button onClick={handleCreateFolder}>Thêm mới</button>
           </div>
-          <h2 className="folder-dialog-header">Tạo học phần mới</h2>
-          <input
-            type="text"
-            placeholder="Tên học phần"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Mô tả"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <button onClick={handleCreateFolder}>Thêm mới</button>
         </div>
       )}
       {isSubMenuOpen && (

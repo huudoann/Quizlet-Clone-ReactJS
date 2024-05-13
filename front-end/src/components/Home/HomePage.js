@@ -48,25 +48,15 @@ const HomePage = () => {
                 throw new Error('Token không tồn tại trong localStorage');
             } else {
                 try {
-                    const responseSet = await axios.get(`http://localhost:8080/api/set/get-public-sets`, {
+                    const responseSet = await axios.get(`http://localhost:8080/api/set/get-public-sets`, { params: { size: 150 } }, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
                     });
 
-                    // const responseFolder = await axios.get(`http://localhost:8080/api/folder/get-public-folders`, {
-                    //     headers: {
-                    //         'Authorization': `Bearer ${token}`
-                    //     }
-                    // });
-
-                    // Lấy 10 phần tử ngẫu nhiên từ mảng sets
                     const shuffledSets = responseSet.data.sort(() => Math.random() - 0.5).slice(0, 9);
-                    // const shuffledFolders = responseFolder.data.sort(() => Math.random() - 0.5).slice(0, 9);
 
                     setSets(shuffledSets);
-                    // setFolders(shuffledFolders)
-                    // console.log(responseSet, responseFolder);
                 } catch (error) {
                     console.error('Lỗi khi lấy danh sách các set:', error.message);
                 }
@@ -83,10 +73,6 @@ const HomePage = () => {
 
         return () => clearInterval(intervalId);
     }, [images.length]);
-
-    // useEffect(() => {
-    //     setOverlayTexts(texts[currentImageIndex]);
-    // }, [currentImageIndex, texts]);
 
     useEffect(() => {
         const newOverlayTexts = texts[currentImageIndex];

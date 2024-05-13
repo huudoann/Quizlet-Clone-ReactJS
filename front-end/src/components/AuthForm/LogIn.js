@@ -53,13 +53,19 @@ const LoginForm = ({ switchForm }) => {
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('user_name', username);
       localStorage.setItem('email', email);
+      localStorage.setItem('role', response.data.role);
       const successToast = {
         message: 'Đăng nhập thành công!',
         position: 'top-center'
       };
       sessionStorage.setItem('toast', JSON.stringify(successToast));
 
-      navigate('/lastest')
+      if (response.data.role === 'ADMIN') {
+        navigate('/admin')
+      }
+      else {
+        navigate('/lastest')
+      }
 
     } catch (error) {
       console.error('Lỗi khi đăng nhập:', error.message);
