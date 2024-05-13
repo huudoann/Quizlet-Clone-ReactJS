@@ -47,7 +47,7 @@ const Flashcard = () => {
     const [showLoadMoreButton, setShowLoadMoreButton] = useState(false);
     const [userReviewed, setUserReviewed] = useState(0);
     const flashcardContainerRef = useRef(null);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     const set_id = localStorage.getItem('set_id');
     const ownerId = localStorage.getItem('ownerId');
     const user_id = localStorage.getItem('user_id');
@@ -498,9 +498,9 @@ const Flashcard = () => {
         navigate('/edit-set');
     }
 
-    const openAddModal = () => {
-        setIsAddModalOpen(true);
-    }
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
     return (
         <div>
@@ -675,11 +675,10 @@ const Flashcard = () => {
                             <button onClick={toggleMenu}><MoreHoriz /></button>
                             {showMenu && (
                                 <div className="menu">
-                                    <button onClick={openAddModal}>
+                                    <div className='add-to-folder'>
                                         <AddModal />
-                                        <span>Thêm vào thư mục</span>
-                                    </button>
-                                    {isAddModalOpen && <AddModal />}
+                                    </div>
+
                                     {isOwner && (
                                         <button onClick={() => handleDeleteSet(set_id)}><Delete />Xóa học phần</button>
                                     )}

@@ -103,21 +103,34 @@ export default function AddModal() {
   return (
     <React.Fragment>
       <Toaster />
-      <AddIcon
+      <Button
         style={{
           padding: "10px !important",
           alignItems: "flex-end !important",
-          fontSize: "20px",
+          fontSize: "14px",
           cursor: "pointer",
-          border: "2px solid #586380",
-          borderRadius: "100px",
-          backgroundColor: isHovered ? "#282E3E" : "", // Màu nền sẽ thay đổi khi hover
-          transition: "background-color 0.3s ease", // Thêm transition cho hiệu ứng màu nền
+          backgroundColor: isHovered ? "lighten($color: #101539, $amount: 10%)" : "",
+          transition: "background-color 0.3s ease",
+          textTransform: 'none',
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClickOpen("paper")}
-      />
+      >
+        <AddIcon
+          style={{
+            padding: "10px !important",
+            alignItems: "flex-end !important",
+            fontSize: "20px",
+            cursor: "pointer",
+            border: "2px solid #586380",
+            borderRadius: "100px",
+            backgroundColor: isHovered ? "#282E3E" : "", // Màu nền sẽ thay đổi khi hover
+            transition: "background-color 0.3s ease", // Thêm transition cho hiệu ứng màu nền
+          }} />
+        <span>Thêm vào thư mục</span>
+      </Button>
+
       <Dialog
         open={open}
         onClose={handleClose}
