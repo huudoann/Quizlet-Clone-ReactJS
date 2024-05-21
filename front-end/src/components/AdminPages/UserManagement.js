@@ -3,6 +3,7 @@ import './UserManagement.scss';
 import { Request } from '../../utils/axios';
 import { endPoint } from '../../utils/api/endPoint';
 import { TextField, Button } from '@mui/material';
+import { toast, Toaster } from 'react-hot-toast';
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
@@ -33,6 +34,9 @@ const UserManagement = () => {
         try {
             await Request.Server.delete(endPoint.deleteUserByUserId(deleteUserId));
             setUsers(prevUsers => prevUsers.filter(user => user.deleteUserId !== deleteUserId));
+            return toast.success('Xóa thành công!', {
+                position: "top-center"
+            })
         } catch (error) {
             console.error('Error deleting user:', error);
         } finally {
@@ -59,6 +63,9 @@ const UserManagement = () => {
                 return user;
             });
             setUsers(updatedUsers);
+            return toast.success('Sửa thành công!', {
+                position: "top-center"
+            })
         } catch (error) {
             console.error('Error updating user:', error);
         } finally {
