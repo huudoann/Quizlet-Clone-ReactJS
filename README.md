@@ -46,16 +46,11 @@ Our Quizlet Clone project uses ReactJS for the frontend, Java Spring Boot and My
 ## Deployment Instructions
 To deploy the Quizlet Clone project using Docker, follow these steps:
 
-### Prerequisites
-Ensure you have the following installed:
-- Docker
-- Docker Compose
-
 ### Steps
 
 #### Clone the Repository
 ```bash
-git clone https://github.com/yourusername/quizlet-clone.git
+git clone https://github.com/huudoann/Quizlet-Clone-ReactJS
 cd quizlet-clone
 ```
 
@@ -63,7 +58,7 @@ cd quizlet-clone
 
 ### Steps
 
-#### cd front-end
+#### `cd front-end`
 
 #### `npm install`
 Install all dependencies.
